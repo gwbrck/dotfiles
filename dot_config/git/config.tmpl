@@ -1,0 +1,11 @@
+[user]
+	name = Gregor
+	email = {{ (bitwarden "item" "github.com").login.username }}
+{{ if (eq .chezmoi.os "darwin") -}}
+[credential]
+	helper = osxkeychain
+{{ end -}}
+[core]
+	excludesFile = ~/.config/git/ignore
+[init]
+	defaultBranch = main

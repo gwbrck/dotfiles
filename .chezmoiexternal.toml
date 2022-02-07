@@ -1,0 +1,42 @@
+[".config/zsh-plugins/zsh-syntax-highlighting"]
+    type = "archive"
+    url = "https://github.com/zsh-users/zsh-syntax-highlighting/archive/master.tar.gz"
+    exact = true
+    stripComponents = 1
+    refreshPeriod = "168h"
+
+[".config/zsh-plugins/zsh-autosuggestions"]
+    type = "archive"
+    url = "https://github.com/zsh-users/zsh-autosuggestions/archive/refs/heads/master.zip"
+    exact = true
+    stripComponents = 1
+    refreshPeriod = "168h"
+
+[".config/pyenv"]
+    type = "archive"
+    url = "https://github.com/pyenv/pyenv/archive/refs/heads/master.zip"
+    exact = false
+    stripComponents = 1
+    refreshPeriod = "168h"
+
+[".config/pyenv/plugins/pyenv-default-packages"]
+    type = "archive"
+	url = "https://github.com/jawshooah/pyenv-default-packages/archive/refs/heads/master.zip"
+    exact = true
+    stripComponents = 1
+    refreshPeriod = "168h"
+
+[".config/csl/styles/apa.csl"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl"
+    refreshPeriod = "168h"
+
+[".config/csl/locales/locales-de-DE.xml"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/citation-style-language/locales/master/locales-de-DE.xml"
+    refreshPeriod = "168h"
+
+[".config/csl/locales/locales-en-US.xml"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/citation-style-language/locales/master/locales-en-US.xml"
+    refreshPeriod = "168h"

@@ -1,0 +1,6 @@
+{
+    "initial_working_directory": "~",
+    "editor_theme": "Dracula",
+    "posix_terminal_shell": "zsh",
+    "editor_keybindings": "vim"
+}

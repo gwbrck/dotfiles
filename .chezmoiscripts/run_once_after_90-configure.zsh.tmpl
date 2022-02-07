@@ -1,0 +1,9 @@
+{{ if (or (eq .chezmoi.os "linux") (eq .chezmoi.os "darwin")) -}}
+#!/usr/local/bin/zsh
+set -eufo pipefail
+
+echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
+chsh -s /usr/local/bin/zsh
+chpass -s /usr/local/bin/zsh
+{{ end -}}
+

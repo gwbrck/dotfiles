@@ -1,0 +1,12 @@
+dir.create(file.path("~/.local/lib/R"), showWarnings = FALSE, recursive = TRUE)
+.libPaths(new = "~/.local/lib/R")
+options(repos = structure(c(CRAN = "https://ftp.gwdg.de/pub/misc/cran/")))
+options(editor = "emacsclient")
+options(defaultPackages = c(getOption("defaultPackages"), "pacman"))
+
+q <- function (save="no", ...) {
+  quit(save=save, ...)
+}
+
+message("Hi!")
+

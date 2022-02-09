@@ -107,6 +107,7 @@ alias mv='nocorrect mv'
 alias stack='nocorrect stack'
 alias sudo='nocorrect sudo'
 
+eval "$(bw completion --shell zsh); compdef _bw bw;"
 
 ################################
 ############ Prompt ############

@@ -801,66 +801,57 @@ targets."
   (evil-collection-define-key 'normal 'dired-mode-map
     "H" 'dired-hide-dotfiles-mode))
 
+(use-package emacs
+  :init
+  (defun bitwarden-unlock ()
+    "Minimal version of https://github.com/seanfarley/emacs-bitwarden"
+    (interactive)
+    (let* ((bws (shell-command-to-string
+                 (concat (executable-find "bw") " status")))
+           (cmd (cond ((string-match "unauthenticated" bws)  "login")
+                      ((string-match "locked" bws)  "unlock")
+                      ((string-match "unlocked" bws) nil))))
+      (when cmd
+        (when (get-process "bitwarden")
+          (delete-process "bitwarden"))
+        (make-process :name "bitwarden"
+                      :buffer nil
+                      :connection-type 'pipe
+                      :command (list (executable-find "bw") cmd)
+                      :filter #'bitwarden--proc-filter))))
+  (defun bitwarden--proc-filter (proc string)
+    "Interacts with PROC by sending line-by-line STRING."
+    (when (string-match "^? Email address:" string)
+      (process-send-string proc (concat (read-string "Bitwarden email: ") "\n")))
+    (when (string-match "^? Master password:" string)
+      (process-send-string
+       proc (concat (read-passwd "Bitwarden master password: ") "\n")))
+    (when (string-match "^Username or password is incorrect" string)
+      (message "incorrect master password"))
+    (when (string-match "^You are not logged in" string)
+      (message "cannot unlock: not logged in"))
+    (when (string-match "^? Two-step login code:" string)
+      (process-send-string
+       proc (concat (read-passwd "Bitwarden two-step login code: ") "\n")))
+    (when (string-match "^Login failed" string)
+      (message "incorrect two-step code"))
+    (when (string-match "^You are already logged in" string)
+      (string-match "You are already logged in as \\(.*\\)\\." string)
+      (message "already logged in as %s" (match-string 1 string)))
+    (when (string-match "^\\(You are logged in\\|Your vault is now unlocked\\)"
+                        string)
+      (string-match "export BW_SESSION=\"\\(.*\\)\"" string)
+      (setenv "BW_SESSION" (match-string 1 string))
+      (message "successfully logged in."))))
+
 (use-package chezmoi
   :straight t)
 
 (use-package ansible
   :straight t
   :hook (yaml-mode . ansible)
-  :config
-  (defun av/filter (proc string)
-    ""
-    (when (string-match "^? Email address:" string)
-      (let ((user (read-string "Bitwarden email: ")))
-        (process-send-string proc (concat user "\n"))))
-    (when (string-match "^? Master password:" string)
-      (process-send-string
-       proc (concat (read-passwd "Bitwarden master password: ") "\n")))
-    ;; check for bad password
-    (when (string-match "^Username or password is incorrect" string)
-      (message "incorrect master password"))
-    ;; if trying to unlock, check if logged in
-    (when (string-match "^You are not logged in" string)
-      (message "cannot unlock: not logged in" ))
-    ;; read the 2fa code
-    (when (string-match "^? Two-step login code:" string)
-      (process-send-string
-       proc (concat (read-passwd "Bitwarden two-step login code: ") "\n")))
-    ;; check for bad code
-    (when (string-match "^Login failed" string)
-      (message "incorrect two-step code"))
-    ;; check for already logged in
-    (when (string-match "^You are already logged in" string)
-      (string-match "You are already logged in as \\(.*\\)\\." string)
-      (message
-       "already logged in as %s" (match-string 1 string)))
-    (when (string-match "^? Decryption successful" string)
-      (message "Decryption successful"))
-    (when (string-match "^? Encryption successful" string)
-      (message "Encryption successful"))
-    (when (string-match "^? ERROR! input is already encrypted" string)
-      (message "Error! Input is already encrypted"))
-    (when (string-match "^? ERROR! input is already decrypted" string)
-      (message "Error! Input is already decrypted")))
-  (defun ansible-vault (mode str)
-    "Execute ansible-vault (MODE STR should be 'decrypt' or 'encrypt')."
-    (let ((temp-file (make-temp-file "ansible-vault-ansible")))
-      (write-region str nil temp-file 'append)
-      (when (get-process "ansible-pass")
-        (delete-process "ansible-pass"))
-      (make-process :name "ansible-pass"
-                    :buffer nil
-                    :connection-type 'pipe
-                    :command (list (executable-find "ansible-vault")
-                                   mode
-                                   ;;"--vault-password-file"
-                                   ;;"~/Code/homeserver/pass.sh"
-                                   temp-file)
-                    :filter (lambda (proc string)
-                              (av/filter proc string)))
-      (while (eq 'run (process-status "ansible-pass"))
-        (sleep-for 0.25))
-      (ansible-get-string-from-file temp-file))))
+  :custom
+  (ansible-vault-password-file nil))
 
 (use-package server
   :after org

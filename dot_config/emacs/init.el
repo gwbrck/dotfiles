@@ -433,13 +433,16 @@ targets."
 
 
 (use-package helpful
-  :straight t)
-;;  :bind
-;;  ([remap describe-function] . helpful-function)
-;;  ([remap describe-symbol] . helpful-symbol)
-;;  ([remap describe-variable] . helpful-variable)
-;;  ([remap describe-command] . helpful-command)
-;;  ([remap describe-key] . helpful-key))
+  :straight t
+  :init
+  ;; REVIEW See Wilfred/elisp-refs#35. Remove once fixed upstream.
+  (defvar read-symbol-positions-list nil)
+  :bind
+  ([remap describe-function] . helpful-function)
+  ([remap describe-symbol] . helpful-symbol)
+  ([remap describe-variable] . helpful-variable)
+  ([remap describe-command] . helpful-command)
+  ([remap describe-key] . helpful-key))
 
 (use-package flycheck
   :straight t

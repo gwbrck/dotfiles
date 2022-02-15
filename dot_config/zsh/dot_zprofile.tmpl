@@ -1,11 +1,10 @@
 {{- if (eq .chezmoi.os "darwin") -}}
-export LANG="en_US.UTF-8"
 # export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
+# export PATH="/usr/local/sbin:$PATH"
 {{ end -}}
 
-export ZDOTDIR=$HOME/.config/zsh/
-export XDG_CONFIG_HOME=$HOME/.config
+export EDITOR="nvim"
+export VISUAL="emacsclient -c -s $HOME/.cache/emacsserver/emacsen"
 
 export PYENV_ROOT="$HOME/.config/pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
@@ -13,5 +12,4 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 export PIPENV_VENV_IN_PROJECT=1
 export PIPENV_PYTHON="$PYENV_ROOT/shims/python"
 
-export EDITOR="nvim"
-export VISUAL="emacsclient -c -s $HOME/.cache/emacsserver/emacsen"
+eval "$(pyenv init --path)"

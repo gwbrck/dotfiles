@@ -23,7 +23,6 @@ setopt no_prompt_bang
 setopt prompt_percent
 setopt NO_CASE_GLOB            # Case Insensitive Globbing
 setopt hash_list_all            # hash everything before completion
-setopt completealiases 
 
 
 ################################

@@ -3,6 +3,8 @@
 # export PATH="/usr/local/sbin:$PATH"
 {{ end -}}
 
+fpath=(~/.config/zsh/completions $fpath)
+
 export EDITOR="nvim"
 export VISUAL="emacsclient -c -s $HOME/.cache/emacsserver/emacsen"
 

@@ -29,27 +29,35 @@ setopt hash_list_all            # hash everything before completion
 ########### Bindings ###########
 ################################
 bindkey -v
-bindkey -M vicmd 'v' edit-command-line
-# Use "cbt" capability ("back_tab", as per `man terminfo`), if we have it:
-if tput cbt &> /dev/null; then
-  bindkey "$(tput cbt)" reverse-menu-complete # make Shift-tab go to previous completion
-fi
-
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd 'v' edit-command-line
 
 
-# Make CTRL-Z background things and unbackground them.
-function fg-bg() {
-  if [[ $#BUFFER -eq 0 ]]; then
-    fg
-  else
-    zle push-input
-  fi
+# Use "cbt" capability ("back_tab", as per `man terminfo`), if we have it:
+if tput cbt &> /dev/null; then
+  bindkey "$(tput cbt)" reverse-menu-complete # make Shift-tab go to previous completion
+fi
+
+vim_ins_mode=""
+vim_cmd_mode="%{$fg[blue]%}$(printf "\U25CF ")%{$reset_color%}"
+vim_mode=$vim_ins_mode
+
+function zle-keymap-select {
+  vim_mode="${${KEYMAP/vicmd/${vim_cmd_mode}}/(main|viins)/${vim_ins_mode}}"
+  zle reset-prompt
 }
-zle -N fg-bg
-bindkey '^Z' fg-bg
+zle -N zle-keymap-select
+
+function zle-line-finish {
+  vim_mode=$vim_ins_mode
+}
+zle -N zle-line-finish
+
+function TRAPINT() {
+  vim_mode=$vim_ins_mode
+  return $(( 128 + $1 ))
+}
 
 ################################
 ########## Completion ##########
@@ -99,9 +107,10 @@ function +vi-git-untracked() {
 }
 
 
-P1_BASE="%B%(1j.$(printf "\U223F").)%(?..%F{red}$(printf "\U2203")%? %f)"
+P1_BASE="%B%(1j.$(printf "\U223F").)%(?..%F{red}$(printf "\U018E ")%? %f)"
 P1_BASE+="%F{white}%(5~.%-3~··%1~.%~)%f%b "
 P1_BASE+='${vcs_info_msg_0_}'
+P1_BASE+='${vim_mode}'
 P1_BASE+="%B%F{blue}$(printf "\U276f") %b%f"
 export PS1=$P1_BASE
 export SPROMPT="zsh: correct %F{red}'%R'%f to %F{red}'%r'%f [%B%Uy%u%bes, %B%Un%u%bo, %B%Ue%u%bdit, %B%Ua%u%bbort]? "
@@ -132,7 +141,6 @@ function -maybe-show-vcs-info() {
   esac
 }
 add-zsh-hook precmd -maybe-show-vcs-info
-
 
 ################################
 ########### Imports ############

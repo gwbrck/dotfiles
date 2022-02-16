@@ -757,8 +757,8 @@ targets."
 
 (use-package term
   :config
-  ;;(setq explicit-shell-file-name "/usr/local/bin/fish")
-  ;;(setq explicit-fish-args '("-l"))
+  (setq explicit-shell-file-name "/usr/local/bin/fish")
+  (setq explicit-fish-args '("-l"))
   (setq term-prompt-regexp "^∃[0-9]*❯ \\|❯ "))
 
 (use-package eterm-256color

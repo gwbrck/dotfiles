@@ -757,7 +757,8 @@ targets."
 
 (use-package term
   :config
-  (setq explicit-shell-file-name "zsh")
+  ;;(setq explicit-shell-file-name "/usr/local/bin/fish")
+  ;;(setq explicit-fish-args '("-l"))
   (setq term-prompt-regexp "^∃[0-9]*❯ \\|❯ "))
 
 (use-package eterm-256color
@@ -769,7 +770,7 @@ targets."
   :commands vterm
   :bind ("C-M-'" . vterm)
   :config
-  (setq vterm-shell "/usr/local/bin/zsh --login")
+  (setq vterm-shell "/usr/local/bin/fish --login")
   (setq term-prompt-regexp "^∃[0-9]*❯ \\|❯ ")
   (setq vterm-max-scrollback 10000))
 

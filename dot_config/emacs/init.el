@@ -684,7 +684,7 @@ targets."
       (pipenv-mode)
       (pipenv-activate)
       (unless (pipenv-executable-find "pylsp")
-        (pipenv--force-wait (pipenv-install "python-lsp-server[all]")))
+        (pipenv--force-wait (pipenv-install "--dev python-lsp-server[all]")))
       (setq-local lsp-pylsp-plugins-jedi-environment pyvenv-virtual-env)
       (setq-local lsp-pylsp-server-command (pipenv-executable-find "pylsp"))
       (lsp)))

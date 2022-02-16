@@ -3,6 +3,7 @@
 set -eufo pipefail
 
 echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
+echo "/usr/local/bin/fish" | sudo tee -a /etc/shells
 chsh -s /usr/local/bin/zsh
 chpass -s /usr/local/bin/zsh
 {{ end -}}

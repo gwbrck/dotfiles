@@ -431,6 +431,14 @@ targets."
   :init
     (corfu-global-mode))
 
+(use-package consult-project-extra
+  :straight (consult-project-extra
+             :type git
+             :host github
+             :repo "Qkessler/consult-project-extra")
+  :bind
+  (("C-c p f" . consult-project-extra)
+   ("C-c p o" . consult-project-extra-other-window)))
 
 (use-package helpful
   :straight t

@@ -1,70 +1,87 @@
 function fish_prompt --description 'Write out the prompt'
     set -l laststatus $status
 
-    set -l git_info
-    if set -l git_branch (command git symbolic-ref HEAD 2>/dev/null | string replace refs/heads/ '')
-        set git_branch (set_color -o blue)"$git_branch"
-        set -l git_status
-        if not command git diff-index --quiet HEAD --
-            if set -l count (command git rev-list --count --left-right $upstream...HEAD 2>/dev/null)
-                echo $count | read -l ahead behind
-                if test "$ahead" -gt 0
-                    set git_status "$git_status"(set_color red)⬆
-                end
-                if test "$behind" -gt 0
-                    set git_status "$git_status"(set_color red)⬇
-                end
-            end
-            for i in (git status --porcelain | string sub -l 2 | sort | uniq)
-                switch $i
-                    case "."
-                        set git_status "$git_status"(set_color green)✚
-                    case " D"
-                        set git_status "$git_status"(set_color red)\u018e
-                    case "*M*"
-                        set git_status "$git_status"(set_color green)✱
-                    case "*R*"
-                        set git_status "$git_status"(set_color purple)➜
-                    case "*U*"
-                        set git_status "$git_status"(set_color brown)═
-                    case "??"
-                        set git_status "$git_status"(set_color red)≠
-                end
-            end
-        else
-            set git_status (set_color green):
-        end
-        set git_info "(git$git_status$git_branch"(set_color white)")"
+    if not set -q fish_prompt_pwd_dir_length
+        set -lx fish_prompt_pwd_dir_length 0
+    end
+    if not set -q __fish_git_prompt_show_informative_status
+        set -g __fish_git_prompt_show_informative_status 1
+    end
+    if not set -q __fish_git_prompt_hide_untrackedfiles
+        set -g __fish_git_prompt_hide_untrackedfiles 1
+    end
+    if not set -q __fish_git_prompt_showupstream
+        set -g __fish_git_prompt_showupstream informative
+    end
+    if not set -q __fish_git_prompt_char_upstream_ahead
+        set -g __fish_git_prompt_char_upstream_ahead "↑"
+    end
+    if not set -q __fish_git_prompt_char_upstream_behind
+        set -g __fish_git_prompt_char_upstream_behind "↓"
+    end
+    if not set -q __fish_git_prompt_char_stagedstate
+        set -g __fish_git_prompt_char_stagedstate "S"
+    end
+    if not set -q __fish_git_prompt_color_stagedstate
+        set -g __fish_git_prompt_color_stagedstate green
+    end
+    if not set -q __fish_git_prompt_char_dirtystate
+        set -g __fish_git_prompt_char_dirtystate "U"
+    end
+    if not set -q __fish_git_prompt_color_dirtystate
+        set -g __fish_git_prompt_color_dirtystate red
+    end
+    if not set -q __fish_git_prompt_char_untrackedfiles
+        set -g __fish_git_prompt_char_untrackedfiles "…"
+    end
+    if not set -q __fish_git_prompt_color_untrackedfiles
+        set -g __fish_git_prompt_color_untrackedfiles red
+    end
+    if not set -q __fish_git_prompt_char_conflictedstate 
+        set -g __fish_git_prompt_char_conflictedstate "x"
+    end
+    if not set -q __fish_git_prompt_color_invalidstate
+        set -g __fish_git_prompt_color_invalidstate red --bold
+    end
+    if not set -q __fish_git_prompt_char_cleanstate 
+        set -g __fish_git_prompt_char_cleanstate ""
     end
 
-    # Disable PWD shortening by default.
     set -q fish_prompt_pwd_dir_length
     or set -lx fish_prompt_pwd_dir_length 0
+
+    set -l suffix
+    if functions -q fish_is_root_user; and fish_is_root_user
+        set suffix '# '
+    else
+        set suffix (printf '\u276f ')
+    end
 
     if test $laststatus -ne 0
         printf "%s\u018e $laststatus %s" (set_color -o red) (set_color normal)
     end
-    printf '%s%s%s%s%s%s%s%s%s%s%s%s%s' (set_color -o white) (prompt_pwd) $git_info (set_color blue) ' '
+    printf '%s%s' (set_color -o white) (prompt_pwd)
+    printf '%s%s' (fish_vcs_prompt) ' '
     switch $fish_bind_mode
         case default
-          set_color --bold red
-          printf '%s ' \u276f
-          set_color white
+            set_color --bold red
+            printf $suffix
+            set_color white
         case insert
-          set_color --bold blue
-          printf '%s ' \u276f 
-          set_color white
+            set_color --bold blue
+            printf $suffix
+            set_color white
         case replace_one
-          set_color --bold green
-          printf 'R %s ' \u276f
-          set_color white
+            set_color --bold green
+            printf 'R %s' $suffix
+            set_color white
         case visual
-          set_color --bold brmagenta
-          printf 'V %s ' \u276f
-          set_color white
+            set_color --bold brmagenta
+            printf 'V %s' $suffix
+            set_color white
         case '*'
-          set_color --bold red
-          printf '? %s ' \u276f
-          set_color white
+            set_color --bold red
+            printf '? %s' $suffix
+            set_color white
      end
 end

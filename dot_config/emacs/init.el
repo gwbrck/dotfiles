@@ -763,6 +763,9 @@ targets."
   (setq ess-use-eldoc nil)
   (setq ess-use-flymake nil))
 
+(use-package fish-mode
+  :straight t)
+
 (use-package term
   :config
   (setq explicit-shell-file-name "/usr/local/bin/fish")

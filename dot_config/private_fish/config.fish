@@ -50,6 +50,8 @@ if status is-interactive
     set -U fish_pager_color_description   yellow
     set -U fish_pager_color_prefix        'white' '--bold' '--underline'
     set -U fish_pager_color_progress      'brwhite' '--background=cyan'
+    # Vi Keybindings
+    set -U fish_key_bindings fish_vi_key_bindings
 end
 
 set fish_greeting ""

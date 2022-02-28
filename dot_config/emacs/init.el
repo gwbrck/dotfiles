@@ -162,7 +162,10 @@
 (use-package modus-themes
   :straight t
   :init
-  (setq modus-themes-completions 'opinionated)
+  (setq modus-themes-completions
+        (quote ((matches . (background intense accented))
+                (selection . (extrabold intense))
+                (popup . (extrabold intense)))))
   (setq modus-themes-org-blocks 'gray-background)
   (setq modus-themes-mode-line '(borderless 6)))
 

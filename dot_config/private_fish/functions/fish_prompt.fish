@@ -60,7 +60,7 @@ function fish_prompt --description 'Write out the prompt'
     if test $laststatus -ne 0
         printf "%s\u018e $laststatus %s" (set_color -o red) (set_color normal)
     end
-    printf '%s%s' (set_color -o white) (prompt_pwd)
+    printf '%s%s' (set_color white) (prompt_pwd)
     printf '%s%s' (fish_vcs_prompt) ' '
     switch $fish_bind_mode
         case default

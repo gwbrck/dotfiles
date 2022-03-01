@@ -1,4 +1,6 @@
 syntax on
+let g:edge_transparent_background = 1
+colorscheme edge
 set listchars=tab:»\ ,eol:↲
 set list
 set spelllang=de,en

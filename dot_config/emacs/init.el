@@ -163,9 +163,9 @@
   :straight t
   :init
   (setq modus-themes-completions
-        (quote ((matches . (background intense accented))
-                (selection . (extrabold intense))
-                (popup . (extrabold intense)))))
+        (quote ((matches . (background))
+                (selection . (extrabold intense accented))
+                (popup . (extrabold intense accented)))))
   (setq modus-themes-org-blocks 'gray-background)
   (setq modus-themes-mode-line '(borderless 6)))
 

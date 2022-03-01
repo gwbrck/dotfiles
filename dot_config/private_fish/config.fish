@@ -31,7 +31,7 @@ if status is-interactive
     set -U fish_color_cwd                 green
     set -U fish_color_cwd_root            red
     set -U fish_color_end                 brmagenta
-    set -U fish_color_error               brred
+    set -U fish_color_error               red
     set -U fish_color_escape              brcyan
     set -U fish_color_history_current     --bold
     set -U fish_color_host                normal

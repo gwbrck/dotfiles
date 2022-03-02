@@ -1,7 +1,7 @@
 window:
   padding:
-    x: 10
-    y: 10
+    x: 8
+    y: 4
   dynamic_padding: true
   decorations: none
 
@@ -40,36 +40,36 @@ selection:
   save_to_clipboard: true
 {{- if (eq .chezmoi.os "darwin") }}
 key_bindings:
-  - { key: 26,      mods: Alt, chars: "{" }
-  - { key: 29,      mods: Alt, chars: "}" }
-  - { key: 12,      mods: Alt, chars: "@" }
-  - { key: 27,      mods: Alt, chars: "\\" }
-  - { key: 50,      mods: Alt, chars: "|" }
-  - { key: 30,      mods: Alt, chars: "~" }
-  - { key: 28,      mods: Alt, chars: "[" }
-  - { key: 25,      mods: Alt, chars: "]" }
+  - { key: 26,      mods: Alt,                 chars: "{"               }
+  - { key: 29,      mods: Alt,                 chars: "}"               }
+  - { key: 12,      mods: Alt,                 chars: "@"               }
+  - { key: 27,      mods: Alt,                 chars: "\\"              }
+  - { key: 50,      mods: Alt,                 chars: "|"               }
+  - { key: 30,      mods: Alt,                 chars: "~"               }
+  - { key: 28,      mods: Alt,                 chars: "["               }
+  - { key: 25,      mods: Alt,                 chars: "]"               }
 {{- else if (eq .chezmoi.os "linux" ) }}
 key_binding:
- - { key: Key5,     mods: Alt,        chars: "\x5b"                     }
- - { key: Key6,     mods: Alt,        chars: "\x5d"                     }
- - { key: Key7,     mods: Alt|Shift,  chars: "\x5c"                     }
- - { key: Key7,     mods: Alt,        chars: "\x7c"                     }
- - { key: Key8,     mods: Alt,        chars: "\x7b"                     }
- - { key: Key9,     mods: Alt,        chars: "\x7d"                     }
- - { key: L,        mods: Alt,        chars: "\x40"                     }
- - { key: V,        mods: Control|Shift, action: Paste            }
- - { key: C,        mods: Control|Shift, action: Copy             }
- - { key: Insert,   mods: Shift,         action: PasteSelection   }
- - { key: Key0,     mods: Control,       action: ResetFontSize    }
- - { key: Equals,   mods: Control,       action: IncreaseFontSize }
- - { key: Plus,     mods: Control,       action: IncreaseFontSize }
- - { key: Minus,    mods: Control,       action: DecreaseFontSize }
- - { key: Paste,                                       action: Paste          }
- - { key: Copy,                                        action: Copy           }
- - { key: PageUp,    mods: Shift,   mode: ~Alt,        action: ScrollPageUp,  }
- - { key: PageDown,  mods: Shift,   mode: ~Alt,        action: ScrollPageDown }
- - { key: Home,      mods: Shift,   mode: ~Alt,        action: ScrollToTop,   }
- - { key: End,       mods: Shift,   mode: ~Alt,        action: ScrollToBottom }
+ - { key: Key5,     mods: Alt,                 chars: "\x5b"            }
+ - { key: Key6,     mods: Alt,                 chars: "\x5d"            }
+ - { key: Key7,     mods: Alt|Shift,           chars: "\x5c"            }
+ - { key: Key7,     mods: Alt,                 chars: "\x7c"            }
+ - { key: Key8,     mods: Alt,                 chars: "\x7b"            }
+ - { key: Key9,     mods: Alt,                 chars: "\x7d"            }
+ - { key: L,        mods: Alt,                 chars: "\x40"            }
+ - { key: V,        mods: Control|Shift,       action: Paste            }
+ - { key: C,        mods: Control|Shift,       action: Copy             }
+ - { key: Insert,   mods: Shift,               action: PasteSelection   }
+ - { key: Key0,     mods: Control,             action: ResetFontSize    }
+ - { key: Equals,   mods: Control,             action: IncreaseFontSize }
+ - { key: Plus,     mods: Control,             action: IncreaseFontSize }
+ - { key: Minus,    mods: Control,             action: DecreaseFontSize }
+ - { key: Paste,                               action: Paste            }
+ - { key: Copy,                                action: Copy             }
+ - { key: PageUp,   mods: Shift,  mode: ~Alt,  action: ScrollPageUp,    }
+ - { key: PageDown, mods: Shift,  mode: ~Alt,  action: ScrollPageDown   }
+ - { key: Home,     mods: Shift,  mode: ~Alt,  action: ScrollToTop,     }
+ - { key: End,      mods: Shift,  mode: ~Alt,  action: ScrollToBottom   }
 {{ end }}
 schemes:  
 

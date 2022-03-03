@@ -1,15 +1,6 @@
 [".config/pyenv"]
-    type = "archive"
-    url = "https://github.com/pyenv/pyenv/archive/refs/heads/master.zip"
-    exact = false
-    stripComponents = 1
-    refreshPeriod = "168h"
-
-[".config/pyenv/plugins/pyenv-default-packages"]
-    type = "archive"
-	url = "https://github.com/jawshooah/pyenv-default-packages/archive/refs/heads/master.zip"
-    exact = true
-    stripComponents = 1
+    type = "git-repo"
+    url = "https://github.com/pyenv/pyenv.git" 
     refreshPeriod = "168h"
 
 [".config/csl/styles/apa.csl"]

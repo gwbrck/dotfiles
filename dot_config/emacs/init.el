@@ -610,11 +610,6 @@ targets."
 (use-package ox-latex
   :after org
   :init
-  (add-to-list 'org-latex-classes
-	       '("moderncv" "\\documentclass[11pt,a4paper,sans]{moderncv}\n[NO-DEFAULT-PACKAGES]\n[NO-PACKAGES]\n"
-		 ("\\section{%s}" . "\\section*{%s}")
-		 ("\\subsection{%s}" . "\\subsection*{%s}")
-		 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
   (setq org-latex-listings 'minted)
   (setq org-latex-minted-options
         '(("bgcolor" "WhiteSmoke")))
@@ -645,7 +640,12 @@ targets."
   (add-to-list 'org-latex-packages-alist '("" "threeparttablex"))
   (add-to-list 'org-latex-packages-alist '("" "makecell"))
   (add-to-list 'org-latex-packages-alist '("svgnames" "xcolor"))
+  (add-to-list 'org-latex-packages-alist '("notquote" "hanging"))
   (add-to-list 'org-latex-packages-alist '("inline" "enumitem")))
+
+(use-package ox-moderncv
+  :load-path "lisp/"
+  :init (require 'ox-moderncv))
   
 (use-package flyspell
   :hook ((org-mode . flyspell-mode)

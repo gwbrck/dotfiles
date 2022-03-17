@@ -56,7 +56,10 @@
   (global-set-key (kbd "C-M-u") 'universal-argument)
   (setq-default indent-tabs-mode nil)
   (setq tab-always-indent 'complete)
-  (global-set-key (kbd "C-x k") 'kill-this-buffer))
+  (global-set-key (kbd "C-x k") 'kill-this-buffer)
+  (global-unset-key (kbd "M-<backspace>"))
+  (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word)
+  (global-set-key (kbd "M-<backspace>") 'delete-indentation))
 
 (use-package pixel-scroll
   :when (>= emacs-major-version 29)
@@ -137,7 +140,7 @@
 (use-package emacs
   :init
   (defun gwbrck/set-font-faces ()
-    (set-face-attribute 'default nil :font "Fira Code" :height 130)
+    (set-face-attribute 'default nil :font "Fira Code" :height 120)
     (set-face-attribute 'fixed-pitch nil :font "Fira Code" :height 1.0)
     (set-face-attribute 'variable-pitch nil :font "Cantarell" :weight 'regular :height 1.0)
     (dolist (face '((org-level-1 . 1.2)
@@ -702,6 +705,7 @@ targets."
   (ess-r-mode . lsp)
   (python-mode . gwbrck/start-pylsp)
   (typescript-mode . lsp)
+  (json-mode . lsp)
   (lsp-mode . lsp-enable-which-key-integration))
 
 (use-package lsp-ui
@@ -720,6 +724,10 @@ targets."
 (use-package yaml-mode
   :mode "\\.yml\\'"
   :straight t)
+
+(use-package json-mode
+  :straight t
+  :mode "\\.js\\(?:on\\|[hl]int\\(?:rc\\)?\\)\\'")
 
 (use-package pipenv
   :straight t
@@ -748,6 +756,36 @@ targets."
 (use-package project
   :init
   (setq project-switch-commands 'project-find-file))
+
+
+(use-package treemacs
+  :straight t
+  :defer t
+  :init
+  (setq treemacs-follow-after-init t
+        treemacs-is-never-other-window t)
+  :config
+  ;; Don't follow the cursor
+  (treemacs-follow-mode -1))
+
+(use-package treemacs-all-the-icons
+  :straight t
+  :after (treemacs))
+
+(use-package treemacs-evil
+  :straight t
+  :defer t
+  :after (evil treemacs))
+
+(use-package treemacs-magit
+  :straight t
+  :after (treemacs magit))
+
+(use-package lsp-treemacs
+  :straight t
+  :after (treemacs lsp)
+  :config
+  (setq lsp-treemacs-theme "all-the-icons"))
 
 (use-package evil-nerd-commenter
   :straight t

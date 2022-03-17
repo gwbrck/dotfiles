@@ -14,7 +14,6 @@
 (require 'ox-latex)
 (require 'ox-html)
 
-
 (add-to-list 'org-latex-classes
 	     '("moderncv" "\\documentclass[a4paper, 11pt, sans]{moderncv}
 [NO-DEFAULT-PACKAGES]
@@ -77,8 +76,16 @@
     (:gitlab "GITLAB" nil nil parse)
     (:github "GITHUB" nil nil parse)
     (:linkedin "LINKEDIN" nil nil parse)
+    (:subtitle "AUTHOR" nil nil parse)
     (:birthdate "BIRTHDATE" nil nil parse)
-    (:with-email nil "email" t t))
+    (:with-email nil "email" t t)
+    (:section-numbers nil nil nil t)
+    (:html-html5-fancy nil nil t t)
+    (:html-head "HTML_HEAD" nil
+                "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" />\n" t)
+    (:html-head-include-default-style nil nil nil org-html-head-include-default-style)
+    (:html-doctype nil nil "html5" t)
+    (:with-toc nil nil 1 t))
   :menu-entry '(?r "Export Resumee"
                    ((?h "As HTML file and open"
                         (lambda (a s v b)
@@ -87,8 +94,9 @@
                                 (org-export-to-file 'htmlcv outfile t s v b nil)
                               (org-open-file (org-export-to-file 'htmlcv outfile
                                   a s v b nil))))))))
-  :translate-alist '((template . org-htmlcv-template)
-                     (headline . org-htmlcv-headline)))
+  :translate-alist '(;;(template . org-htmlcv-template)
+                     (headline . org-htmlcv-headline)
+                     (inner-template . org-htmlcv-inner-template)))
 
 ;;;; Template
 ;;
@@ -113,6 +121,7 @@ holding export options."
      (let ((cvstyle (org-export-data (plist-get info :cvstyle) info)))
        (when cvstyle (format "\\moderncvstyle{%s}\n" cvstyle)))
      ;; cvcolor
+     
      (let ((cvcolor (org-export-data (plist-get info :cvcolor) info)))
        (when (not (string-empty-p cvcolor)) (format "\\moderncvcolor{%s}\n" cvcolor)))
      ;; Possibly limit depth for headline numbering.
@@ -195,90 +204,154 @@ holding export options."
      ;; Document end.
      "\\end{document}")))
 
-;; TODO implement (not org-html-inner-template) org-html-template org-html-headline
+(defun org-htmlcv--div-class (class string &optional info prefix postfix)
+  "Div CLASS with STRING.  When INFO is passed, STRING will exportet with backend.
+POSTFIX and PREFIX are strings wich get never exportet via backend."
+  (concat
+   (format "<div class=\"%s\">" class)
+   (when prefix prefix)
+   (if info (org-export-data string info) string)
+   (when postfix postfix)
+   "</div>\n"))
 
-(defun org-htmlcv-template (contents info)
-  "Return complete document string after HTML conversion.
+(defun org-htmlcv-inner-template (contents info)
+  "Return body of document string after HTML conversion.
 CONTENTS is the transcoded contents string.  INFO is a plist
 holding export options."
   (concat
-   (when (and (not (org-html-html5-p info)) (org-html-xhtml-p info))
-     (let* ((xml-declaration (plist-get info :html-xml-declaration))
-	    (decl (or (and (stringp xml-declaration) xml-declaration)
-		      (cdr (assoc (plist-get info :html-extension)
-				  xml-declaration))
-		      (cdr (assoc "html" xml-declaration))
-		      "")))
-       (when (not (or (not decl) (string= "" decl)))
-	 (format "%s\n"
-		 (format decl
-			 (or (and org-html-coding-system
-				  (fboundp 'coding-system-get)
-				  (coding-system-get org-html-coding-system 'mime-charset))
-			     "iso-8859-1"))))))
-   (org-html-doctype info)
-   "\n"
-   (concat "<html"
-	   (cond ((org-html-xhtml-p info)
-		  (format
-		   " xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"%s\" xml:lang=\"%s\""
-		   (plist-get info :language) (plist-get info :language)))
-		 ((org-html-html5-p info)
-		  (format " lang=\"%s\"" (plist-get info :language))))
-	   ">\n")
-   "<head>\n"
-   (org-html--build-meta-info info)
-   (org-html--build-head info)
-   (org-html--build-mathjax-config info)
-   "</head>\n"
-   "<body>\n"
-   (let ((link-up (org-trim (plist-get info :html-link-up)))
-	 (link-home (org-trim (plist-get info :html-link-home))))
-     (unless (and (string= link-up "") (string= link-home ""))
-       (format (plist-get info :html-home/up-format)
-	       (or link-up link-home)
-	       (or link-home link-up))))
-   ;; Preamble.
-   (org-html--build-pre/postamble 'preamble info)
+   ;; Table of contents.
+   (let ((depth (plist-get info :with-toc)))
+     (when depth (org-html-toc depth info)))
+   ;; Profile
+   "<section class=\"profile\">\n"
+   ;; photo <img src="pic_trulli.jpg" alt="Italian Trulli">
+   (let ((photo (org-export-data (plist-get info :photo) info)))
+     (when (org-string-nw-p photo)
+       (org-htmlcv--div-class "profilepic" photo nil
+                              "<img src=\""
+                              "\" alt=\"Italian Trulli\">")))
+   (let ((birthdate (org-export-data (plist-get info :birthdate) info)))
+     (when (org-string-nw-p birthdate)
+       (org-htmlcv--div-class "birthdate" birthdate nil "&#10033; ")))
+   ;; email
+   (let ((email (and (plist-get info :with-email)
+                     (org-export-data (plist-get info :email) info))))
+     (when (org-string-nw-p email)
+       (org-htmlcv--div-class "email" email nil "<a href=\"mailto:"
+                              (concat "\"><i class=\"fa-solid fa-envelope\"></i> "
+                                      email
+                                      "</a>"))))
+   ;; phone
+   (let ((mobile (org-export-data (plist-get info :mobile) info)))
+     (when (org-string-nw-p mobile)
+       (org-htmlcv--div-class "mobile" mobile info "<i class=\"fa-solid fa-mobile-screen\"></i> ")))
+   ;; homepage
+   ;;(let ((homepage (org-export-data (plist-get info :homepage) info)))
+   ;;  (when (org-string-nw-p homepage)
+   ;;    (org-htmlcv--div-class "homepage" homepage info)))
+   ;;github
+   (let ((gh (org-export-data (plist-get info :github) info)))
+     (when (org-string-nw-p gh)
+       (org-htmlcv--div-class "github" gh nil "<a href=\"https://github.com/"
+                              (concat "/\"><i class=\"fa-brands fa-github\"></i> "
+                                      gh
+                                      "</a>"))))
+   "</section>\n"
    ;; Document contents.
-   (let ((div (assq 'content (plist-get info :html-divs))))
-     (format "<%s id=\"%s\" class=\"%s\">\n"
-             (nth 1 div)
-             (nth 2 div)
-             (plist-get info :html-content-class)))
-   ;; Document title.
-   (when (plist-get info :with-title)
-     (let ((title (and (plist-get info :with-title)
-		       (plist-get info :title)))
-	   (subtitle (plist-get info :subtitle))
-	   (html5-fancy (org-html--html5-fancy-p info)))
-       (when title
-	 (format
-	  (if html5-fancy
-	      "<header>\n<h1 class=\"title\">%s</h1>\n%s</header>"
-	    "<h1 class=\"title\">%s%s</h1>\n")
-	  (org-export-data title info)
-	  (if subtitle
-	      (format
-	       (if html5-fancy
-		   "<p class=\"subtitle\" role=\"doc-subtitle\">%s</p>\n"
-		 (concat "\n" (org-html-close-tag "br" nil info) "\n"
-			 "<span class=\"subtitle\">%s</span>\n"))
-	       (org-export-data subtitle info))
-	    "")))))
+   "<section class=\"main-content\">\n"
    contents
-   (format "</%s>\n" (nth 1 (assq 'content (plist-get info :html-divs))))
-   ;; Postamble.
-   (org-html--build-pre/postamble 'postamble info)
-   ;; Possibly use the Klipse library live code blocks.
-   (when (plist-get info :html-klipsify-src)
-     (concat "<script>" (plist-get info :html-klipse-selection-script)
-	     "</script><script src=\""
-	     org-html-klipse-js
-	     "\"></script><link rel=\"stylesheet\" type=\"text/css\" href=\""
-	     org-html-klipse-css "\"/>"))
-   ;; Closing document.
-   "</body>\n</html>"))
+   "</section>\n"
+   ;; Footnotes section.
+   (org-html-footnote-section info)))
+
+
+;; (defun org-htmlcv-template (contents info)
+;;   "Return complete document string after HTML conversion.
+;; CONTENTS is the transcoded contents string.  INFO is a plist
+;; holding export options."
+;;  ;; (let ((title (or (plist-get info :title)
+;;  ;;                  (error "No title defined")))
+;;  ;;       (author (or (plist-get info :author)
+;;  ;;                   (error "No author defined"))))
+;;   ;;     (concat
+;;   (concat
+;;    (when (and (not (org-html-html5-p info)) (org-html-xhtml-p info))
+;;      (let* ((xml-declaration (plist-get info :html-xml-declaration))
+;; 	    (decl (or (and (stringp xml-declaration) xml-declaration)
+;; 		      (cdr (assoc (plist-get info :html-extension)
+;; 				  xml-declaration))
+;; 		      (cdr (assoc "html" xml-declaration))
+;; 		      "")))
+;;        (when (not (or (not decl) (string= "" decl)))
+;; 	 (format "%s\n"
+;; 		 (format decl
+;; 			 (or (and org-html-coding-system
+;; 				  (fboundp 'coding-system-get)
+;; 				  (coding-system-get org-html-coding-system 'mime-charset))
+;; 			     "iso-8859-1"))))))
+;;    (org-html-doctype info)
+;;    "\n"
+;;    (concat "<html"
+;; 	   (cond ((org-html-xhtml-p info)
+;; 		  (format
+;; 		   " xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"%s\" xml:lang=\"%s\""
+;; 		   (plist-get info :language) (plist-get info :language)))
+;; 		 ((org-html-html5-p info)
+;; 		  (format " lang=\"%s\"" (plist-get info :language))))
+;; 	   ">\n")
+;;    "<head>\n"
+;;    (org-html--build-meta-info info)
+;;    (org-html--build-head info)
+;;    (org-html--build-mathjax-config info)
+;;    "</head>\n"
+;;    "<body>\n"
+;;    (let ((link-up (org-trim (plist-get info :html-link-up)))
+;; 	 (link-home (org-trim (plist-get info :html-link-home))))
+;;      (unless (and (string= link-up "") (string= link-home ""))
+;;        (format (plist-get info :html-home/up-format)
+;; 	       (or link-up link-home)
+;; 	       (or link-home link-up))))
+;;    ;; Preamble.
+;;    (org-html--build-pre/postamble 'preamble info)
+;;    ;; Document contents.
+;;    (let ((div (assq 'content (plist-get info :html-divs))))
+;;      (format "<%s id=\"%s\" class=\"%s\">\n"
+;;              (nth 1 div)
+;;              (nth 2 div)
+;;              (plist-get info :html-content-class)))
+;;    ;; Document title.
+;;    (when (plist-get info :with-title)
+;;      (let ((title (and (plist-get info :with-title)
+;; 		       (plist-get info :title)))
+;; 	   (subtitle (plist-get info :subtitle))
+;; 	   (html5-fancy (org-html--html5-fancy-p info)))
+;;        (when title
+;; 	 (format
+;; 	  (if html5-fancy
+;; 	      "<header>\n<h1 class=\"title\">%s</h1>\n%s</header>\n"
+;; 	    "<h1 class=\"title\">%s%s</h1>\n")
+;; 	  (org-export-data title info)
+;; 	  (if subtitle
+;; 	      (format
+;; 	       (if html5-fancy
+;; 		   "<p class=\"subtitle\" role=\"doc-subtitle\">%s</p>\n"
+;; 		 (concat "\n" (org-html-close-tag "br" nil info) "\n"
+;; 			 "<span class=\"subtitle\">%s</span>\n"))
+;; 	       (org-export-data subtitle info))
+;; 	    "")))))
+;;    contents
+;;    (format "</%s>\n" (nth 1 (assq 'content (plist-get info :html-divs))))
+;;    ;; Postamble.
+;;    (org-html--build-pre/postamble 'postamble info)
+;;    ;; Possibly use the Klipse library live code blocks.
+;;    (when (plist-get info :html-klipsify-src)
+;;      (concat "<script>" (plist-get info :html-klipse-selection-script)
+;; 	     "</script><script src=\""
+;; 	     org-html-klipse-js
+;; 	     "\"></script><link rel=\"stylesheet\" type=\"text/css\" href=\""
+;; 	     org-html-klipse-css "\"/>"))
+;;    ;; Closing document.
+;;    "</body>\n</html>"))
 
 (defun org-htmlcv-headline (headline contents info)
   "Transcode a HEADLINE element from Org to HTML.
@@ -289,6 +362,17 @@ holding contextual information."
            (numbers (org-export-get-headline-number headline info))
            (level (+ (org-export-get-relative-level headline info)
                      (1- (plist-get info :html-toplevel-hlevel))))
+           ;;(recipient (org-element-property :RECIPIENT headline))
+           ;;(recipient_adress (org-element-property :RECIPIENT_ADRESS headline))
+           ;;(opening (org-element-property :OPENING headline))
+           ;;(closing (org-element-property :CLOSING headline))
+           (omit (org-element-property :OMIT_HEADLINE headline))
+           (from (or (org-element-property :FROM headline) ""))
+           (to (org-element-property :TO headline))
+           (time (if to (format "%s &ndash; %s" from to) from))
+           (position (or (org-element-property :POSITION headline) ""))
+           (institute (or (org-element-property :INSTITUTE headline) ""))
+           (location (or (org-element-property :LOCATION headline) ""))
            (todo (and (plist-get info :with-todo-keywords)
                       (let ((todo (org-element-property :todo-keyword headline)))
                         (and todo (org-export-data todo info)))))
@@ -300,26 +384,57 @@ holding contextual information."
                       (org-export-get-tags headline info)))
            (full-text (funcall (plist-get info :html-format-headline-function)
                                todo todo-type priority text tags info))
-           (contents (or contents ""))
+           (environment (let ((env (org-element-property :CV_ENV headline)))
+                          (or (org-string-nw-p env) "block")))
+           (contents (cond
+                      ((equal contents nil) "")
+                      ((equal (org-element-property :raw-value headline) "Anschreiben")
+                       (let* ((match-s
+                               (car
+                                (s-match
+                                 "^[[:word:]]+"
+                                 (replace-regexp-in-string "<[^>]+>" "" contents)
+                                 0)))
+                              (match (string-match match-s contents)))
+                         (concat
+                          (substring contents 0 match)
+                          (upcase (substring contents match (+ match 1)))
+                          (substring contents (+ match 1)))))
+                      (t contents)))
 	   (id (org-html--reference headline info))
 	   (formatted-text
 	    (if (plist-get info :html-self-link-headlines)
 		(format "<a href=\"#%s\">%s</a>" id full-text)
 	      full-text)))
-      (if (org-export-low-level-p headline info)
-          ;; This is a deep sub-tree: export it as a list item.
-          (let* ((html-type (if numberedp "ol" "ul")))
-	    (concat
-	     (and (org-export-first-sibling-p headline info)
-		  (apply #'format "<%s class=\"org-%s\">\n"
-			 (make-list 2 html-type)))
-	     (org-html-format-list-item
-	      contents (if numberedp 'ordered 'unordered)
-	      nil info nil
-	      (concat (org-html--anchor id nil nil info) formatted-text)) "\n"
-	     (and (org-export-last-sibling-p headline info)
-		  (format "</%s>\n" html-type))))
-	;; Standard headline.  Export it as a section.
+        ;; This is a deep sub-tree: export it as a list item.
+      (cond
+       ((or (equal environment "cventry")
+            (equal environment "cvitem"))
+        (concat
+         (format "<div class=%s-wrapper>\n<div class=title>%s</div>\n"
+                 environment
+                 (if omit "" full-text))
+         (org-htmlcv--div-class "time" time)
+         (org-htmlcv--div-class "position" position info)
+         (org-htmlcv--div-class "location" location info)
+         (org-htmlcv--div-class "institute" institute info)
+         (org-htmlcv--div-class "contents" contents)
+         "</div>\n"))
+       ((org-export-low-level-p headline info)
+        ;; This is a deep sub-tree: export it as a list item.
+        (let* ((html-type (if numberedp "ol" "ul")))
+	  (concat
+	   (and (org-export-first-sibling-p headline info)
+		(apply #'format "<%s class=\"org-%s\">\n"
+		       (make-list 2 html-type)))
+	   (org-html-format-list-item
+	    contents (if numberedp 'ordered 'unordered)
+	    nil info nil
+	    (concat (org-html--anchor id nil nil info) formatted-text)) "\n"
+	    (and (org-export-last-sibling-p headline info)
+		 (format "</%s>\n" html-type)))))
+       ;; Standard headline.  Export it as a section.
+       (t
         (let ((extra-class
 	       (org-element-property :HTML_CONTAINER_CLASS headline))
 	      (headline-class
@@ -350,7 +465,7 @@ holding contextual information."
                   ;; `org-info.js'.
                   (if (eq (org-element-type first-content) 'section) contents
                     (concat (org-html-section first-content "" info) contents))
-                  (org-html--container headline info)))))))
+                  (org-html--container headline info))))))))
 
 (defun org-moderncv--format-cventry (headline contents info)
   "Format HEADLINE as as cventry.
@@ -400,7 +515,8 @@ as a communication channel."
      (when closing
        (format "\\closing{%s}\n" closing))
      "\\makelettertitle\\justifying\n"
-     contents
+     (downcase (substring contents 0 1))
+     (substring contents 1)
      "\n\n\\makeletterclosing\n\\newpage\n\n\\makecvtitle\n")))
 
 

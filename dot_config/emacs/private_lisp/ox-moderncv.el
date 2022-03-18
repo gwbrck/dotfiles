@@ -76,7 +76,7 @@
     (:gitlab "GITLAB" nil nil parse)
     (:github "GITHUB" nil nil parse)
     (:linkedin "LINKEDIN" nil nil parse)
-    (:subtitle "AUTHOR" nil nil parse)
+    ;;(:subtitle "AUTHOR" nil nil parse)
     (:birthdate "BIRTHDATE" nil nil parse)
     (:with-email nil "email" t t)
     (:section-numbers nil nil nil t)
@@ -227,9 +227,12 @@ holding export options."
    ;; photo <img src="pic_trulli.jpg" alt="Italian Trulli">
    (let ((photo (org-export-data (plist-get info :photo) info)))
      (when (org-string-nw-p photo)
-       (org-htmlcv--div-class "profilepic" photo nil
-                              "<img src=\""
-                              "\" alt=\"Italian Trulli\">")))
+       (org-htmlcv--div-class "profilepic-wrapper" photo nil
+                              "<div class=\"profilepic\"><img src=\""
+                              "\" alt=\"profile picture\"></div>")))
+   (let ((author (org-export-data (plist-get info :author) info)))
+     (when (org-string-nw-p author)
+       (org-htmlcv--div-class "name-wrapper" author info "<h1>" "</h1>")))
    (let ((birthdate (org-export-data (plist-get info :birthdate) info)))
      (when (org-string-nw-p birthdate)
        (org-htmlcv--div-class "birthdate" birthdate nil "&#10033; ")))
@@ -388,7 +391,7 @@ holding contextual information."
                           (or (org-string-nw-p env) "block")))
            (contents (cond
                       ((equal contents nil) "")
-                      ((equal (org-element-property :raw-value headline) "Anschreiben")
+                      ((equal (org-element-property :raw-value headline) "Motivation")
                        (let* ((match-s
                                (car
                                 (s-match
@@ -534,7 +537,7 @@ as a communication channel."
         (org-moderncv--format-cventry headline contents info))
        ((equal environment "cvitem")
         (org-moderncv--format-cvitem headline contents info))
-       ((equal (org-element-property :raw-value headline) "Anschreiben")
+       ((equal (org-element-property :raw-value headline) "Motivation")
         (org-moderncv--format-coverletter headline contents info))
        ((org-export-with-backend 'latex headline contents info))))))
 

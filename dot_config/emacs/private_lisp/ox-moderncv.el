@@ -94,7 +94,7 @@
                                 (org-export-to-file 'htmlcv outfile t s v b nil)
                               (org-open-file (org-export-to-file 'htmlcv outfile
                                   a s v b nil))))))))
-  :translate-alist '(;;(template . org-htmlcv-template)
+  :translate-alist '((template . org-htmlcv-template)
                      (headline . org-htmlcv-headline)
                      (inner-template . org-htmlcv-inner-template)))
 
@@ -227,38 +227,38 @@ holding export options."
    ;; photo <img src="pic_trulli.jpg" alt="Italian Trulli">
    (let ((photo (org-export-data (plist-get info :photo) info)))
      (when (org-string-nw-p photo)
-       (org-htmlcv--div-class "profilepic-wrapper" photo nil
-                              "<div class=\"profilepic\"><img src=\""
-                              "\" alt=\"profile picture\"></div>")))
+       (format "<div id=\"pic\">%s</div>"
+               (org-htmlcv--div-class "profilepic-wrapper" photo nil
+                                      "<div class=\"profilepic\"><img src=\""
+                                      "\" alt=\"profile picture\"></div>"))))
+
    (let ((author (org-export-data (plist-get info :author) info)))
      (when (org-string-nw-p author)
-       (org-htmlcv--div-class "name-wrapper" author info "<h1>" "</h1>")))
+       (format "<h1>%s</h1>"
+               (org-export-data author info))))
+   "<ul>\n"
    (let ((birthdate (org-export-data (plist-get info :birthdate) info)))
      (when (org-string-nw-p birthdate)
-       (org-htmlcv--div-class "birthdate" birthdate nil "&#10033; ")))
+       (format "<li>&#10033; %s</li>\n" birthdate)))
    ;; email
    (let ((email (and (plist-get info :with-email)
                      (org-export-data (plist-get info :email) info))))
      (when (org-string-nw-p email)
-       (org-htmlcv--div-class "email" email nil "<a href=\"mailto:"
-                              (concat "\"><i class=\"fa-solid fa-envelope\"></i> "
-                                      email
-                                      "</a>"))))
+       (format "<li><a href=\"mailto:%s\"><i class=\"fa-solid fa-envelope\"></i> %s</a></li>\n" email email)))
    ;; phone
    (let ((mobile (org-export-data (plist-get info :mobile) info)))
      (when (org-string-nw-p mobile)
-       (org-htmlcv--div-class "mobile" mobile info "<i class=\"fa-solid fa-mobile-screen\"></i> ")))
-   ;; homepage
-   ;;(let ((homepage (org-export-data (plist-get info :homepage) info)))
-   ;;  (when (org-string-nw-p homepage)
-   ;;    (org-htmlcv--div-class "homepage" homepage info)))
+       (format "<li><i class=\"fa-solid fa-mobile-screen\"></i> %s</li>\n" mobile)))
    ;;github
    (let ((gh (org-export-data (plist-get info :github) info)))
      (when (org-string-nw-p gh)
-       (org-htmlcv--div-class "github" gh nil "<a href=\"https://github.com/"
-                              (concat "/\"><i class=\"fa-brands fa-github\"></i> "
-                                      gh
-                                      "</a>"))))
+       (format
+        "<li><a href=\"https://github.com/%s/\"><i class=\"fa-brands fa-github\"></i> %s</a></li>\n"
+        gh gh)))
+   "</ul>\n"
+   (format
+    "<a id=\"btn\" href=/*.pdf download=\"cv_%s\"= ><i class=\"fa-solid fa-file-pdf\"></i> Download</a>"
+    (s-trim (org-export-data (plist-get info :author) info)))
    "</section>\n"
    ;; Document contents.
    "<section class=\"main-content\">\n"
@@ -266,95 +266,6 @@ holding export options."
    "</section>\n"
    ;; Footnotes section.
    (org-html-footnote-section info)))
-
-
-;; (defun org-htmlcv-template (contents info)
-;;   "Return complete document string after HTML conversion.
-;; CONTENTS is the transcoded contents string.  INFO is a plist
-;; holding export options."
-;;  ;; (let ((title (or (plist-get info :title)
-;;  ;;                  (error "No title defined")))
-;;  ;;       (author (or (plist-get info :author)
-;;  ;;                   (error "No author defined"))))
-;;   ;;     (concat
-;;   (concat
-;;    (when (and (not (org-html-html5-p info)) (org-html-xhtml-p info))
-;;      (let* ((xml-declaration (plist-get info :html-xml-declaration))
-;; 	    (decl (or (and (stringp xml-declaration) xml-declaration)
-;; 		      (cdr (assoc (plist-get info :html-extension)
-;; 				  xml-declaration))
-;; 		      (cdr (assoc "html" xml-declaration))
-;; 		      "")))
-;;        (when (not (or (not decl) (string= "" decl)))
-;; 	 (format "%s\n"
-;; 		 (format decl
-;; 			 (or (and org-html-coding-system
-;; 				  (fboundp 'coding-system-get)
-;; 				  (coding-system-get org-html-coding-system 'mime-charset))
-;; 			     "iso-8859-1"))))))
-;;    (org-html-doctype info)
-;;    "\n"
-;;    (concat "<html"
-;; 	   (cond ((org-html-xhtml-p info)
-;; 		  (format
-;; 		   " xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"%s\" xml:lang=\"%s\""
-;; 		   (plist-get info :language) (plist-get info :language)))
-;; 		 ((org-html-html5-p info)
-;; 		  (format " lang=\"%s\"" (plist-get info :language))))
-;; 	   ">\n")
-;;    "<head>\n"
-;;    (org-html--build-meta-info info)
-;;    (org-html--build-head info)
-;;    (org-html--build-mathjax-config info)
-;;    "</head>\n"
-;;    "<body>\n"
-;;    (let ((link-up (org-trim (plist-get info :html-link-up)))
-;; 	 (link-home (org-trim (plist-get info :html-link-home))))
-;;      (unless (and (string= link-up "") (string= link-home ""))
-;;        (format (plist-get info :html-home/up-format)
-;; 	       (or link-up link-home)
-;; 	       (or link-home link-up))))
-;;    ;; Preamble.
-;;    (org-html--build-pre/postamble 'preamble info)
-;;    ;; Document contents.
-;;    (let ((div (assq 'content (plist-get info :html-divs))))
-;;      (format "<%s id=\"%s\" class=\"%s\">\n"
-;;              (nth 1 div)
-;;              (nth 2 div)
-;;              (plist-get info :html-content-class)))
-;;    ;; Document title.
-;;    (when (plist-get info :with-title)
-;;      (let ((title (and (plist-get info :with-title)
-;; 		       (plist-get info :title)))
-;; 	   (subtitle (plist-get info :subtitle))
-;; 	   (html5-fancy (org-html--html5-fancy-p info)))
-;;        (when title
-;; 	 (format
-;; 	  (if html5-fancy
-;; 	      "<header>\n<h1 class=\"title\">%s</h1>\n%s</header>\n"
-;; 	    "<h1 class=\"title\">%s%s</h1>\n")
-;; 	  (org-export-data title info)
-;; 	  (if subtitle
-;; 	      (format
-;; 	       (if html5-fancy
-;; 		   "<p class=\"subtitle\" role=\"doc-subtitle\">%s</p>\n"
-;; 		 (concat "\n" (org-html-close-tag "br" nil info) "\n"
-;; 			 "<span class=\"subtitle\">%s</span>\n"))
-;; 	       (org-export-data subtitle info))
-;; 	    "")))))
-;;    contents
-;;    (format "</%s>\n" (nth 1 (assq 'content (plist-get info :html-divs))))
-;;    ;; Postamble.
-;;    (org-html--build-pre/postamble 'postamble info)
-;;    ;; Possibly use the Klipse library live code blocks.
-;;    (when (plist-get info :html-klipsify-src)
-;;      (concat "<script>" (plist-get info :html-klipse-selection-script)
-;; 	     "</script><script src=\""
-;; 	     org-html-klipse-js
-;; 	     "\"></script><link rel=\"stylesheet\" type=\"text/css\" href=\""
-;; 	     org-html-klipse-css "\"/>"))
-;;    ;; Closing document.
-;;    "</body>\n</html>"))
 
 (defun org-htmlcv-headline (headline contents info)
   "Transcode a HEADLINE element from Org to HTML.
@@ -423,6 +334,40 @@ holding contextual information."
          (org-htmlcv--div-class "institute" institute info)
          (org-htmlcv--div-class "contents" contents)
          "</div>\n"))
+       ((equal (org-element-property :raw-value headline) "Motivation")
+        (let ((extra-class
+	       (org-element-property :HTML_CONTAINER_CLASS headline))
+	      (headline-class
+	       (org-element-property :HTML_HEADLINE_CLASS headline)))
+          (format "<%s id=\"%s\" class=\"%s\">%s%s</%s>\n"
+                  (org-html--container headline info)
+                  (format "outline-container-%s" id)
+                  (concat (format "outline-%d" level)
+                          (and extra-class " ")
+                          extra-class)
+                  (format "\n<h%d id=\"%s\"%s>%s</h%d>\n"
+                          level
+                          id
+			  (if (not headline-class) ""
+			    (format " class=\"%s\"" headline-class))
+                          (concat
+                           (and numberedp
+                                (format
+                                 "<span class=\"section-number-%d\">%s</span> "
+                                 level
+                                 (concat (mapconcat #'number-to-string numbers ".") ".")))
+                           formatted-text)
+                          level)
+                  ;; When there is no section, pretend there is an
+                  (concat
+                   "<div class=\"motivation\">\n"
+                   "<input id=\"collapsible\" class=\"toggle\" type=\"checkbox\">\n"
+                   "<div class=\"collapsible-content\">\n"
+                   "<div class=\"content-inner\">\n"
+                   contents
+                   "</div><label for=\"collapsible\" id=\"lbl-toggle\"></label>\n"
+                   "</div></div>")
+                  (org-html--container headline info))))
        ((org-export-low-level-p headline info)
         ;; This is a deep sub-tree: export it as a list item.
         (let* ((html-type (if numberedp "ol" "ul")))
@@ -469,6 +414,123 @@ holding contextual information."
                   (if (eq (org-element-type first-content) 'section) contents
                     (concat (org-html-section first-content "" info) contents))
                   (org-html--container headline info))))))))
+
+
+(defun org-htmlcv-template (contents info)
+  "Return complete document string after HTML conversion.
+CONTENTS is the transcoded contents string.  INFO is a plist
+holding export options."
+  (concat
+   (when (and (not (org-html-html5-p info)) (org-html-xhtml-p info))
+     (let* ((xml-declaration (plist-get info :html-xml-declaration))
+	    (decl (or (and (stringp xml-declaration) xml-declaration)
+		      (cdr (assoc (plist-get info :html-extension)
+				  xml-declaration))
+		      (cdr (assoc "html" xml-declaration))
+		      "")))
+       (when (not (or (not decl) (string= "" decl)))
+	 (format "%s\n"
+		 (format decl
+			 (or (and org-html-coding-system
+				  (fboundp 'coding-system-get)
+				  (coding-system-get org-html-coding-system 'mime-charset))
+			     "iso-8859-1"))))))
+   (org-html-doctype info)
+   "\n"
+   (concat "<html"
+	   (cond ((org-html-xhtml-p info)
+		  (format
+		   " xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"%s\" xml:lang=\"%s\""
+		   (plist-get info :language) (plist-get info :language)))
+		 ((org-html-html5-p info)
+		  (format " lang=\"%s\"" (plist-get info :language))))
+	   ">\n")
+   "<head>\n"
+   (org-html--build-meta-info info)
+   (org-html--build-head info)
+   (org-html--build-mathjax-config info)
+   "</head>\n"
+   "<body>\n"
+   (let ((link-up (org-trim (plist-get info :html-link-up)))
+	 (link-home (org-trim (plist-get info :html-link-home))))
+     (unless (and (string= link-up "") (string= link-home ""))
+       (format (plist-get info :html-home/up-format)
+	       (or link-up link-home)
+	       (or link-home link-up))))
+   ;; Preamble.
+   (org-html--build-pre/postamble 'preamble info)
+   ;; Document contents.
+   (let ((div (assq 'content (plist-get info :html-divs))))
+     (format "<%s id=\"%s\" class=\"%s\">\n"
+             (nth 1 div)
+             (nth 2 div)
+             (plist-get info :html-content-class)))
+   ;; Document title.
+   (when (plist-get info :with-title)
+     (let ((title (and (plist-get info :with-title)
+		       (plist-get info :title)))
+	   (subtitle (plist-get info :subtitle))
+	   (html5-fancy (org-html--html5-fancy-p info)))
+       (when title
+	 (format
+	  (if html5-fancy
+	      "<header>\n<h1 class=\"title\">%s</h1>\n%s</header>"
+	    "<h1 class=\"title\">%s%s</h1>\n")
+	  (org-export-data title info)
+	  (if subtitle
+	      (format
+	       (if html5-fancy
+		   "<p class=\"subtitle\" role=\"doc-subtitle\">%s</p>\n"
+		 (concat "\n" (org-html-close-tag "br" nil info) "\n"
+			 "<span class=\"subtitle\">%s</span>\n"))
+	       (org-export-data subtitle info))
+	    "")))))
+   contents
+   (format "</%s>\n" (nth 1 (assq 'content (plist-get info :html-divs))))
+   ;; Postamble.
+   (org-html--build-pre/postamble 'postamble info)
+   ;; Possibly use the Klipse library live code blocks.
+   (when (plist-get info :html-klipsify-src)
+     (concat "<script>" (plist-get info :html-klipse-selection-script)
+	     "</script><script src=\""
+	     org-html-klipse-js
+	     "\"></script><link rel=\"stylesheet\" type=\"text/css\" href=\""
+	     org-html-klipse-css "\"/>"))
+   ;; Closing document.
+   "<script>\n"
+   "function resize() {
+     if (window.innerWidth > 850) { 
+         var height = document.getElementById(\"table-of-contents\").offsetHeight;
+         var anav = document.querySelectorAll(\"nav ul li a\");
+         for (i = 0; i < anav.length; i++) {
+             anav[i].onclick = function (info) {
+                 var trgt = document.getElementById(\"outline-container-\" + info.target.hash.substring(1));
+                 trgt.scrollIntoView({
+                     block: 'start',
+                     behavior: 'smooth',
+                 });
+                 return false;
+             }
+         }
+         
+         var section = document.querySelectorAll(\".main-content h2\");
+         for (i = 0; i < section.length; i++) {
+             section[i].style.top = height + \"px\";
+             section[i].style.scrollMargin = height + \"px\"; 
+         }
+         
+         var outlineclass = document.getElementsByClassName(\"outline-2\");
+         for (i = 0; i < outlineclass.length; i++) {
+             outlineclass[i].style.scrollMargin = height + \"px\"; 
+         }
+         
+         document.getElementsByClassName(\"profile\")[0].style.top = height + \"px\";
+         document.getElementsByClassName(\"profile\")[0].style.height = (window.innerHeight - height) + \"px\";
+     }
+ }
+ window.onresize = resize;
+ resize();\n</script>\n"
+   "</body>\n</html>"))
 
 (defun org-moderncv--format-cventry (headline contents info)
   "Format HEADLINE as as cventry.

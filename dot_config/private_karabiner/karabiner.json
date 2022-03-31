@@ -1001,6 +1001,36 @@
                                 "type": "basic"
                             },
                             {
+                                "description": "ctrl-w instead of option backspace",
+                                "from": {
+                                    "key_code": "w",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "left_control"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "delete_or_backspace",
+                                        "modifiers": [
+                                            "left_option"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "frontmost_application_unless",
+                                        "bundle_identifiers": [
+                                            "^org\\.gnu\\.Emacs$",
+                                            "^com\\.apple\\.Terminal$",
+                                            "^io\\.alacritty$"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
                                 "description": " u = curly bracket open",
                                 "from": {
                                     "key_code": "u",

@@ -706,6 +706,7 @@ targets."
   (python-mode . gwbrck/start-pylsp)
   (typescript-mode . lsp)
   (json-mode . lsp)
+  (java-mode . lsp)
   (lsp-mode . lsp-enable-which-key-integration))
 
 (use-package lsp-ui
@@ -714,6 +715,12 @@ targets."
 
 (use-package consult-lsp
   :straight t)
+
+(use-package lsp-java
+  :straight t
+  :after dap-mode lsp-mode
+  :config
+  (require 'dap-java))
 
 (use-package typescript-mode
   :straight t
@@ -740,9 +747,14 @@ targets."
   :init
   (yas-global-mode 1))
 
-;;(use-package dap-mode
-;;  :straight t
-;;  :after lsp-mode)
+(use-package yasnippet-snippets
+  :straight t
+  :ensure t)
+
+(use-package dap-mode
+  :straight t
+  :after lsp-mode
+  :config (dap-auto-configure-mode))
 
 (use-package magit
   :straight t
@@ -766,25 +778,30 @@ targets."
         treemacs-is-never-other-window t)
   :config
   ;; Don't follow the cursor
-  (treemacs-follow-mode -1))
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t))
 
 (use-package treemacs-all-the-icons
   :straight t
-  :after (treemacs))
+  :after (treemacs)
+  :config
+  (treemacs-load-theme "all-the-icons"))
 
 (use-package treemacs-evil
   :straight t
-  :defer t
+  :ensure t
   :after (evil treemacs))
 
 (use-package treemacs-magit
   :straight t
+  :ensure t
   :after (treemacs magit))
 
 (use-package lsp-treemacs
   :straight t
   :after (treemacs lsp)
-  :config
+  :init
+  (lsp-treemacs-sync-mode 1)
   (setq lsp-treemacs-theme "all-the-icons"))
 
 (use-package evil-nerd-commenter

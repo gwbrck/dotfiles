@@ -1191,26 +1191,6 @@
                                 "type": "basic"
                             },
                             {
-                                "description": " u = page_up",
-                                "from": {
-                                    "key_code": "u",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "right_command",
-                                            "right_control",
-                                            "right_shift",
-                                            "right_option"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "page_up"
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
                                 "description": "command + i = shift + home",
                                 "from": {
                                     "key_code": "i",
@@ -1404,26 +1384,6 @@
                                         "mouse_key": {
                                             "vertical_wheel": -128
                                         }
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "description": " i = home",
-                                "from": {
-                                    "key_code": "i",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "right_command",
-                                            "right_control",
-                                            "right_shift",
-                                            "right_option"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "home"
                                     }
                                 ],
                                 "type": "basic"
@@ -2533,9 +2493,9 @@
                         "description": "Hyper Brackets etc",
                         "manipulators": [
                             {
-                                "description": " u = curly bracket open",
+                                "description": " + = tilde",
                                 "from": {
-                                    "key_code": "u",
+                                    "key_code": "close_bracket",
                                     "modifiers": {
                                         "mandatory": [
                                             "right_command",
@@ -2547,7 +2507,7 @@
                                 },
                                 "to": [
                                     {
-                                        "key_code": "7",
+                                        "key_code": "close_bracket",
                                         "modifiers": [
                                             "left_option"
                                         ]
@@ -2571,6 +2531,29 @@
                                 "to": [
                                     {
                                         "key_code": "0",
+                                        "modifiers": [
+                                            "left_option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "description": " u = curly bracket open",
+                                "from": {
+                                    "key_code": "u",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "right_command",
+                                            "right_control",
+                                            "right_shift",
+                                            "right_option"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "7",
                                         "modifiers": [
                                             "left_option"
                                         ]
@@ -2673,7 +2656,7 @@
                         ]
                     },
                     {
-                        "Description": "Change '#' to ctrl. (Still '#' if pressed alone)",
+                        "description": "Change '#' to ctrl. (Still '#' if pressed alone)",
                         "manipulators": [
                             {
                                 "from": {

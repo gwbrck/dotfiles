@@ -687,8 +687,10 @@ targets."
 (use-package lsp-mode
   :straight t
   :commands (lsp)
+  :custom
+  (lsp-keep-workspace-alive nil)
+  (lsp-keymap-prefix "C-c l")
   :init
-  (setq lsp-keymap-prefix "C-c l")
   (defun gwbrck/start-pylsp ()
     "Function to start python lsp"
     (when (pipenv-project?)
@@ -698,6 +700,15 @@ targets."
         (pipenv--force-wait (pipenv-install "--dev python-lsp-server[all]")))
       (setq-local lsp-pylsp-plugins-jedi-environment pyvenv-virtual-env)
       (setq-local lsp-pylsp-server-command (pipenv-executable-find "pylsp"))
+      (let ((root (lsp-workspace-root)))
+        (if (boundp 'gwbrck/py-projd)
+            (add-to-list 'gwbrck/py-projd root)
+        (setq gwbrck/py-projd (list root))))
+      (add-hook
+       'lsp-after-uninitialized-functions
+       (lambda (ws)
+         (when (member (lsp--workspace-root ws) gwbrck/py-projd)
+           (pipenv-deactivate))))
       (lsp)))
   :hook
   (c-mode . lsp)

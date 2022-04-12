@@ -739,6 +739,12 @@ targets."
   :config
   (setq typescript-indent-level 2))
 
+(use-package npm-mode
+  :hook
+  (typescript-mode . npm-mode)
+  (javascript-mode . npm-mode)
+  :straight t)
+
 (use-package yaml-mode
   :mode "\\.yml\\'"
   :straight t)

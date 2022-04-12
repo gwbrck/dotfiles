@@ -58,7 +58,9 @@
   (setq tab-always-indent 'complete)
   (global-set-key (kbd "C-x k") 'kill-this-buffer)
   (global-unset-key (kbd "M-<backspace>"))
-  (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word)
+  (global-unset-key (kbd "C-<backspace>"))
+  (global-unset-key (kbd "M-DEL"))
+  (global-unset-key (kbd "C-DEL"))
   (global-set-key (kbd "M-<backspace>") 'delete-indentation))
 
 (use-package pixel-scroll
@@ -213,6 +215,7 @@
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
   (setq evil-want-C-i-jump nil)
+  ;;(setq evil-want-minibuffer t)
   :config
   (evil-mode 1)
   (define-key evil-normal-state-map (kbd "SPC w") evil-window-map)
@@ -221,6 +224,8 @@
   (define-key evil-normal-state-map (kbd "SPC x") ctl-x-map)
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
   (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+  (define-key evil-emacs-state-map (kbd "\C-w") 'backward-kill-word)
+  (define-key minibuffer-local-map (kbd "\C-w") 'backward-kill-word)
   ;; Use visual line motions even outside of visual-line-mode buffers
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)

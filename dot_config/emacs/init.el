@@ -164,6 +164,11 @@
     (set-face-attribute 'org-hide nil :inherit 'fixed-pitch)
     (set-face-attribute 'org-block-begin-line nil :height 0.8)))
 
+(use-package doom-themes
+  :straight t
+  :custom
+  (doom-themes-padded-modeline 5))
+
 (use-package modus-themes
   :straight t
   :init
@@ -188,8 +193,8 @@
     "Load theme, taking current system APPEARANCE into consideration."
     (mapc #'disable-theme custom-enabled-themes)
     (pcase appearance
-      ('light (load-theme 'modus-operandi t))
-      ('dark (load-theme 'modus-vivendi t)))
+      ('light (load-theme 'doom-one-light t))
+      ('dark (load-theme 'doom-vibrant t)))
     (gwbrck/set-font-faces))
   (add-hook 'ns-system-appearance-change-functions #'gwbrck/apply-theme)
   (when (equal system-type 'darwin)

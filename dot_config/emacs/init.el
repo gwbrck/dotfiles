@@ -794,7 +794,8 @@ targets."
 
 (use-package project
   :init
-  (setq project-switch-commands 'project-find-file))
+  ;;(setq project-switch-commands 'project-find-file)
+  )
 
 
 (use-package treemacs

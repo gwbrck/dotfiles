@@ -258,7 +258,7 @@ holding export options."
    "</ul>\n"
    (format
     "<a id=\"btn\" href=./%s.pdf download=\"CV_%s.pdf\"= ><i class=\"fa-solid fa-file-pdf\"></i> Download</a>"
-    (s-trim (replace-regexp-in-string "\\w+\\.de\\/" "" (org-export-data (plist-get info :homepage) info)))
+    (s-trim (replace-regexp-in-string "^.+\\/" "" (org-export-data (plist-get info :homepage) info)))
     (s-trim (replace-regexp-in-string " " "_" (org-export-data (plist-get info :author) info))))
    "</section>\n"
    ;; Document contents.

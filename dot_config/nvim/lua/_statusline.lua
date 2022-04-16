@@ -171,7 +171,7 @@ local function statuslinee(active)
         local mode = vim.api.nvim_get_mode()['mode']
         RedrawColors(mode)
         local mode_string = "%#Mode#"..current_mode[mode].."%#StatusLine#"
-        local fp = vim.api.nvim_buf_get_name(string.format(vim.api.nvim_get_current_buf()))
+        local fp = vim.api.nvim_buf_get_name(0)
         local git_string = string.format(check_for_new_string(fp))
         local line_numbers = "%#StatusLineNumbers# [%l/%L|%p%%] %#StatusLine#"
         local left = blank..icon.."%f"..blank..git_string..line_numbers

@@ -2,7 +2,6 @@ HOME = os.getenv("HOME")
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 vim.opt.termguicolors = true
-vim.opt.shell = "/usr/local/bin/zsh"
 
 local fn = vim.fn
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
@@ -11,14 +10,10 @@ if fn.empty(fn.glob(install_path)) > 0 then
 end
 
 return require('packer').startup(function(use)
-  -- My plugins here
-  -- use "foo1/bar1.nvim"
-  -- use "foo2/bar2.nvim"
      use "tpope/vim-fugitive" 
      use "wbthomason/packer.nvim"
      use "jalvesaq/Nvim-R" 
      use "airblade/vim-gitgutter" 
-     use  "nvim-lua/completion-nvim" 
      use "vim-pandoc/vim-pandoc-syntax"
      use "tpope/vim-surround"
      use  "jiangmiao/auto-pairs" 
@@ -35,7 +30,10 @@ return require('packer').startup(function(use)
      use  "kyazdani42/nvim-web-devicons" 
      use  "sainnhe/edge" 
      use  "dhruvasagar/vim-table-mode"
-  -- Automatically set up your configuration after cloning packer.nvim
+     use 'hrsh7th/nvim-cmp' -- Autocompletion plugin
+     use 'hrsh7th/cmp-nvim-lsp' -- LSP source for nvim-cmp
+     use 'saadparwaiz1/cmp_luasnip' -- Snippets source for nvim-cmp
+     use 'L3MON4D3/LuaSnip'
      -- Put this at the end after all plugins
      if packer_bootstrap then
 	require('packer').sync()

@@ -6,6 +6,8 @@ echo "/usr/local/bin/fish" | sudo tee -a /etc/shells
 chsh -s /usr/local/bin/fish
 
 echo "$(whoami) ALL = (root) NOPASSWD: $(which yabai) --load-sa" | sudo tee -a /private/etc/sudoers.d/yabai
+sudo yabai --install-sa
+sudo yabai --load-sa
 
 brew services start yabai
 brew services start skhd

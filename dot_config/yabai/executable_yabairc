@@ -12,10 +12,6 @@ yabai -m config normal_window_opacity        0.90
 yabai -m config window_border                off
 yabai -m config split_ratio                  0.50
 yabai -m config auto_balance                 off
-yabai -m config mouse_modifier               fn
-yabai -m config mouse_action1                move
-yabai -m config mouse_action2                resize
-yabai -m config mouse_drop_action            swap
 
 yabai -m config active_window_border_color   0xff775759
 yabai -m config normal_window_border_color   0xff555555
@@ -29,8 +25,8 @@ yabai -m config left_padding                 5
 yabai -m config right_padding                5
 yabai -m config window_gap                   5
 
-yabai -m rule --add app=Spotify space=3 grid=16:16:1:1:14:14 manage=off
-yabai -m rule --add app=WhatsApp space=4 manage=off
+yabai -m rule --add app=Spotify sticky=on grid=16:16:1:1:14:14 manage=off
+yabai -m rule --add app=WhatsApp sticky=on grid=16:16:1:1:14:14 manage=off
 yabai -m rule --add app=Mail space=4
 yabai -m rule --add app=Calendar space=4 manage=off
 yabai -m rule --add app=System\ Preferences manage=off

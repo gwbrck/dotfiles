@@ -12,16 +12,6 @@ ctrl - 5  : yabai -m space --focus 5
 
 hyper - e : fish -l -i -c em
 
-
-# float / unfloat window and center on screen
-# alt - t : yabai -m window --toggle float;\
-#           yabai -m window --grid 4:4:1:1:2:2
-
-# toggle sticky(+float), topmost, picture-in-picture
-# alt - p : yabai -m window --toggle sticky;\
-#           yabai -m window --toggle topmost;\
-#
-
 alt - h : yabai -m window --focus west
 alt - j : yabai -m window --focus south
 alt - k : yabai -m window --focus north

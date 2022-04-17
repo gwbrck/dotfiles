@@ -259,8 +259,10 @@
   (evil-snipe-override-mode +1)
   (setq evil-snipe-scope 'buffer))
 
-(use-package electric-pair-mode
-  :demand t)
+(use-package elec-pair
+  :demand t
+  :init
+  (electric-pair-mode))
 
 (use-package all-the-icons
   :straight t)

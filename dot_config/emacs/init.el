@@ -472,6 +472,12 @@ targets."
   ([remap describe-command] . helpful-command)
   ([remap describe-key] . helpful-key))
 
+(use-package elisp-demos
+  :straight t
+  :after helpful
+  :init
+  (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
+
 (use-package flycheck
   :straight t
   :init

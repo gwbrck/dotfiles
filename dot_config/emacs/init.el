@@ -235,11 +235,15 @@
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
   (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal)
+  (evil-set-initial-state 'dashboard-mode 'normal))
+
+(use-package pulse
+  :after evil
+  :init
   (defun gwbrck/evil-yank-advice (orig-fn beg end &rest args)
     (pulse-momentary-highlight-region beg end 'highlight)
     (apply orig-fn beg end args))
-  (advice-add 'evil-yank :around 'gwbrck/evil-yank-advice))
+  (advice-add 'evil-yank :around #'gwbrck/evil-yank-advice))
 
 (use-package evil-collection
   :straight t
@@ -254,6 +258,9 @@
   (evil-snipe-mode +1)
   (evil-snipe-override-mode +1)
   (setq evil-snipe-scope 'buffer))
+
+(use-package electric-pair-mode
+  :demand t)
 
 (use-package all-the-icons
   :straight t)

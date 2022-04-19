@@ -1,3 +1,6 @@
+sudo yabai --load-sa
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+
 # global settings
 yabai -m config mouse_follows_focus          off
 yabai -m config focus_follows_mouse          off
@@ -19,14 +22,18 @@ yabai -m config insert_feedback_color        0xffd75f5f
 
 # general space settings
 yabai -m config layout                       bsp
-yabai -m config top_padding                  5
-yabai -m config bottom_padding               5
-yabai -m config left_padding                 5
-yabai -m config right_padding                5
-yabai -m config window_gap                   5
+yabai -m config top_padding                  8
+yabai -m config bottom_padding               8
+yabai -m config left_padding                 8
+yabai -m config right_padding                8
+yabai -m config window_gap                   8
 
 yabai -m rule --add app=Spotify sticky=on grid=16:16:1:1:14:14 manage=off
 yabai -m rule --add app=WhatsApp sticky=on grid=16:16:1:1:14:14 manage=off
 yabai -m rule --add app=Mail space=4
 yabai -m rule --add app=Calendar space=4 manage=off
 yabai -m rule --add app=System\ Preferences manage=off
+
+
+yabai -m signal --add event=window_destroyed action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
+yabai -m signal --add event=application_terminated action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"

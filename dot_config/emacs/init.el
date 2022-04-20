@@ -454,7 +454,23 @@ targets."
         ("S-TAB" . corfu-previous)
         ([backtab] . corfu-previous));; Do not preview current candidate
   :init
-    (corfu-global-mode))
+  (corfu-global-mode))
+
+(use-package corfu-doc
+  :hook (corfu-mode . corfu-doc-mode))
+
+(use-package kind-icon
+  :straight t
+  :after corfu
+  :custom
+  (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
+(use-package cape
+  :straight t
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-file))
 
 (use-package consult-project-extra
   :straight (consult-project-extra
@@ -713,6 +729,7 @@ targets."
   :straight t
   :commands (lsp)
   :custom
+  (lsp-completion-provider nil)
   (lsp-keep-workspace-alive nil)
   (lsp-keymap-prefix "C-c l")
   :init
@@ -735,7 +752,12 @@ targets."
          (when (member (lsp--workspace-root ws) gwbrck/py-projd)
            (pipenv-deactivate))))
       (lsp)))
+  (defun gwbrck/corfu-lsp ()
+     "Using orderless instead of default-lsp"
+     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+           '(orderless)))
   :hook
+  (lsp-completion-mode . gwbrck/corfu-lsp)
   (c-mode . lsp)
   (c++-mode . lsp)
   (ess-r-mode . lsp)

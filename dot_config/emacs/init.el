@@ -457,6 +457,7 @@ targets."
   (corfu-global-mode))
 
 (use-package corfu-doc
+  :straight t
   :hook (corfu-mode . corfu-doc-mode))
 
 (use-package kind-icon

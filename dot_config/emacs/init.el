@@ -139,8 +139,8 @@
   :straight t
   :hook (org-mode . org-make-toc-mode))
 
-(use-package emacs
-  :init
+(use-package faces
+  :config
   (defun gwbrck/set-font-faces ()
     (set-face-attribute 'default nil :font "Fira Code" :height 120)
     (set-face-attribute 'fixed-pitch nil :font "Fira Code" :height 1.0)
@@ -460,7 +460,7 @@ targets."
         ("S-TAB" . corfu-previous)
         ([backtab] . corfu-previous));; Do not preview current candidate
   :init
-  (corfu-global-mode))
+  (global-corfu-mode))
 
 (use-package corfu-doc
   :straight t
@@ -1002,6 +1002,6 @@ targets."
   (server-name "emacsen")
   :config
   (unless (server-running-p)
-  (server-tart)))
+  (server-start)))
 
 ;;; init.el ends here

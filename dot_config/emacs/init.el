@@ -162,7 +162,12 @@
     (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
     (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
     (set-face-attribute 'org-hide nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-block-begin-line nil :height 0.8)))
+    (set-face-attribute 'org-block-begin-line nil :height 0.8))
+  (add-hook 'after-make-frame-functions
+            (lambda (frame)
+              (with-selected-frame frame
+                (gwbrck/set-font-faces))))
+  (gwbrck/set-font-faces))
 
 (use-package doom-themes
   :straight t
@@ -238,8 +243,9 @@
   (evil-set-initial-state 'dashboard-mode 'normal))
 
 (use-package pulse
-  :after evil
-  :init
+  :custom (pulse-flag t)
+  :straight (:type built-in)
+  :config
   (defun gwbrck/evil-yank-advice (orig-fn beg end &rest args)
     (pulse-momentary-highlight-region beg end 'highlight)
     (apply orig-fn beg end args))
@@ -990,20 +996,12 @@ targets."
   (ansible-vault-password-file nil))
 
 (use-package server
-  :after org
-  :init
-  (if (daemonp)
-      (add-hook 'after-make-frame-functions
-                (lambda (frame)
-                  (with-selected-frame frame
-                    (gwbrck/set-font-faces))))
-    (gwbrck/set-font-faces)))
-
-(use-package server
-  :unless (server-running-p)
-  :init
-  (setq server-socket-dir "~/.cache/emacsserver")
-  (setq server-name "emacsen")
-  (server-start))
+  :unless (daemonp)
+  :custom
+  (server-socket-dir "~/.cache/emacsserver")
+  (server-name "emacsen")
+  :config
+  (unless (server-running-p)
+  (server-tart)))
 
 ;;; init.el ends here

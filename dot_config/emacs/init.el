@@ -776,7 +776,10 @@ targets."
 
 (use-package lsp-ui
   :straight t
-  :hook (lsp-mode . lsp-ui-mode))
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-sideline-enable nil)
+  (lsp-ui-doc-include-signature t))
 
 (use-package consult-lsp
   :straight t)

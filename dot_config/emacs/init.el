@@ -99,7 +99,8 @@
   :hook ((org-mode . gwbrck/org-mode-setup)
 	 (org-mode . synosaurus-mode))
   :init
-  (setq org-agenda-files (directory-files-recursively gwbrck/roam "\\.org$"))
+  ;; agenda files are defined by vulpea function in orgroam
+  ;;(setq org-agenda-files (directory-files-recursively gwbrck/roam "\\.org$"))
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((R . t)
@@ -108,7 +109,10 @@
   (defun gwbrck/org-mode-visual-fill ()
     (setq visual-fill-column-width 110
           visual-fill-column-center-text t)
-    (visual-fill-column-mode 1)))
+    (visual-fill-column-mode 1))
+  :config
+  (add-to-list 'org-tags-exclude-from-inheritance "project")
+  (setq org-default-notes-file (concat gwbrck/roam "main.org")))
 
 (use-package org-tempo
   :init
@@ -644,6 +648,11 @@ targets."
                               "#+title: ${title}\n#+created: %(format-time-string \"[%Y-%m-%d %H:%M]\")\n\n")
            :unnarrowed t)))
   (org-roam-setup))
+
+(use-package vulpea-org-roam
+  :after org-roam
+  :load-path "lisp/"
+  :init (require 'vulpea-org-roam))
 
 (use-package ox
   :after org

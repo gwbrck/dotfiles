@@ -31,9 +31,21 @@ require('packer').startup(function()
                 config = function()
                         require 'nvim-treesitter.configs'.setup {
                                 ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-                                highlight = { enable = true } } -- false will disable the whole extension
+                                highlight = { enable = true },
+                                incremental_selection = {
+                                        enable = true,
+                                        keymaps = {
+                                                init_selection = 'gnn',
+                                                node_incremental = 'grn',
+                                                scope_incremental = 'grc',
+                                                node_decremental = 'grm',
+                                        },
+                                },
+                                indent = {
+                                        enable = true,
+                                },
+                        }
                 end }
-        --	use "nvim-treesitter/completion-treesitter"
         use {
                 "norcalli/nvim-colorizer.lua",
                 config = function()
@@ -90,9 +102,16 @@ HOME = os.getenv("HOME")
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 
---Highlight on yank
-local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
-vim.api.nvim_create_autocmd("TextYankPost", { callback = function() vim.highlight.on_yank() end, group = highlight_group })
+
+-- Highlight on yank
+local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
+vim.api.nvim_create_autocmd('TextYankPost', {
+        callback = function()
+                vim.highlight.on_yank()
+        end,
+        group = highlight_group,
+        pattern = '*',
+})
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)

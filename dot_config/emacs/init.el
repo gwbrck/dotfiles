@@ -52,16 +52,8 @@
                   treemacs-mode-hook
                   eshell-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
-  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-  (global-set-key (kbd "C-M-u") 'universal-argument)
   (setq-default indent-tabs-mode nil)
-  (setq tab-always-indent 'complete)
-  (global-set-key (kbd "C-x k") 'kill-this-buffer)
-  (global-unset-key (kbd "M-<backspace>"))
-  (global-unset-key (kbd "C-<backspace>"))
-  (global-unset-key (kbd "M-DEL"))
-  (global-unset-key (kbd "C-DEL"))
-  (global-set-key (kbd "M-<backspace>") 'delete-indentation))
+  (setq tab-always-indent 'complete))
 
 (use-package pixel-scroll
   :when (>= emacs-major-version 29)
@@ -72,6 +64,7 @@
 (use-package files
   :no-require t
   :config
+  ;;(setq insert-drectory-program "gls")
   (setq backup-directory-alist '(("." . "~/.config/emacs/backup")))
   (setq backup-by-copying t)
   (setq version-control t)
@@ -84,22 +77,18 @@
   :when (equal system-type 'darwin)
   :init (ns-auto-titlebar-mode +1))
 
-(use-package emacs
+(use-package org
+  :straight t
+  :demand t
+  :after emacs
+  :hook ((org-mode . gwbrck/org-mode-setup))
   :init
   (defun gwbrck/org-mode-setup ()
     (org-indent-mode)
     (variable-pitch-mode 1)
     (gwbrck/set-font-faces)
-    (visual-line-mode 1)))
-
-(use-package org
-  :straight t
-  :demand t
-  :after emacs
-  :hook ((org-mode . gwbrck/org-mode-setup)
-	 (org-mode . synosaurus-mode))
-  :init
-  ;; agenda files are defined by vulpea function in orgroam
+    (visual-line-mode 1))
+  ;; agenda files are defined by vulpea functions (orgroam)
   ;;(setq org-agenda-files (directory-files-recursively gwbrck/roam "\\.org$"))
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -192,9 +181,12 @@
   :when (equal system-type 'darwin)
   :init
   (setq auth-sources '(macos-keychain-internet macos-keychain-generic "~/.authinfo.gpg" "~/.authinfo" "~/.netrc"))
-  (setq mac-command-modifier 'meta)
-  (setq mac-option-modifier 'none)
-  (setq insert-directory-program "gls")
+  (setq mac-command-modifier      'super
+        ns-command-modifier       'super
+        mac-option-modifier       'meta
+        ns-option-modifier        'meta
+        mac-right-option-modifier 'none
+        ns-right-option-modifier  'none)
   (set-terminal-coding-system 'utf-8)
   (set-keyboard-coding-system 'utf-8)
   (prefer-coding-system 'utf-8)
@@ -220,7 +212,17 @@
       (ns-raise-emacs))))
 
 (use-package general
-  :straight t)
+  :straight t
+  :demand t
+  :config
+  (general-create-definer leader-key-def-mapless
+    :states '(normal insert visual emacs)
+    :prefix "SPC"
+    :global-prefix "C-SPC")
+  (general-create-definer leader-key-def
+    :keymaps '(normal insert visual emacs)
+    :prefix "SPC"
+    :global-prefix "C-SPC"))
 
 (use-package evil
   :straight t
@@ -232,19 +234,51 @@
   ;;(setq evil-want-minibuffer t)
   :config
   (evil-mode 1)
-  (define-key evil-normal-state-map (kbd "SPC w") evil-window-map)
-  (define-key evil-normal-state-map (kbd "SPC c") (general-simulate-key "C-c"))
-  (define-key evil-normal-state-map (kbd "SPC h") help-map)
-  (define-key evil-normal-state-map (kbd "SPC x") ctl-x-map)
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-  (define-key evil-emacs-state-map (kbd "\C-w") 'backward-kill-word)
-  (define-key minibuffer-local-map (kbd "\C-w") 'backward-kill-word)
-  ;; Use visual line motions even outside of visual-line-mode buffers
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-  (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal))
+  :general
+  ("s-<backspace>" 'delete-indentation)
+  (leader-key-def
+    "SPC" '(execute-extended-command :wk "M-x")
+    "x" '(:keymap ctl-x-map :wk "ctl-x-map")
+    "h" '(:keymap help-map :wk "help")
+    "b" '(:ignore t :wk "buffers")
+    "bn" '(next-buffer :wk "next Buffer")
+    "bv" '(previous-buffer :wk "preVious Buffer")
+    "bk" '(:ignore t :which-key "kill buffer")
+    "bks" '(kill-some-buffers :wk "kill some buffers")
+    "bkk" '(kill-this-buffer :wk "kill this buffer")
+    "w" '(evil-window-map :which-key "windows")
+    "s" '(flyspell-mode :wk "spell")))
+
+
+(use-package evil-collection
+  :straight t
+  :after evil
+  :config
+  (evil-collection-init))
+
+(use-package evil-org
+  :straight t
+  :after org
+  :hook (org-mode . (lambda () evil-org-mode))
+  :config
+  (require 'evil-org)
+  (require 'evil-org-agenda)
+  (evil-org-set-key-theme '(navigation todo insert textobjects additional))
+  (evil-org-agenda-set-keys))
+
+(use-package evil-snipe
+  :straight t
+  :after evil-collection
+  :config
+  (evil-snipe-mode +1)
+  (evil-snipe-override-mode +1)
+  (setq evil-snipe-scope 'buffer))
+
+(use-package evil-surround
+  :straight t
+  :after evil
+  :config
+  (global-evil-surround-mode 1))
 
 (use-package pulse
   :custom (pulse-flag t)
@@ -254,20 +288,6 @@
     (pulse-momentary-highlight-region beg end 'highlight)
     (apply orig-fn beg end args))
   (advice-add 'evil-yank :around #'gwbrck/evil-yank-advice))
-
-(use-package evil-collection
-  :straight t
-  :after evil
-  :config
-  (evil-collection-init))
-
-(use-package evil-snipe
-  :straight t
-  :after evil-collection
-  :config
-  (evil-snipe-mode +1)
-  (evil-snipe-override-mode +1)
-  (setq evil-snipe-scope 'buffer))
 
 (use-package elec-pair
   :demand t
@@ -325,57 +345,17 @@
 
 (use-package marginalia
   :straight t
-  :bind (("M-A" . marginalia-cycle)
-         :map minibuffer-local-map
-         ("M-A" . marginalia-cycle))
   :init
   (marginalia-mode))
 
 (use-package consult
   :straight t
-  :bind (;; C-c bindings (mode-specific-map)
-         ("C-c h" . consult-history)
-         ("C-c m" . consult-mode-command)
-         ("C-c b" . consult-bookmark)
-         ("C-c k" . consult-kmacro)
-         ;; C-x bindings (ctl-x-map)
-         ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
-         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
-         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
-         ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
-         ;; Custom M-# bindings for fast register access
-         ("C-M-#" . consult-register)
-         ;; Other custom bindings
-         ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-         ("<help> a" . consult-apropos)            ;; orig. apropos-command
-         ;; M-g bindings (goto-map)
-         ("M-g e" . consult-compile-error)
-         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
-         ("M-g g" . consult-goto-line)             ;; orig. goto-line
-         ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
-         ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
-         ("M-g m" . consult-mark)
-         ("M-g k" . consult-global-mark)
-         ("M-g i" . consult-imenu)
-         ("M-g I" . consult-imenu-multi)
-         ;; M-s bindings (search-map)
-         ("M-s f" . consult-find)
-         ("M-s F" . consult-locate)
-         ("M-s g" . consult-grep)
-         ("M-s G" . consult-git-grep)
-         ("M-s r" . consult-ripgrep)
-         ("C-s" . consult-line)
-         ("M-s L" . consult-line-multi)
-         ("M-s m" . consult-multi-occur)
-         ("M-s k" . consult-keep-lines)
-         ("M-s u" . consult-focus-lines)
-         ;; Isearch integration
-         ("M-s e" . consult-isearch-history)
-         :map isearch-mode-map
-         ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
-         ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
-         ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
-         ("M-s L" . consult-line-multi))           ;; needed by consult-line to detect isearch
+  :general
+  ("C-s" 'consult-line)
+  (leader-key-def "bs" 'consult-buffer)
+  (:keymaps 'org-mode-map
+            :states 'normal
+            "/" 'consult-outline)
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :init
   (setq register-preview-delay 0
@@ -393,10 +373,10 @@
 
 (use-package embark
   :straight t
-  :bind
-  (("M-o" . embark-act)         ;; pick some comfortable binding
-   ("C-;" . embark-dwim)        ;; good alternative: M-.
-   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+  :general
+  (leader-key-def
+    "e" '(embark-act :wk "embark")
+    "E" '(embark-dwim :wk "embark"))
   :init
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
@@ -457,12 +437,13 @@ targets."
   (corfu-scroll-margin 5)        ;; Use scroll margin
   (corfu-preview-current t)
   (corfu-preselect-first nil)
-  :bind
-  (:map corfu-map
-        ("TAB" . corfu-next)
-        ([tab] . corfu-next)
-        ("S-TAB" . corfu-previous)
-        ([backtab] . corfu-previous));; Do not preview current candidate
+  :general
+  (:keymaps 'corfu-map
+        "TAB"  'corfu-next
+        [tab] 'corfu-next
+        "S-TAB" 'corfu-previous
+        [backtab] 'corfu-previous
+        "SPC" 'corfu-insert-separator)
   :init
   (global-corfu-mode))
 
@@ -483,23 +464,14 @@ targets."
   :init
   (add-to-list 'completion-at-point-functions #'cape-file))
 
-(use-package consult-project-extra
-  :straight (consult-project-extra
-             :type git
-             :host github
-             :repo "Qkessler/consult-project-extra")
-  :bind
-  (("C-c p f" . consult-project-extra)
-   ("C-c p o" . consult-project-extra-other-window)))
-
 (use-package helpful
   :straight t
-  :bind
-  ([remap describe-function] . helpful-function)
-  ([remap describe-symbol] . helpful-symbol)
-  ([remap describe-variable] . helpful-variable)
-  ([remap describe-command] . helpful-command)
-  ([remap describe-key] . helpful-key))
+  :general
+  ([remap describe-function] 'helpful-function
+   [remap describe-symbol] 'helpful-symbol
+   [remap describe-variable] 'helpful-variable
+   [remap describe-command] 'helpful-command
+   [remap describe-key] 'helpful-key))
 
 (use-package elisp-demos
   :straight t
@@ -513,7 +485,7 @@ targets."
   (global-flycheck-mode))
 
 (use-package bibtex
-  :bind ([remap bibtex-clean-entry] . gwbrck/bibtex-clean-entry)
+  :general ([remap bibtex-clean-entry] 'gwbrck/bibtex-clean-entry)
   :config
   (setq bibtex-dialect 'biblatex)
   (setq bibtex-entry-format '(opts-or-alts numerical-fields whitespace realign last-comma delimiters unify-case sort-fields delimiters required-fields))
@@ -628,8 +600,9 @@ targets."
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
   (org-cite-export-processors '((t csl "apa.csl")))
-  :bind
-  (:map org-mode-map :package org ("C-c b" . #'org-cite-insert)))
+  :general
+  (:keymaps 'org-mode-map
+            "C-c b" 'org-cite-insert))
 
 (use-package org-roam
   :straight t
@@ -708,9 +681,13 @@ targets."
   :init (require 'ox-moderncv))
   
 (use-package flyspell
-  :hook ((org-mode . flyspell-mode)
-	 (org-mode . flyspell-buffer))
+  :hook ((flyspell-mode . flyspell-buffer)
+         (flyspell-mode . synosaurus-mode))
+  :after evil
   :config
+  (assoc-delete-all 'flyspell-mode minor-mode-map-alist)
+  (setq flyspell-mode-map (make-sparse-keymap))
+  (add-to-list 'minor-mode-map-alist `(flyspell-mode . ,flyspell-mode-map))
   (cond ((executable-find "enchant-2")  (progn
                                           (setq-default ispell-program-name "enchant-2")
                                           (setq ispell-dictionary   "de_DE")))
@@ -720,17 +697,39 @@ targets."
                                           (setq ispell-dictionary   "de_DE")))
         ((executable-find "aspell")     (progn
                                           (setq-default ispell-program-name "aspell")
-                                          (setq ispell-dictionary   "de_DE")))))
+                                          (setq ispell-dictionary   "de_DE"))))
+  :general
+  (leader-key-def-mapless
+    :keymaps 'flyspell-mode-map
+    "s" '(:ignore t :wk "spell")
+    "sn" '(flyspell-goto-next-error :wk "next error")
+    "sv" '(evil-prev-flyspell-error :wk "preVious error")))
+
 (use-package flyspell-correct
   :straight t
   :after flyspell
-  :bind (:map flyspell-mode-map ("C-c C-s ," . flyspell-correct-wrapper)))
+  :general
+  (leader-key-def-mapless
+    :keymaps 'flyspell-mode-map
+    "ss" 'flyspell-correct-wrapper))
 
 (use-package synosaurus
   :straight t
+  :after flyspell
   :init
   (setq synosaurus-backend 'synosaurus-backend-openthesaurus)
-  (setq synosaurus-choose-method 'default))
+  (setq synosaurus-choose-method 'default)
+  :config
+  (assoc-delete-all 'synosaurus-mode minor-mode-map-alist)
+  (setq synosaurus-mode-map (make-sparse-keymap))
+  (add-to-list 'minor-mode-map-alist `(synosaurus-mode . ,synosaurus-mode-map))
+  :general
+  (leader-key-def-mapless
+    :keymaps 'flyspell-mode-map
+    "so" '(:ignore t :wk "openthesaurus")
+    "si" '(synosaurus-choose-and-insert :wk "synonym insert")
+    "sc" '(synosaurus-choose-and-replace :wk "caw with synonym")))
+
 
 (use-package tree-sitter
   :straight t
@@ -849,10 +848,10 @@ targets."
                           'append))
 
 (use-package project
-  :init
-  ;;(setq project-switch-commands 'project-find-file)
-  )
-
+  :general
+  (leader-key-def
+    "p" '(:keymap project-prefix-map :wk "projects")
+    "bkp" '(project-kill-buffers :wk "kill project")))
 
 (use-package treemacs
   :straight t
@@ -890,7 +889,8 @@ targets."
 
 (use-package evil-nerd-commenter
   :straight t
-  :bind ("M-/" . evilnc-comment-or-uncomment-lines))
+  :general
+  ("M-/" 'evilnc-comment-or-uncomment-lines))
 
 (use-package rainbow-delimiters
   :straight t
@@ -918,7 +918,8 @@ targets."
 (use-package vterm
   :straight t
   :commands vterm
-  :bind ("C-M-'" . vterm)
+  :general
+  ("C-s-'" 'vterm)
   :config
   (setq vterm-shell "/usr/local/bin/fish --login")
   (setq term-prompt-regexp "^∃[0-9]*❯ \\|❯ ")
@@ -926,7 +927,6 @@ targets."
 
 (use-package dired
   :commands (dired dired-jump)
-  :bind (("C-x C-j" . dired-jump))
   :custom ((dired-listing-switches "-agho --group-directories-first"))
   :config
   (evil-collection-define-key 'normal 'dired-mode-map
@@ -996,10 +996,18 @@ targets."
                         string)
       (string-match "export BW_SESSION=\"\\(.*\\)\"" string)
       (setenv "BW_SESSION" (match-string 1 string))
-      (message "successfully logged in."))))
+      (message "successfully logged in.")))
+  (add-hook 'emacs-startup-hook 'bitwarden-unlock))
 
 (use-package chezmoi
-  :straight t)
+  :straight t
+  :general
+  (leader-key-def
+    "c" '(:ignore t :wk "chezmoi")
+    "cf" 'chezmoi-find
+    "cd" 'chezmoi-diff
+    "cm" 'chezmoi-magit-status
+    "cw" 'chezmoi-write))
 
 (use-package ansible
   :straight t

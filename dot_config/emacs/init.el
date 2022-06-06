@@ -64,7 +64,7 @@
 (use-package files
   :no-require t
   :config
-  ;;(setq insert-drectory-program "gls")
+  (setq insert-directory-program "gls")
   (setq backup-directory-alist '(("." . "~/.config/emacs/backup")))
   (setq backup-by-copying t)
   (setq version-control t)
@@ -484,98 +484,18 @@ targets."
   :init
   (global-flycheck-mode))
 
-(use-package bibtex
-  :general ([remap bibtex-clean-entry] 'gwbrck/bibtex-clean-entry)
-  :config
-  (setq bibtex-dialect 'biblatex)
-  (setq bibtex-entry-format '(opts-or-alts numerical-fields whitespace realign last-comma delimiters unify-case sort-fields delimiters required-fields))
-  (setq bibtex-autokey-name-year-separator "_"
-        bibtex-autokey-year-title-separator "_"
-        bibtex-autokey-titlewords 1
-        bibtex-autokey-year-length 4
-        bibtex-autokey-edit-before-use nil
-        bibtex-autokey-additional-names 1
-        bibtex-autokey-titleword-ignore '("A" "An" "On" "The" "Eine" "Ein" "Der" "Die" "Das")
-        bibtex-autokey-titlewords-stretch 0
-        bibtex-autokey-titleword-length 5
-        bibtex-autokey-name-separator "-"
-        bibtex-autokey-names 2
-        bibtex-autokey-additional-names "-ea"
-        bibtex-comma-after-last-field t)
-  (add-to-list 'bibtex-autokey-name-change-strings '("ß" . "ss"))
-  (add-to-list 'bibtex-autokey-name-change-strings '("å" . "a"))
-  (add-to-list 'bibtex-autokey-name-change-strings '("Å" . "A"))
-  (add-to-list 'bibtex-autokey-name-change-strings '("ö" . "oe"))
-  (add-to-list 'bibtex-autokey-name-change-strings '("Ö" . "Oe"))
-  (add-to-list 'bibtex-autokey-name-change-strings '("ä" . "ae"))
-  (add-to-list 'bibtex-autokey-name-change-strings '("Ä" . "Ae"))
-  (add-to-list 'bibtex-autokey-name-change-strings '("Ü" . "Ue"))
-  (add-to-list 'bibtex-autokey-name-change-strings '("ü" . "ue"))
-  (add-to-list 'bibtex-autokey-titleword-change-strings '("ß" . "ss"))
-  (add-to-list 'bibtex-autokey-titleword-change-strings '("å" . "a"))
-  (add-to-list 'bibtex-autokey-titleword-change-strings '("Å" . "A"))
-  (add-to-list 'bibtex-autokey-titleword-change-strings '("ö" . "oe"))
-  (add-to-list 'bibtex-autokey-titleword-change-strings '("Ö" . "Oe"))
-  (add-to-list 'bibtex-autokey-titleword-change-strings '("ä" . "ae"))
-  (add-to-list 'bibtex-autokey-titleword-change-strings '("Ä" . "Ae"))
-  (add-to-list 'bibtex-autokey-titleword-change-strings '("Ü" . "Ue"))
-  (add-to-list 'bibtex-autokey-titleword-change-strings '("ü" . "ue"))
-  :init
-  (defun gwbrck/bibtex-dashes ()
-    (let (bounds)
-      (when (looking-at bibtex-entry-maybe-empty-head)
-        (goto-char (match-end 0))
-        (while (setq bounds (bibtex-parse-field))
-          (goto-char (bibtex-start-of-field bounds))
-          (if (and (member (bibtex-name-in-field bounds) '("pages" "Pages"))
-                   (string-match "[0-9]-[0-9]" (bibtex-text-in-field-bounds bounds)))
-              (save-restriction
-                (narrow-to-region (caar bounds) (nth 3 bounds))
-                (goto-char (point-min))
-                (while (search-forward "-" nil t)
-                  (replace-match "--")))
-            (goto-char (bibtex-end-of-field bounds)))))))
-  (defun gwbrck/bibtex-journal ()
-    (let (bounds)
-      (when (looking-at bibtex-entry-maybe-empty-head)
-        (goto-char (match-end 0))
-        (while (setq bounds (bibtex-parse-field))
-          (goto-char (bibtex-start-of-field bounds))
-          (if (member (bibtex-name-in-field bounds) '("journal" "Journal"))
-              (save-restriction
-                (narrow-to-region (caar bounds) (nth 3 bounds))
-                (goto-char (point-min))
-                (while (re-search-forward "^[\t ]*journal" nil t)
-                  (replace-match "journaltitle")))
-            (goto-char (bibtex-end-of-field bounds)))))))
-  (defun gwbrck/bibtex-abstract  ()
-    (let (bounds)
-      (when (looking-at bibtex-entry-maybe-empty-head)
-        (goto-char (match-end 0))
-        (while (setq bounds (bibtex-parse-field))
-          (goto-char (bibtex-start-of-field bounds))
-          (if (member (bibtex-name-in-field bounds) '("abstract" "Abstract"))
-              (kill-region (caar bounds) (nth 3 bounds))
-            (goto-char (bibtex-end-of-field bounds)))))))
-  (defun gwbrck/bibtex-clean-entry (&optional x)
-    (interactive)
-    (save-excursion
-      (save-restriction
-	(bibtex-narrow-to-entry)
-	;;(bibtex-mark-entry)
-	;;(ucs-normalize-NFC-region)
-	(bibtex-beginning-of-entry)
-	(gwbrck/bibtex-journal)
-	(bibtex-beginning-of-entry)
-	(gwbrck/bibtex-dashes)
-	(bibtex-beginning-of-entry)
-	(gwbrck/bibtex-abstract)))
-    (bibtex-clean-entry 2)))
+
+(use-package bibtex-clean
+  :after bibtex
+  :hook ((bibtex-mode . bibtex-clean-mode)
+         (biblio-mode . bibtex-clean-mode))
+  :load-path "lisp/")
 
 (use-package biblio
   :straight t
-  :init
-  (setq biblio-cleanup-bibtex-function 'gwbrck/bibtex-clean-entry))
+  :after bibtex-clean
+  :custom
+  (biblio-cleanup-bibtex-function 'gwbrck/bibtex-clean-entry))
 
 (use-package citar
   :straight t
@@ -624,8 +544,7 @@ targets."
 
 (use-package vulpea-org-roam
   :after org-roam
-  :load-path "lisp/"
-  :init (require 'vulpea-org-roam))
+  :load-path "lisp/")
 
 (use-package ox
   :after org
@@ -677,8 +596,7 @@ targets."
   (add-to-list 'org-latex-packages-alist '("inline" "enumitem")))
 
 (use-package ox-moderncv
-  :load-path "lisp/"
-  :init (require 'ox-moderncv))
+  :load-path "lisp/")
   
 (use-package flyspell
   :hook ((flyspell-mode . flyspell-buffer)
@@ -955,49 +873,8 @@ targets."
   (evil-collection-define-key 'normal 'dired-mode-map
     "H" 'dired-hide-dotfiles-mode))
 
-(use-package emacs
-  :init
-  (defun bitwarden-unlock ()
-    "Minimal version of https://github.com/seanfarley/emacs-bitwarden"
-    (interactive)
-    (let* ((bws (shell-command-to-string
-                 (concat (executable-find "bw") " status")))
-           (cmd (cond ((string-match "unauthenticated" bws)  "login")
-                      ((string-match "locked" bws)  "unlock")
-                      ((string-match "unlocked" bws) nil))))
-      (when cmd
-        (when (get-process "bitwarden")
-          (delete-process "bitwarden"))
-        (make-process :name "bitwarden"
-                      :buffer nil
-                      :connection-type 'pipe
-                      :command (list (executable-find "bw") cmd)
-                      :filter #'bitwarden--proc-filter))))
-  (defun bitwarden--proc-filter (proc string)
-    "Interacts with PROC by sending line-by-line STRING."
-    (when (string-match "^? Email address:" string)
-      (process-send-string proc (concat (read-string "Bitwarden email: ") "\n")))
-    (when (string-match "^? Master password:" string)
-      (process-send-string
-       proc (concat (read-passwd "Bitwarden master password: ") "\n")))
-    (when (string-match "^Username or password is incorrect" string)
-      (message "incorrect master password"))
-    (when (string-match "^You are not logged in" string)
-      (message "cannot unlock: not logged in"))
-    (when (string-match "^? Two-step login code:" string)
-      (process-send-string
-       proc (concat (read-passwd "Bitwarden two-step login code: ") "\n")))
-    (when (string-match "^Login failed" string)
-      (message "incorrect two-step code"))
-    (when (string-match "^You are already logged in" string)
-      (string-match "You are already logged in as \\(.*\\)\\." string)
-      (message "already logged in as %s" (match-string 1 string)))
-    (when (string-match "^\\(You are logged in\\|Your vault is now unlocked\\)"
-                        string)
-      (string-match "export BW_SESSION=\"\\(.*\\)\"" string)
-      (setenv "BW_SESSION" (match-string 1 string))
-      (message "successfully logged in.")))
-  (add-hook 'emacs-startup-hook 'bitwarden-unlock))
+(use-package bitwarden-min
+  :load-path "lisp/")
 
 (use-package chezmoi
   :straight t

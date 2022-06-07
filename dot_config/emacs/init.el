@@ -648,7 +648,6 @@ targets."
     "si" '(synosaurus-choose-and-insert :wk "synonym insert")
     "sc" '(synosaurus-choose-and-replace :wk "caw with synonym")))
 
-
 (use-package tree-sitter
   :straight t
   :init
@@ -763,7 +762,9 @@ targets."
   (magit-add-section-hook 'magit-status-sections-hook
                           'magit-insert-modules
                           'magit-insert-stashes
-                          'append))
+                          'append)
+  :general
+  (:keymaps 'magit-mode-map "SPC" nil))
 
 (use-package project
   :general
@@ -846,10 +847,9 @@ targets."
 (use-package dired
   :commands (dired dired-jump)
   :custom ((dired-listing-switches "-agho --group-directories-first"))
-  :config
-  (evil-collection-define-key 'normal 'dired-mode-map
-    "h" 'dired-single-up-directory
-    "l" 'dired-single-buffer))
+  :general
+  (:states 'normal :keymaps 'dired-mode-map
+    "SPC" nil))
 
 (use-package dired-single
   :straight t)

@@ -223,7 +223,9 @@
   (org-log-into-drawer t)
   :general
   ("SPC" nil :keymaps 'org-agenda-mode-map)
-  ("SPC" nil :keymaps 'org-agenda-mode-map :states 'motion))
+  ("SPC" nil :keymaps 'org-agenda-mode-map :states 'motion)
+  (leader-key-def
+    "a" '(org-agenda :wk "org-agenda")))
 
 (use-package org-tempo
   :after org

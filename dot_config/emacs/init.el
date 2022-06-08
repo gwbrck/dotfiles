@@ -32,6 +32,20 @@
   (setq default-directory "~/"))
 
 (use-package emacs
+  :when (equal system-type 'darwin)
+  :init
+  (setq auth-sources '(macos-keychain-internet macos-keychain-generic "~/.authinfo.gpg" "~/.authinfo" "~/.netrc"))
+  (setq mac-command-modifier      'super
+        ns-command-modifier       'super
+        mac-option-modifier       'meta
+        ns-option-modifier        'meta
+        mac-right-option-modifier 'none
+        ns-right-option-modifier  'none)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8))
+
+(use-package emacs
   :init
   (setq native-comp-async-report-warnings-errors nil)
   (setq inhibit-startup-message t)
@@ -77,10 +91,107 @@
   :when (equal system-type 'darwin)
   :init (ns-auto-titlebar-mode +1))
 
+(use-package evil
+  :straight t
+  :demand t
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-i-jump nil)
+  ;;(setq evil-want-minibuffer t)
+  :config
+  (evil-mode 1))
+
+(use-package general
+  :straight t
+  :after evil
+  :config
+  (general-unbind 'motion "SPC")
+  (general-create-definer leader-key-def-mapless
+    :states '(normal insert visual emacs motion)
+    :prefix "SPC"
+    :global-prefix "C-SPC")
+  (general-create-definer leader-key-def
+    :states '(normal insert visual emacs motion)
+    :prefix "SPC"
+    :global-prefix "C-SPC"))
+
+(use-package evil-collection
+  :after evil
+  :straight t
+  :config
+  (evil-collection-init)
+  (leader-key-def
+    "SPC" '(execute-extended-command :wk "M-x")
+    "x" '(:keymap ctl-x-map :wk "ctl-x-map")
+    "h" '(:keymap help-map :wk "help")
+    "b" '(:ignore t :wk "buffers")
+    "bn" '(next-buffer :wk "next Buffer")
+    "bv" '(previous-buffer :wk "preVious Buffer")
+    "bk" '(:ignore t :which-key "kill buffer")
+    "bks" '(kill-some-buffers :wk "kill some buffers")
+    "bkk" '(kill-this-buffer :wk "kill this buffer")
+    "w" '(evil-window-map :which-key "windows")
+    "s" '(flyspell-mode :wk "spell")))
+
+(use-package evil-org
+  :straight t
+  :after org
+  :hook (org-mode . (lambda () evil-org-mode))
+  :config
+  (require 'evil-org)
+  (require 'evil-org-agenda)
+  (evil-org-set-key-theme '(navigation todo insert textobjects additional))
+  (evil-org-agenda-set-keys))
+
+(use-package evil-snipe
+  :straight t
+  :after evil-collection
+  :config
+  (evil-snipe-mode +1)
+  (evil-snipe-override-mode +1)
+  (setq evil-snipe-scope 'buffer))
+
+(use-package evil-surround
+  :straight t
+  :after evil-collection
+  :config
+  (global-evil-surround-mode 1))
+
+(use-package pulse
+  :custom (pulse-flag t)
+  :straight (:type built-in)
+  :config
+  (defun gwbrck/evil-yank-advice (orig-fn beg end &rest args)
+    (pulse-momentary-highlight-region beg end 'highlight)
+    (apply orig-fn beg end args))
+  (advice-add 'evil-yank :around #'gwbrck/evil-yank-advice))
+
+(use-package elec-pair
+  :demand t
+  :init
+  (electric-pair-mode))
+
+(use-package all-the-icons
+  :straight t)
+
+(use-package minions
+  :straight t
+  :config
+  (setq minions-mode-line-lighter "[↑]")
+  :init (minions-mode 1))
+
+(use-package which-key
+  :straight t
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+  (setq which-key-idle-delay 0.1))
+
 (use-package org
   :straight t
   :demand t
-  :after emacs
   :hook ((org-mode . gwbrck/org-mode-setup))
   :init
   (defun gwbrck/org-mode-setup ()
@@ -88,8 +199,6 @@
     (variable-pitch-mode 1)
     (gwbrck/set-font-faces)
     (visual-line-mode 1))
-  ;; agenda files are defined by vulpea functions (orgroam)
-  ;;(setq org-agenda-files (directory-files-recursively gwbrck/roam "\\.org$"))
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((R . t)
@@ -101,9 +210,23 @@
     (visual-fill-column-mode 1))
   :config
   (add-to-list 'org-tags-exclude-from-inheritance "project")
-  (setq org-default-notes-file (concat gwbrck/roam "main.org")))
+  (setq org-default-notes-file (concat gwbrck/roam "main.org"))
+  (advice-add 'org-refile :after 'org-save-all-org-buffers))
+
+(use-package org-agenda
+  :after org
+  ;; agenda files are defined by vulpea functions (orgroam)
+  ;;(setq org-agenda-files (directory-files-recursively gwbrck/roam "\\.org$"))
+  :custom
+  (org-agenda-start-with-log-mode t)
+  (org-log-done 'note)
+  (org-log-into-drawer t)
+  :general
+  ("SPC" nil :keymaps 'org-agenda-mode-map)
+  ("SPC" nil :keymaps 'org-agenda-mode-map :states 'motion))
 
 (use-package org-tempo
+  :after org
   :init
   (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
@@ -123,12 +246,14 @@
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 
 (use-package org-contrib
+  :after org
   :straight t
   :init
   (require 'ox-extra)
   (ox-extras-activate '(ignore-headlines)))
 
 (use-package org-make-toc
+  :after org
   :straight t
   :hook (org-mode . org-make-toc-mode))
 
@@ -162,6 +287,18 @@
                 (gwbrck/set-font-faces))))
   (gwbrck/set-font-faces))
 
+(use-package org-modern
+  :straight t
+  :config
+  (global-org-modern-mode))
+
+(use-package calendar
+  :custom
+  (calendar-set-date-style 'iso)
+  :general
+  ("SPC" nil :keymaps 'calendar-mode-map)
+  ("SPC" nil :states 'normal :keymaps 'calendar-mode-map))
+
 (use-package doom-themes
   :straight t
   :custom
@@ -180,16 +317,6 @@
 (use-package emacs
   :when (equal system-type 'darwin)
   :init
-  (setq auth-sources '(macos-keychain-internet macos-keychain-generic "~/.authinfo.gpg" "~/.authinfo" "~/.netrc"))
-  (setq mac-command-modifier      'super
-        ns-command-modifier       'super
-        mac-option-modifier       'meta
-        ns-option-modifier        'meta
-        mac-right-option-modifier 'none
-        ns-right-option-modifier  'none)
-  (set-terminal-coding-system 'utf-8)
-  (set-keyboard-coding-system 'utf-8)
-  (prefer-coding-system 'utf-8)
   (defun gwbrck/apply-theme (appearance)
     "Load theme, taking current system APPEARANCE into consideration."
     (mapc #'disable-theme custom-enabled-themes)
@@ -210,105 +337,6 @@
     (add-hook 'after-make-frame-functions 'ns-raise-emacs-with-frame)
     (when (display-graphic-p)
       (ns-raise-emacs))))
-
-(use-package general
-  :straight t
-  :demand t
-  :config
-  (general-create-definer leader-key-def-mapless
-    :states '(normal insert visual emacs)
-    :prefix "SPC"
-    :global-prefix "C-SPC")
-  (general-create-definer leader-key-def
-    :keymaps '(normal insert visual emacs)
-    :prefix "SPC"
-    :global-prefix "C-SPC"))
-
-(use-package evil
-  :straight t
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil)
-  ;;(setq evil-want-minibuffer t)
-  :config
-  (evil-mode 1)
-  :general
-  ("s-<backspace>" 'delete-indentation)
-  (leader-key-def
-    "SPC" '(execute-extended-command :wk "M-x")
-    "x" '(:keymap ctl-x-map :wk "ctl-x-map")
-    "h" '(:keymap help-map :wk "help")
-    "b" '(:ignore t :wk "buffers")
-    "bn" '(next-buffer :wk "next Buffer")
-    "bv" '(previous-buffer :wk "preVious Buffer")
-    "bk" '(:ignore t :which-key "kill buffer")
-    "bks" '(kill-some-buffers :wk "kill some buffers")
-    "bkk" '(kill-this-buffer :wk "kill this buffer")
-    "w" '(evil-window-map :which-key "windows")
-    "s" '(flyspell-mode :wk "spell")))
-
-
-(use-package evil-collection
-  :straight t
-  :after evil
-  :config
-  (evil-collection-init))
-
-(use-package evil-org
-  :straight t
-  :after org
-  :hook (org-mode . (lambda () evil-org-mode))
-  :config
-  (require 'evil-org)
-  (require 'evil-org-agenda)
-  (evil-org-set-key-theme '(navigation todo insert textobjects additional))
-  (evil-org-agenda-set-keys))
-
-(use-package evil-snipe
-  :straight t
-  :after evil-collection
-  :config
-  (evil-snipe-mode +1)
-  (evil-snipe-override-mode +1)
-  (setq evil-snipe-scope 'buffer))
-
-(use-package evil-surround
-  :straight t
-  :after evil
-  :config
-  (global-evil-surround-mode 1))
-
-(use-package pulse
-  :custom (pulse-flag t)
-  :straight (:type built-in)
-  :config
-  (defun gwbrck/evil-yank-advice (orig-fn beg end &rest args)
-    (pulse-momentary-highlight-region beg end 'highlight)
-    (apply orig-fn beg end args))
-  (advice-add 'evil-yank :around #'gwbrck/evil-yank-advice))
-
-(use-package elec-pair
-  :demand t
-  :init
-  (electric-pair-mode))
-
-(use-package all-the-icons
-  :straight t)
-
-(use-package minions
-  :straight t
-  :config
-  (setq minions-mode-line-lighter "[↑]")
-  :init (minions-mode 1))
-
-(use-package which-key
-  :straight t
-  :init (which-key-mode)
-  :diminish which-key-mode
-  :config
-  (setq which-key-idle-delay 0.1))
 
 (use-package vertico
   :straight t

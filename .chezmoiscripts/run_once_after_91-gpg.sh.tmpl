@@ -1,0 +1,10 @@
+#!/bin/bash
+
+gpg --import /dev/stdin <<EOF
+{{ (bitwarden "item" "gpg").notes }}
+EOF
+
+rm ~/.gnupg/trustdb.gpg
+gpg --import-ownertrust <<EOF
+{{ (bitwardenFields "item" "gpg").trust.value }}
+EOF

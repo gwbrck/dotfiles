@@ -45,6 +45,10 @@
   (set-keyboard-coding-system 'utf-8)
   (prefer-coding-system 'utf-8))
 
+(use-package epg
+  :config
+  (setq epg-pinentry-mode 'loopback))
+
 (use-package emacs
   :init
   (setq native-comp-async-report-warnings-errors nil)
@@ -193,6 +197,11 @@
   :straight t
   :demand t
   :hook ((org-mode . gwbrck/org-mode-setup))
+  :custom
+  (org-default-notes-file (concat gwbrck/roam "main.org"))
+  (org-clock-clocktable-default-properties '(:maxlevel 4 :scope agenda))
+  (org-archive-location (concat gwbrck/roam "archive.org::* From %s"))
+  (org-archive-subtree-save-file-p t)
   :init
   (defun gwbrck/org-mode-setup ()
     (org-indent-mode)
@@ -210,7 +219,6 @@
     (visual-fill-column-mode 1))
   :config
   (add-to-list 'org-tags-exclude-from-inheritance "project")
-  (setq org-default-notes-file (concat gwbrck/roam "main.org"))
   (advice-add 'org-refile :after 'org-save-all-org-buffers))
 
 (use-package org-agenda
@@ -572,8 +580,12 @@ targets."
            :unnarrowed t)))
   (org-roam-setup))
 
-(use-package vulpea-org-roam
-  :after org-roam
+(use-package org-caldav
+  :straight t
+  :after org-roam)
+
+(use-package vulpea-org-roam-caldav
+  :after org-caldav
   :load-path "lisp/")
 
 (use-package ox

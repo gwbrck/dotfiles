@@ -1,3 +1,9 @@
+(setq org-caldav-inbox (concat org-roam-directory "nextcloud.org"))
+(setq org-icalendar-timezone "Europe/Berlin")
+(setq org-caldav-url {{ (bitwardenFields "item" "Nextcloud Admin").CalDav.value }})
+(setq org-caldav-calendar-id "personal")
+
+
 (setq org-agenda-prefix-format
       '((agenda . " %i %-12(vulpea-agenda-category)%?-12t% s")
         (todo . " %i %-12(vulpea-agenda-category) ")
@@ -88,12 +94,16 @@ tasks."
 
 (defun vulpea-agenda-files-update (&rest _)
   "Update the value of `org-agenda-files'."
-  (setq org-agenda-files (vulpea-project-files)))
+  (setq org-agenda-files (vulpea-project-files))
+  (add-to-list 'org-agenda-files (concat org-roam-directory "archive.org"))
+  (setq org-caldav-files org-agenda-files)
+  (add-to-list 'org-agenda-files (concat org-roam-directory "nextcloud.org")))
 
 (add-hook 'find-file-hook #'vulpea-project-update-tag)
 (add-hook 'before-save-hook #'vulpea-project-update-tag)
 
 (advice-add 'org-agenda :before #'vulpea-agenda-files-update)
+(advice-add 'org-caldav-sync :before #'vulpea-agenda-files-update)
 (advice-add 'org-todo-list :before #'vulpea-agenda-files-update)
 ;; functions borrowed from `vulpea' library
 ;; https://github.com/d12frosted/vulpea/blob/6a735c34f1f64e1f70da77989e9ce8da7864e5ff/vulpea-buffer.el
@@ -188,4 +198,4 @@ If nil it defaults to `split-string-default-separators', normally
        (match-beginning 1)
        (match-end 1)))))
 
-(provide 'vulpea-org-roam)
+(provide 'vulpea-org-roam-caldav)

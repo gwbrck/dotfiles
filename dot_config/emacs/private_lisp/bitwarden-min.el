@@ -1,8 +1,10 @@
 ;;; package --- Summary:
 ;;; Commentary:
 ;;; Code:
+(defvar bitwarden--init-prompt-done-p nil)
+
 (defun bitwarden-unlock ()
-  "Minimal version of https://github.com/seanfarley/emacs-bitwarden"
+  "Minimal version of https://github.com/seanfarley/emacs-bitwarden."
   (interactive)
   (let* ((bws (shell-command-to-string
                (concat (executable-find "bw") " status")))
@@ -17,6 +19,7 @@
                     :connection-type 'pipe
                     :command (list (executable-find "bw") cmd)
                     :filter #'bitwarden--proc-filter))))
+
 (defun bitwarden--proc-filter (proc string)
   "Interacts with PROC by sending line-by-line STRING."
   (when (string-match "^? Email address:" string)
@@ -40,20 +43,19 @@
                       string)
     (string-match "export BW_SESSION=\"\\(.*\\)\"" string)
     (setenv "BW_SESSION" (match-string 1 string))
+    (unless bitwarden--init-prompt-done-p
+      (run-hooks 'bitwarden-after-init-prompt-hooks)
+      (setq bitwarden--init-prompt-done-p t))
     (message "successfully logged in.")))
 
-(defvar bitwarden--init-prompt-done-p nil)
 
 (defvar bitwarden-after-init-prompt-hooks '()
   "Hooks to run after creating a new frame.  After init.  Once!")
-(add-hook 'bitwarden-after-init-prompt-hooks 'bitwarden-unlock -90)
 
 (defun bitwarden--run-after-init-prompt-hooks (frame)
   "Run configured hooks in response to inital (server) window aka FRAME."
-  (unless bitwarden--init-prompt-done-p
-    (with-selected-frame frame
-      (run-hooks 'bitwarden-after-init-prompt-hooks))
-    (setq bitwarden--init-prompt-done-p t)))
+  (with-selected-frame frame
+    (bitwarden-unlock)))
 
 (if (daemonp)
     (add-hook 'after-make-frame-functions 'bitwarden--run-after-init-prompt-hooks 90)

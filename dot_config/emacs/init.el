@@ -34,7 +34,7 @@
 (use-package emacs
   :when (equal system-type 'darwin)
   :init
-  (setq auth-sources '(macos-keychain-internet macos-keychain-generic "~/.authinfo.gpg" "~/.authinfo" "~/.netrc"))
+  (setq auth-sources '(macos-keychain-internet macos-keychain-generic "~/.authinfo.gpg"))
   (setq mac-command-modifier      'super
         ns-command-modifier       'super
         mac-option-modifier       'meta
@@ -44,6 +44,9 @@
   (set-terminal-coding-system 'utf-8)
   (set-keyboard-coding-system 'utf-8)
   (prefer-coding-system 'utf-8))
+
+(use-package bitwarden-min
+  :load-path "lisp/")
 
 (use-package epg
   :config
@@ -914,9 +917,6 @@ targets."
   :config
   (evil-collection-define-key 'normal 'dired-mode-map
     "H" 'dired-hide-dotfiles-mode))
-
-(use-package bitwarden-min
-  :load-path "lisp/")
 
 (use-package chezmoi
   :straight t

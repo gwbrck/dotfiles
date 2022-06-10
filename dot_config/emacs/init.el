@@ -222,7 +222,10 @@
     (visual-fill-column-mode 1))
   :config
   (add-to-list 'org-tags-exclude-from-inheritance "project")
-  (advice-add 'org-refile :after 'org-save-all-org-buffers))
+  (advice-add 'org-refile :after 'org-save-all-org-buffers)
+  (advice-add 'org-archive-subtree
+              :before (lambda () (org-set-property "ROAM_EXCLUDE" "t")))
+  (advice-add 'org-archive-subtree :after 'org-save-all-org-buffers))
 
 (use-package org-agenda
   :after org

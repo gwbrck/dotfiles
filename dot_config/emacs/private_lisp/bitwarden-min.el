@@ -1,7 +1,6 @@
 ;;; package --- Summary:
 ;;; Commentary:
 ;;; Code:
-
 (defun bitwarden-unlock ()
   "Minimal version of https://github.com/seanfarley/emacs-bitwarden"
   (interactive)
@@ -43,8 +42,30 @@
     (setenv "BW_SESSION" (match-string 1 string))
     (message "successfully logged in.")))
 
-(add-hook 'emacs-startup-hook 'bitwarden-unlock)
+(defvar bitwarden--init-prompt-done-p nil)
 
+(defvar bitwarden-after-init-prompt-hooks '()
+  "Hooks to run after creating a new frame.  After init.  Once!")
+(add-hook 'bitwarden-after-init-prompt-hooks 'bitwarden-unlock -90)
+
+(defun bitwarden--run-after-init-prompt-hooks (frame)
+  "Run configured hooks in response to inital (server) window aka FRAME."
+  (unless bitwarden--init-prompt-done-p
+    (with-selected-frame frame
+      (run-hooks 'bitwarden-after-init-prompt-hooks))
+    (setq bitwarden--init-prompt-done-p t)))
+
+(if (daemonp)
+    (add-hook 'after-make-frame-functions 'bitwarden--run-after-init-prompt-hooks 90)
+  (defconst bitwarden--initial-frame (selected-frame)
+    "The frame (if any) active during Emacs initialization.")
+  (add-hook 'after-init-hook
+          (lambda ()
+            (unless bitwarden--init-prompt-done-p
+              (when bitwarden--initial-frame
+                  (bitwarden--run-after-init-prompt-hooks bitwarden--initial-frame))))))
+
+  
 (provide 'bitwarden-min)
 
 ;;; bitwarden-min.el ends here

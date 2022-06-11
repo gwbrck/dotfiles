@@ -494,7 +494,7 @@ targets."
       (global-corfu-mode)))
   (if (daemonp)
       (add-hook 'server-after-make-frame-hook #'safe-global-corfu-mode)
-    (safe-global-minor-mode)))
+    (safe-global-corfu-mode)))
 
 (use-package corfu-doc
   :straight t

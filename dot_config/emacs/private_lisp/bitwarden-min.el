@@ -3,6 +3,9 @@
 ;;; Code:
 (defvar bitwarden--init-prompt-done-p nil)
 
+(defvar bitwarden-after-init-prompt-hooks '()
+  "Hooks to run after creating a new frame.  After init.  Once!")
+
 (defun bitwarden-unlock ()
   "Minimal version of https://github.com/seanfarley/emacs-bitwarden."
   (interactive)
@@ -49,13 +52,12 @@
     (message "successfully logged in.")))
 
 
-(defvar bitwarden-after-init-prompt-hooks '()
-  "Hooks to run after creating a new frame.  After init.  Once!")
 
 (defun bitwarden--run-after-init-prompt-hooks (frame)
   "Run configured hooks in response to inital (server) window aka FRAME."
   (with-selected-frame frame
-    (bitwarden-unlock)))
+    (unless bitwarden--init-prompt-done-p
+      (bitwarden-unlock))))
 
 (if (daemonp)
     (add-hook 'after-make-frame-functions 'bitwarden--run-after-init-prompt-hooks 90)

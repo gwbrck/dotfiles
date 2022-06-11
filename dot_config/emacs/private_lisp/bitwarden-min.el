@@ -51,25 +51,15 @@
       (setq bitwarden--init-prompt-done-p t))
     (message "successfully logged in.")))
 
-
-
-(defun bitwarden--run-after-init-prompt-hooks (frame)
-  "Run configured hooks in response to inital (server) window aka FRAME."
-  (with-selected-frame frame
+(defun bitwarden--init-prompt-run ()
     (unless bitwarden--init-prompt-done-p
-      (bitwarden-unlock))))
+      (bitwarden-unlock)))
 
 (if (daemonp)
-    (add-hook 'after-make-frame-functions 'bitwarden--run-after-init-prompt-hooks 90)
-  (defconst bitwarden--initial-frame (selected-frame)
-    "The frame (if any) active during Emacs initialization.")
-  (add-hook 'after-init-hook
-          (lambda ()
-            (unless bitwarden--init-prompt-done-p
-              (when bitwarden--initial-frame
-                  (bitwarden--run-after-init-prompt-hooks bitwarden--initial-frame))))))
-
+    (add-hook 'server-after-make-frame-hook 'bitwarden--init-prompt-run 90)
+  (add-hook 'after-init-hook 'bitwarden--init-prompt-run 90))
   
 (provide 'bitwarden-min)
 
 ;;; bitwarden-min.el ends here
+

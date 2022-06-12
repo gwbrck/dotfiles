@@ -210,6 +210,7 @@
   (org-clock-clocktable-default-properties '(:maxlevel 4 :scope agenda))
   (org-archive-location (concat gwbrck/roam "archiv.org::* From %s"))
   (org-archive-subtree-save-file-p t)
+  (org-startup-folded t)
   :init
   (defun gwbrck/org-mode-setup ()
     (org-indent-mode)
@@ -249,6 +250,12 @@
   ("SPC" nil :keymaps 'org-agenda-mode-map :states 'motion)
   (leader-key-def
     "a" '(org-agenda :wk "org-agenda")))
+
+(use-package ox-icalendar
+  :after org
+  :custom
+  (org-icalendar-use-scheduled '(event-if-todo-not-done event-if-not-todo))
+  (org-icalendar-use-deadline '(event-if-todo-not-done event-if-not-todo)))
 
 (use-package org-tempo
   :after org
@@ -598,8 +605,8 @@ targets."
                               nil
                               (lambda (node)
                                 (member "project" (org-roam-node-tags node))))
-                       :templates '(("p" "project tag" plain "** TODO %? \n:PROPERTIES:\n:END:\nDEADLINE: %t"
-                                     :target (file+head+olp "%<%Y%m%d%H%M%S>-${slug}.org"
+                       :templates '(("p" "project tag" plain "* TODO %?\nSCHEDULED: %t"
+                                     :target (file+head+olp "${slug}-%<%Y%m%d%H%M%S>.org"
                                                             "#+title: ${title}\n"
                                                             ("Tasks"))))))
   (defun org-agenda-capture (&optional with-time)
@@ -615,15 +622,18 @@ current HH:MM time."
 
   (setq org-roam-capture-templates 
         '(("d" "default" plain "%?"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+           :target (file+head "${slug}-%<%Y%m%d%H%M%S>.org"
                               "#+title: ${title}\n")
            :unnarrowed t)
           ("t" "task" plain "* TODO %?"
-           :target (file+head "INBOX.org"
-                              "#+title: INBOX\n")
+           :target (file+head+olp "${slug}-%<%Y%m%d%H%M%S>.org"
+                                  "#+title: ${title}\n"
+                                  ("Tasks"))
            :unnarrowed t)
           ("i" "INBOX Task" plain "* TODO %?\n"
-           :target (node "INBOX")
+           :target (file+head+olp "INBOX.org"
+                                  "#+title: INBOX\n"
+                                  ("Tasks"))
            :unnarrowed t)
           ("I" "INBOX Note" plain "* %?\n"
            :target (node "INBOX")

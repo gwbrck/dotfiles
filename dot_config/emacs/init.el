@@ -862,7 +862,10 @@ current HH:MM time."
                           'magit-insert-stashes
                           'append)
   :general
-  (:keymaps 'magit-mode-map "SPC" nil))
+  (:keymaps 'magit-diff-mode-map "SPC" nil :states 'normal)
+  (:keymaps 'magit-diff-mode-map "SPC" nil)
+  (:keymaps 'magit-mode-map "SPC" nil)
+  (:keymaps 'magit-mode-map "SPC" nil :states 'normal))
 
 (use-package project
   :general

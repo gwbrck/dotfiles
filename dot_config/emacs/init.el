@@ -27,7 +27,7 @@
 
 (use-package emacs
   :init
-  (setq gwbrck/roam "~/Documents/myBib/roam/")
+  (setq gwbrck/roam "~/Nextcloud/roam/")
   (setq org-directory gwbrck/roam)
   (setq default-directory "~/"))
 
@@ -166,6 +166,11 @@
   :config
   (global-evil-surround-mode 1))
 
+(use-package view
+  :general
+  ("SPC" nil :keymaps 'view-mode-map)
+  ("SPC" nil :keymaps 'view-mode-map :states 'normal))
+
 (use-package pulse
   :custom (pulse-flag t)
   :straight (:type built-in)
@@ -201,9 +206,9 @@
   :demand t
   :hook ((org-mode . gwbrck/org-mode-setup))
   :custom
-  (org-default-notes-file (concat gwbrck/roam "main.org"))
+  (org-default-notes-file (concat gwbrck/roam "INBOX.org"))
   (org-clock-clocktable-default-properties '(:maxlevel 4 :scope agenda))
-  (org-archive-location (concat gwbrck/roam "archive.org::* From %s"))
+  (org-archive-location (concat gwbrck/roam "archiv.org::* From %s"))
   (org-archive-subtree-save-file-p t)
   :init
   (defun gwbrck/org-mode-setup ()
@@ -225,7 +230,11 @@
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
   (advice-add 'org-archive-subtree
               :before (lambda () (org-set-property "ROAM_EXCLUDE" "t")))
-  (advice-add 'org-archive-subtree :after 'org-save-all-org-buffers))
+  (advice-add 'org-archive-subtree :after 'org-save-all-org-buffers)
+  (setq org-tag-alist
+        '(("fun" . ?c)
+          ("work" . ?w)
+          ("personal" . ?p))))
 
 (use-package org-agenda
   :after org
@@ -302,11 +311,6 @@
               (with-selected-frame frame
                 (gwbrck/set-font-faces))))
   (gwbrck/set-font-faces))
-
-(use-package org-modern
-  :straight t
-  :config
-  (global-org-modern-mode))
 
 (use-package calendar
   :custom
@@ -513,6 +517,11 @@ targets."
   :init
   (add-to-list 'completion-at-point-functions #'cape-file))
 
+(use-package help
+  :general
+  ("SPC" nil :keymaps 'help-mode-map)
+  ("SPC" nil :keymaps 'help-mode-map :states 'normal))
+
 (use-package helpful
   :straight t
   :general
@@ -549,9 +558,9 @@ targets."
 (use-package citar
   :straight t
   :config
-  (setq citar-bibliography '("~/Documents/myBib/main.bib"))
-  (setq citar-library-paths '("~/Documents/myBib/pdfs"))
-  (setq citar-notes-paths '("~/Documents/myBib/roam/Konspekte"))
+  (add-to-list 'citar-bibliography (concat gwbrck/roam "main.bib"))
+  (add-to-list 'citar-library-paths (concat gwbrck/roam "pdfs"))
+  (add-to-list 'citar-notes-paths (concat "Konspekte"))
   (setq citar-symbols
 	`((file ,(all-the-icons-faicon "file-o" :face 'all-the-icons-green :v-adjust -0.1) . " ")
           (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue :v-adjust -0.3) . " ")
@@ -561,8 +570,9 @@ targets."
 
 (use-package oc
   :no-require
+  :config
+  (add-to-list 'org-cite-global-bibliography (concat gwbrck/roam "main.bib"))
   :custom
-  (org-cite-global-bibliography '("~/Documents/myBib/main.bib"))
   (org-cite-csl-styles-dir "~/.config/csl/styles")
   (org-cite-csl-locales-dir "~/.config/csl/locales")
   (org-cite-insert-processor 'citar)
@@ -578,22 +588,57 @@ targets."
   :after org
   :init
   (setq org-roam-v2-ack t)
+  :custom
+  (org-roam-directory gwbrck/roam)
+  (org-roam-completion-everywhere t)
   :config
-  (setq org-roam-directory gwbrck/roam)
+  (defun org-roam-capture-agenda ()
+    (interactive)
+    (org-roam-capture- :node (org-roam-node-read
+                              nil
+                              (lambda (node)
+                                (member "project" (org-roam-node-tags node))))
+                       :templates '(("p" "project tag" plain "** TODO %? \n:PROPERTIES:\n:END:\nDEADLINE: %t"
+                                     :target (file+head+olp "%<%Y%m%d%H%M%S>-${slug}.org"
+                                                            "#+title: ${title}\n"
+                                                            ("Tasks"))))))
+  (defun org-agenda-capture (&optional with-time)
+    "Call `org-capture' with the date at point.
+With a `C-1' prefix, use the HH:MM value at point (if any) or the
+current HH:MM time."
+    (interactive "P")
+    (if (not (eq major-mode 'org-agenda-mode))
+        (user-error "You cannot do this outside of agenda buffers")
+      (let ((org-overriding-default-time
+	     (org-get-cursor-date (equal with-time 1))))
+        (call-interactively 'org-roam-capture-agenda))))
+
   (setq org-roam-capture-templates 
         '(("d" "default" plain "%?"
-           :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                               "#+title: ${title}\n")
            :unnarrowed t)
-          ("p" "projekte" plain "%?"
-           :if-new (file+head "Projekte/${slug}.org"
-                              "#+title: ${title}\n#+created: %(format-time-string \"[%Y-%m-%d %H:%M]\")\n\n")
+          ("t" "task" plain "* TODO %?"
+           :target (file+head "INBOX.org"
+                              "#+title: INBOX\n")
+           :unnarrowed t)
+          ("i" "INBOX Task" plain "* TODO %?\n"
+           :target (node "INBOX")
+           :unnarrowed t)
+          ("I" "INBOX Note" plain "* %?\n"
+           :target (node "INBOX")
            :unnarrowed t)))
+  (advice-add 'org-roam-refile :after 'org-save-all-org-buffers)
   (org-roam-setup))
 
 (use-package org-caldav
   :straight t
-  :after org-roam)
+  :after org-roam
+  :config
+  (advice-add 'org-caldav-sync :after #'org-save-all-org-buffers)
+  :general
+  ("SPC" nil :keymaps 'org-caldav-sync-results-mode-map)
+  ("SPC" nil :states 'normal :keymaps 'org-caldav-sync-results-mode-map))
 
 (use-package vulpea-org-roam-caldav
   :after org-caldav

@@ -500,12 +500,13 @@ targets."
         [backtab] 'corfu-previous
         "SPC" 'corfu-insert-separator)
   :init
-  (defun safe-global-corfu-mode ()
-    (when (display-graphic-p)
-      (global-corfu-mode)))
-  (if (daemonp)
-      (add-hook 'server-after-make-frame-hook #'safe-global-corfu-mode)
-    (safe-global-corfu-mode)))
+  (global-corfu-mode))
+  ;;(defun safe-global-corfu-mode ()
+  ;;  (when (display-graphic-p)
+  ;;    (global-corfu-mode)))
+  ;;(if (daemonp)
+  ;;    (add-hook 'server-after-make-frame-hook #'safe-global-corfu-mode)
+  ;;  (safe-global-corfu-mode)))
 
 (use-package corfu-doc
   :straight t

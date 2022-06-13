@@ -57,7 +57,8 @@ end
 set fish_greeting ""
 
 set -Ux PYENV_ROOT $HOME/.config/pyenv
-set -U fish_user_paths $PYENV_ROOT/bin $fish_user_paths
+fish_add_path $PYENV_ROOT/bin
+fish_add_path ~/bin
 set -Ux PIPENV_VENV_IN_PROJECT 1 
 set -Ux PIPENV_PYTHON $PYENV_ROOT/shims/python
 

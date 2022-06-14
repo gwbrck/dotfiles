@@ -1,8 +1,8 @@
 (setq org-caldav-inbox (concat org-roam-directory "caldav.org"))
 (setq org-icalendar-timezone "Europe/Berlin")
-(setq org-caldav-url {{ (bitwardenFields "item" "Nextcloud Admin").CalDav.value }})
-(setq caldav-host {{ (bitwardenFields "item" "Nextcloud Admin").host.value }})
-(setq caldav-user  "{{ (bitwarden "item" "Nextcloud Admin").login.username }}")
+(setq org-caldav-url (auth-source-pass-get "org-caldav-url" "nebenkosten/nextcloud_(privat)"))
+(setq caldav-host (auth-source-pass-get "caldav-host" "nebenkosten/nextcloud_(privat)"))
+(setq caldav-user  (auth-source-pass-get "Username" "nebenkosten/nextcloud_(privat)"))
 (setq org-caldav-calendar-id "personal")
 
 (defun caldav-check-credentials ()
@@ -11,8 +11,9 @@
     (let* ((c (auth-source-search
                :host caldav-host 
                :user caldav-user
-               :secret (shell-command-to-string
-                        "bw get item 'Nextcloud Admin' | jq -r '.fields[1] .value'")
+               :secret (auth-source-pass-get 
+                        "caldav-secret"
+                        "nebenkosten/nextcloud_(privat)")
                :max 1
                :create t
                :port "https"
@@ -20,7 +21,7 @@
            (C (plist-get (nth 0 c) :save-function)))
       (funcall C))))
 
-(add-hook 'bitwarden-after-init-prompt-hooks 'caldav-check-credentials)
+(caldav-check-credentials)
 
 (setq org-agenda-prefix-format
       '((agenda . " %i %-12(vulpea-agenda-category)%?-12t% s")

@@ -34,7 +34,7 @@
 (use-package emacs
   :when (equal system-type 'darwin)
   :init
-  (setq auth-sources '(macos-keychain-internet macos-keychain-generic "~/.authinfo.gpg"))
+  ;;(setq auth-sources '(macos-keychain-internet macos-keychain-generic "~/.authinfo.gpg"))
   (setq mac-command-modifier      'super
         ns-command-modifier       'super
         mac-option-modifier       'meta
@@ -45,12 +45,25 @@
   (set-keyboard-coding-system 'utf-8)
   (prefer-coding-system 'utf-8))
 
-(use-package bitwarden-min
-  :load-path "lisp/")
-
 (use-package epg
   :config
-  (setq epg-pinentry-mode 'loopback))
+  (defun pinentry-loopback-after-init ()
+    (unless (eq epg-pinentry-mode 'loopback)
+      (setq epg-pinentry-mode 'loopback)))
+  (if (daemonp)
+      (add-hook 'server-after-make-frame-hook 'pinentry-loopback-after-init)
+    (add-hook 'after-init-hook 'pinentry-loopback-after-init)))
+
+(use-package auth-source
+  :custom
+  (auth-sources '(password-store "~/.authinfo.gpg")))
+
+(use-package password-store
+  ;;also comes with brew installation of pass
+  :straight t)
+
+(use-package password-store-otp
+  :straight t)
 
 (use-package emacs
   :init

@@ -246,7 +246,8 @@
               :before (lambda () (org-set-property "ROAM_EXCLUDE" "t")))
   (advice-add 'org-archive-subtree :after 'org-save-all-org-buffers)
   (setq org-tag-alist
-        '(("fun" . ?c)
+        '((:endgroup)
+          ("fun" . ?c)
           ("work" . ?w)
           ("personal" . ?p))))
 
@@ -255,14 +256,40 @@
   ;; agenda files are defined by vulpea functions (orgroam)
   ;;(setq org-agenda-files (directory-files-recursively gwbrck/roam "\\.org$"))
   :custom
+  (org-agenda-columns-add-appointments-to-effort-sum t)
   (org-agenda-start-with-log-mode t)
   (org-log-done 'note)
   (org-log-into-drawer t)
+  (org-agenda-current-time-string
+   "⭠ now ─────────────────────────────────────────────────")
   :general
   ("SPC" nil :keymaps 'org-agenda-mode-map)
   ("SPC" nil :keymaps 'org-agenda-mode-map :states 'motion)
   (leader-key-def
-    "a" '(org-agenda :wk "org-agenda")))
+    "a" '(org-agenda :wk "agenda"))
+  :config
+  (setq org-agenda-custom-commands
+        '(("f" "fun"
+           ((tags-todo "fun" ((org-agenda-overriding-header "FUN TODOs")))))
+          ("A" "all dashboard"
+           ((agenda "" ((org-agenda-span 1)
+                        (org-agenda-archives-mode t)
+                        (org-agenda-clockreport-mode t)))
+            (alltodo "" ((org-agenda-overriding-header "Non schedueled TODOs")))))
+          ("W" "all week dashboard"
+           ((agenda "" ((org-agenda-span 7)
+                        (org-agenda-archives-mode t)
+                        (org-agenda-clockreport-mode t)
+                        (org-agenda-clockreport-parameter-plist '(:link t :maxlever 4 :block thisweek))))
+            (alltodo "" ((org-agenda-overriding-header "Non schedueled TODOs")))))
+          ("w" "default week dashboard"
+           ((agenda "" ((org-agenda-span 7)
+                        (org-agenda-tag-filter-preset '("-fun"))))
+            (tags-todo "-fun" ((org-agenda-overriding-header "TODOs")))))
+          ("a" "default dashboard"
+           ((agenda "" ((org-agenda-span 1)
+                        (org-agenda-tag-filter-preset '("-fun"))))
+            (tags-todo "-fun" ((org-agenda-overriding-header "TODOs"))))))))
 
 (use-package ox-icalendar
   :after org
@@ -607,6 +634,7 @@ targets."
 (use-package org-roam
   :straight t
   :after org
+  :demand t
   :init
   (setq org-roam-v2-ack t)
   :custom
@@ -653,7 +681,11 @@ current HH:MM time."
            :target (node "INBOX")
            :unnarrowed t)))
   (advice-add 'org-roam-refile :after 'org-save-all-org-buffers)
-  (org-roam-setup))
+  (org-roam-setup)
+  :general
+  (leader-key-def
+    "f" 'org-roam-node-find
+    "o" 'org-roam-capture))
 
 (use-package org-caldav
   :straight t

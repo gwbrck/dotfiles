@@ -5,26 +5,22 @@
 (setq caldav-user  (auth-source-pass-get "Username" "nebenkosten/nextcloud_(privat)"))
 (setq org-caldav-calendar-id "personal")
 
-(defun caldav-check-credentials ()
-  "Function that checks if caldav credentials are avaliable or gets it from bw."
-  (unless (auth-source-search :host caldav-host)
-    (let* ((c (auth-source-search
-               :host caldav-host 
-               :user caldav-user
-               :secret (auth-source-pass-get 
-                        "caldav-secret"
-                        "nebenkosten/nextcloud_(privat)")
-               :max 1
-               :create t
-               :port "https"
-               :type 'netrc))
-           (C (plist-get (nth 0 c) :save-function)))
-      (funcall C))))
-
-(caldav-check-credentials)
+(unless (auth-source-search :host caldav-host)
+  (let* ((c (auth-source-search
+             :host caldav-host 
+             :user caldav-user
+             :secret (auth-source-pass-get 
+                      "caldav-secret"
+                      "nebenkosten/nextcloud_(privat)")
+             :max 1
+             :create t
+             :port "https"
+             :type 'netrc))
+         (C (plist-get (nth 0 c) :save-function)))
+    (funcall C)))
 
 (setq org-agenda-prefix-format
-      '((agenda . " %i %-12(vulpea-agenda-category)%?-12t% s")
+      '((agenda . " %i %-12(vulpea-agenda-category)%-12t%-6e% s")
         (todo . " %i %-12(vulpea-agenda-category) ")
         (tags . " %i %-12(vulpea-agenda-category) ")
         (search . " %i %-12(vulpea-agenda-category) ")))

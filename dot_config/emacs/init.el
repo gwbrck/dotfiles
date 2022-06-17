@@ -806,7 +806,9 @@ current HH:MM time."
   :straight t
   :init
   (global-tree-sitter-mode)
-  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
+  :config
+  (setf (alist-get 'typescript-tsx-mode tree-sitter-major-mode-language-alist) 'tsx))
 
 (use-package tree-sitter-langs
   :straight t)
@@ -871,9 +873,12 @@ current HH:MM time."
 
 (use-package typescript-mode
   :straight t
-  :mode "\\.\\(ts\\|tsx\\)\\'"
+  :mode (rx ".ts" string-end)
   :config
-  (setq typescript-indent-level 2))
+  (setq typescript-indent-level 2)
+  :init
+  (define-derived-mode typescript-tsx-mode typescript-mode "typescript-tsx")
+  (add-to-list 'auto-mode-alist (cons (rx ".tsx" string-end) #'typescript-tsx-mode)))
 
 (use-package npm-mode
   :hook

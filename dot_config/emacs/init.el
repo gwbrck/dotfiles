@@ -1006,6 +1006,16 @@ current HH:MM time."
   (setq term-prompt-regexp "^∃[0-9]*❯ \\|❯ ")
   (setq vterm-max-scrollback 10000))
 
+(use-package compile
+  :custom
+  (compilation-scroll-output t)
+  :config
+  (require 'ansi-color)
+  (defun colorize-compilation-buffer ()
+    (let ((inhibit-read-only t))
+      (ansi-color-apply-on-region (point-min) (point-max))))
+  (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
+
 (use-package dired
   :commands (dired dired-jump)
   :custom ((dired-listing-switches "-agho --group-directories-first"))

@@ -128,12 +128,12 @@
   :after evil
   :config
   (general-unbind 'motion "SPC")
-  (general-create-definer leader-key-def-mapless
+  (general-create-definer leader-key-def-minor
     :states '(normal insert visual emacs motion)
     :prefix "SPC"
     :global-prefix "C-SPC")
   (general-create-definer leader-key-def
-    :states '(normal insert visual emacs motion)
+    :keymaps '(normal insert visual emacs motion)
     :prefix "SPC"
     :global-prefix "C-SPC"))
 
@@ -771,7 +771,7 @@ current HH:MM time."
                                           (setq-default ispell-program-name "aspell")
                                           (setq ispell-dictionary   "de_DE"))))
   :general
-  (leader-key-def-mapless
+  (leader-key-def-minor
     :keymaps 'flyspell-mode-map
     "s" '(:ignore t :wk "spell")
     "sn" '(flyspell-goto-next-error :wk "next error")
@@ -781,7 +781,7 @@ current HH:MM time."
   :straight t
   :after flyspell
   :general
-  (leader-key-def-mapless
+  (leader-key-def-minor
     :keymaps 'flyspell-mode-map
     "ss" 'flyspell-correct-wrapper))
 
@@ -796,7 +796,7 @@ current HH:MM time."
   (setq synosaurus-mode-map (make-sparse-keymap))
   (add-to-list 'minor-mode-map-alist `(synosaurus-mode . ,synosaurus-mode-map))
   :general
-  (leader-key-def-mapless
+  (leader-key-def-minor
     :keymaps 'flyspell-mode-map
     "so" '(:ignore t :wk "openthesaurus")
     "si" '(synosaurus-choose-and-insert :wk "synonym insert")
@@ -874,14 +874,15 @@ current HH:MM time."
 (use-package typescript-mode
   :straight t
   :mode (rx ".ts" string-end)
-  :config
-  (setq typescript-indent-level 2)
+  :custom
+  (typescript-indent-level 2)
   :init
   (define-derived-mode typescript-tsx-mode typescript-mode "typescript-tsx")
   (add-to-list 'auto-mode-alist (cons (rx ".tsx" string-end) #'typescript-tsx-mode)))
 
 (use-package npm-mode
   :hook
+  (typescript-tsx-mode . npm-mode) 
   (typescript-mode . npm-mode)
   (javascript-mode . npm-mode)
   :straight t)

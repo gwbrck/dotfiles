@@ -135,7 +135,12 @@
   (general-create-definer leader-key-def
     :keymaps '(normal insert visual emacs motion)
     :prefix "SPC"
-    :global-prefix "C-SPC"))
+    :global-prefix "C-SPC")
+  (general-create-definer leader-key-def-c-map
+    :states '(normal insert visual emacs motion)
+    :prefix "SPC c"
+    :prefix-map 'leader-c-map
+    :global-prefix "C-SPC c"))
 
 (use-package evil-collection
   :after evil
@@ -143,6 +148,8 @@
   :config
   (evil-collection-init)
   (leader-key-def
+    "f" '(:ignore t :wk "find")
+    "c" '(:ignore t :wk "mode-map")
     "SPC" '(execute-extended-command :wk "M-x")
     "x" '(:keymap ctl-x-map :wk "ctl-x-map")
     "h" '(:keymap help-map :wk "help")
@@ -684,7 +691,7 @@ current HH:MM time."
   (org-roam-setup)
   :general
   (leader-key-def
-    "f" 'org-roam-node-find
+    "ff" 'org-roam-node-find
     "o" 'org-roam-capture))
 
 (use-package org-caldav
@@ -754,7 +761,8 @@ current HH:MM time."
   
 (use-package flyspell
   :hook ((flyspell-mode . flyspell-buffer)
-         (flyspell-mode . synosaurus-mode))
+         (flyspell-mode . synosaurus-mode)
+         (flyspell-mode . evil-normalize-keymaps))
   :after evil
   :config
   (assoc-delete-all 'flyspell-mode minor-mode-map-alist)
@@ -773,6 +781,7 @@ current HH:MM time."
   :general
   (leader-key-def-minor
     :keymaps 'flyspell-mode-map
+    "s" nil
     "s" '(:ignore t :wk "spell")
     "sn" '(flyspell-goto-next-error :wk "next error")
     "sv" '(evil-prev-flyspell-error :wk "preVious error")))
@@ -881,11 +890,13 @@ current HH:MM time."
   (add-to-list 'auto-mode-alist (cons (rx ".tsx" string-end) #'typescript-tsx-mode)))
 
 (use-package npm-mode
-  :hook
-  (typescript-tsx-mode . npm-mode) 
-  (typescript-mode . npm-mode)
-  (javascript-mode . npm-mode)
-  :straight t)
+  :straight t
+  :config
+  (add-to-list 'which-key-replacement-alist '((nil . "npm-mode-") . (nil . "")))
+  (add-to-list 'which-key-replacement-alist '((nil . "npm-mode-npm-") . (nil . "")))
+  :general
+  (leader-key-def-c-map
+    "n" '(:keymap npm-mode-command-keymap :package npm-mode :wk "npm")))
 
 (use-package yaml-mode
   :mode "\\.yml\\'"
@@ -1050,11 +1061,10 @@ current HH:MM time."
   :straight t
   :general
   (leader-key-def
-    "c" '(:ignore t :wk "chezmoi")
-    "cf" 'chezmoi-find
-    "cd" 'chezmoi-diff
-    "cm" 'chezmoi-magit-status
-    "cw" 'chezmoi-write))
+    "fc" 'chezmoi-find
+    "xcm" '(chezmoi-magit-status :wk "chezmoi magit")
+    "xcd" 'chezmoi-diff
+    "xcw" 'chezmoi-write))
 
 (use-package ansible
   :straight t

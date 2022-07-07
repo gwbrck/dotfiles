@@ -34,7 +34,6 @@
 (use-package emacs
   :when (equal system-type 'darwin)
   :init
-  ;;(setq auth-sources '(macos-keychain-internet macos-keychain-generic "~/.authinfo.gpg"))
   (setq mac-command-modifier      'super
         ns-command-modifier       'super
         mac-option-modifier       'meta
@@ -151,6 +150,9 @@
   (evil-collection-init)
   (leader-key-def
     "f" '(:ignore t :wk "find")
+    "fF" '(find-file :wk "file")
+    "d" '(:ignore t :wk "dired")
+    "dd" #'dired
     "c" '(:ignore t :wk "mode-map")
     "SPC" '(execute-extended-command :wk "M-x")
     "x" '(:keymap ctl-x-map :wk "ctl-x-map")
@@ -946,6 +948,8 @@ current HH:MM time."
   :general
   (leader-key-def
     "p" '(:keymap project-prefix-map :wk "projects")
+    "fp" '(project-find-file :wk "project find")
+    "dp" '(project-dired :wk "project dired")
     "bkp" '(project-kill-buffers :wk "kill project")))
 
 (use-package treemacs

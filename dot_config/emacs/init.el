@@ -910,6 +910,9 @@ current HH:MM time."
   :straight t
   :mode "\\.js\\(?:on\\|[hl]int\\(?:rc\\)?\\)\\'")
 
+(use-package format-all
+  :straight t)
+
 (use-package pipenv
   :straight t
   :custom

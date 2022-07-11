@@ -147,6 +147,7 @@
   :after evil
   :straight t
   :config
+  (global-set-key (kbd "s-<backspace>") #'delete-indentation)
   (evil-collection-init)
   (leader-key-def
     "f" '(:ignore t :wk "find")

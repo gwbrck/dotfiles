@@ -628,6 +628,10 @@ targets."
   (setq citar-symbol-separator "  ")
   (setq citar-file-note-org-include '(org-id org-roam-ref)))
 
+(use-package citar-org-roam
+  :after citar org-roam
+  :straight (citar-org-roam :type git :host github :repo "emacs-citar/citar-org-roam"))
+
 (use-package oc
   :no-require
   :config

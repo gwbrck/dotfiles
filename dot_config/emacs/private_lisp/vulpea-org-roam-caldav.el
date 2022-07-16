@@ -77,8 +77,8 @@ tasks."
         (let* ((tags (vulpea-buffer-tags-get))
                (original-tags tags))
           (if (vulpea-project-p)
-              (setq tags (cons "project" tags))
-            (setq tags (remove "project" tags)))
+              (setq tags (cons "tasks" tags))
+            (setq tags (remove "tasks" tags)))
 
           ;; cleanup duplicates
           (setq tags (seq-uniq tags))
@@ -105,7 +105,7 @@ tasks."
         :from tags
         :left-join nodes
         :on (= tags:node-id nodes:id)
-        :where (like tag (quote "%\"project\"%"))]))))
+        :where (like tag (quote "%\"tasks\"%"))]))))
 
 (defun vulpea-agenda-files-update (&rest _)
   "Update the value of `org-agenda-files'."

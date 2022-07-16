@@ -151,7 +151,7 @@
   (evil-collection-init)
   (leader-key-def
     "f" '(:ignore t :wk "find")
-    "fF" '(find-file :wk "file")
+    "ff" '(find-file :wk "file")
     "d" '(:ignore t :wk "dired")
     "dd" #'dired
     "c" '(:ignore t :wk "mode-map")
@@ -252,13 +252,13 @@
           visual-fill-column-center-text t)
     (visual-fill-column-mode 1))
   :config
-  (add-to-list 'org-tags-exclude-from-inheritance "project")
+  (add-to-list 'org-tags-exclude-from-inheritance "tasks")
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
-  (advice-add 'org-archive-subtree
-              :before (lambda () (org-set-property "ROAM_EXCLUDE" "t")))
   (advice-add 'org-archive-subtree :after 'org-save-all-org-buffers)
   (setq org-tag-alist
         '((:endgroup)
+          ("Konspekt" . ?K)
+          ("Exzerpt" . ?E)
           ("fun" . ?c)
           ("work" . ?w)
           ("personal" . ?p))))
@@ -459,7 +459,9 @@
   :straight t
   :general
   ("C-s" 'consult-line)
-  (leader-key-def "bs" 'consult-buffer)
+  (leader-key-def
+    "bs" 'consult-buffer
+    "fF" 'consult-ripgrep)
   (:keymaps 'org-mode-map
             :states 'normal
             "/" 'consult-outline)
@@ -480,10 +482,10 @@
 
 (use-package embark
   :straight t
-  :general
-  (leader-key-def
-    "e" '(embark-act :wk "embark")
-    "E" '(embark-dwim :wk "embark"))
+  :bind
+  (("C-." . embark-act)         ;; pick some comfortable binding
+   ("C-," . embark-dwim)        ;; good alternative: M-.
+   ("C-h B" . embark-bindings))
   :init
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
@@ -620,17 +622,30 @@ targets."
   :config
   (add-to-list 'citar-bibliography (concat gwbrck/roam "main.bib"))
   (add-to-list 'citar-library-paths (concat gwbrck/roam "pdfs"))
-  (add-to-list 'citar-notes-paths (concat "Konspekte"))
   (setq citar-symbols
 	`((file ,(all-the-icons-faicon "file-o" :face 'all-the-icons-green :v-adjust -0.1) . " ")
           (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue :v-adjust -0.3) . " ")
           (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange :v-adjust 0.01) . " ")))
   (setq citar-symbol-separator "  ")
-  (setq citar-file-note-org-include '(org-id org-roam-ref)))
+  :general
+  (leader-key-def
+    "fb" 'citar-open
+    "fB" 'citar-open-entry))
 
 (use-package citar-org-roam
   :after citar org-roam
-  :straight (citar-org-roam :type git :host github :repo "emacs-citar/citar-org-roam"))
+  :straight (citar-org-roam :type git :host github :repo "emacs-citar/citar-org-roam")
+  :custom
+  (citar-org-roam-subdir "annotaions")
+  (citar-org-roam-note-title-template "${author editor} (${year}) :: ${title}")
+  :config
+  (citar-org-roam-mode))
+
+(use-package citar-embark
+  :straight t
+  :after citar embark
+  :no-require
+  :config (citar-embark-mode))
 
 (use-package oc
   :no-require
@@ -657,13 +672,26 @@ targets."
   (org-roam-directory gwbrck/roam)
   (org-roam-completion-everywhere t)
   :config
+  (setq org-roam-db-node-include-function
+        (lambda ()
+          (not (member "ARCHIVE" (org-get-tags)))))
+  (cl-defmethod org-roam-node-type ((node org-roam-node))
+    "Return the TYPE of NODE."
+    (condition-case nil
+        (file-name-nondirectory
+         (directory-file-name
+          (file-name-directory
+           (file-relative-name (org-roam-node-file node) org-roam-directory))))
+      (error "")))
+  (setq org-roam-node-display-template
+        (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (defun org-roam-capture-agenda ()
     (interactive)
     (org-roam-capture- :node (org-roam-node-read
                               nil
                               (lambda (node)
-                                (member "project" (org-roam-node-tags node))))
-                       :templates '(("p" "project tag" plain "* TODO %?\nSCHEDULED: %t"
+                                (member "tasks" (org-roam-node-tags node))))
+                       :templates '(("p" "tasks tag" plain "* TODO %?\nSCHEDULED: %t"
                                      :target (file+head+olp "${slug}-%<%Y%m%d%H%M%S>.org"
                                                             "#+title: ${title}\n"
                                                             ("Tasks"))))))
@@ -679,28 +707,34 @@ current HH:MM time."
         (call-interactively 'org-roam-capture-agenda))))
 
   (setq org-roam-capture-templates 
-        '(("d" "default" plain "%?"
-           :target (file+head "${slug}-%<%Y%m%d%H%M%S>.org"
-                              "#+title: ${title}\n")
+        '(("m" "main" plain "%?"
+           :target
+           (file+head "main/${slug}.org" "#+title: ${title}\n")
+           :immediate-finish t
            :unnarrowed t)
-          ("t" "task" plain "* TODO %?"
-           :target (file+head+olp "${slug}-%<%Y%m%d%H%M%S>.org"
-                                  "#+title: ${title}\n"
-                                  ("Tasks"))
+          ("a" "annotation" plain "%?"
+           :target
+           (file+head "annotations/${title}.org" "#+title: ${title}\n")
+           :immediate-finish t
            :unnarrowed t)
-          ("i" "INBOX Task" plain "* TODO %?\n"
-           :target (file+head+olp "INBOX.org"
-                                  "#+title: INBOX\n"
-                                  ("Tasks"))
+          ("p" "project" plain "%?"
+           :target
+           (file+head "projects/${title}.org" "#+title: ${title}")
+           :immediate-finish t
            :unnarrowed t)
-          ("I" "INBOX Note" plain "* %?\n"
+          ("t" "INBOX Task" plain "* TODO ${slug} %?\n"
+           :target
+           (file+head+olp "INBOX.org" "#+title: INBOX\n" ("Tasks"))
+           :unnarrowed t)
+          ("n" "INBOX Note" plain "* %?\n"
            :target (node "INBOX")
-           :unnarrowed t)))
+           :immediate-finish t
+           :unnarroed t)))
   (advice-add 'org-roam-refile :after 'org-save-all-org-buffers)
   (org-roam-setup)
   :general
   (leader-key-def
-    "ff" 'org-roam-node-find
+    "fn" 'org-roam-node-find
     "o" 'org-roam-capture))
 
 (use-package org-caldav
@@ -1075,7 +1109,7 @@ current HH:MM time."
   :straight t
   :general
   (leader-key-def
-    "fc" 'chezmoi-find
+    "fd" '(chezmoi-find :wk "dotfiles")
     "xcm" '(chezmoi-magit-status :wk "chezmoi magit")
     "xcd" 'chezmoi-diff
     "xcw" 'chezmoi-write))

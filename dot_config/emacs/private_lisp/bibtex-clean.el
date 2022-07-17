@@ -51,66 +51,50 @@
 (add-to-list 'bibtex-autokey-titleword-change-strings '("Ü" . "Ue"))
 (add-to-list 'bibtex-autokey-titleword-change-strings '("ü" . "ue"))
 
-(defun gwbrck/bibtex-dashes ()
-  (let (bounds)
-    (when (looking-at bibtex-entry-maybe-empty-head)
-      (goto-char (match-end 0))
-      (while (setq bounds (bibtex-parse-field))
-        (goto-char (bibtex-start-of-field bounds))
-        (if (and (member (bibtex-name-in-field bounds) '("pages" "Pages"))
-                 (string-match "[0-9]-[0-9]" (bibtex-text-in-field-bounds bounds)))
-            (save-restriction
-              (narrow-to-region (caar bounds) (nth 3 bounds))
-              (goto-char (point-min))
-              (while (search-forward "-" nil t)
-                (replace-match "--")))
-          (goto-char (bibtex-end-of-field bounds)))))))
 
-(defun gwbrck/bibtex-journal ()
-  (let (bounds)
-    (when (looking-at bibtex-entry-maybe-empty-head)
-      (goto-char (match-end 0))
-      (while (setq bounds (bibtex-parse-field))
-        (goto-char (bibtex-start-of-field bounds))
-        (if (member (bibtex-name-in-field bounds) '("journal" "Journal"))
-            (save-restriction
-              (narrow-to-region (caar bounds) (nth 3 bounds))
-              (goto-char (point-min))
-              (while (re-search-forward "^[\t ]*journal" nil t)
-                (replace-match "journaltitle")))
-          (goto-char (bibtex-end-of-field bounds)))))))
-
-(defun gwbrck/bibtex-abstract  ()
-  (let (bounds)
-    (when (looking-at bibtex-entry-maybe-empty-head)
-      (goto-char (match-end 0))
-      (while (setq bounds (bibtex-parse-field))
-        (goto-char (bibtex-start-of-field bounds))
-        (if (member (bibtex-name-in-field bounds) '("abstract" "Abstract"))
-            (kill-region (caar bounds) (nth 3 bounds))
-          (goto-char (bibtex-end-of-field bounds)))))))
-
-(defun gwbrck/bibtex-clean-entry (&optional x)
-  (interactive)
-  (save-excursion
-    (save-restriction
-      (bibtex-narrow-to-entry)
-      ;;(bibtex-mark-entry)
-      ;;(ucs-normalize-NFC-region)
-      (bibtex-beginning-of-entry)
-      (gwbrck/bibtex-journal)
-      (bibtex-beginning-of-entry)
-      (gwbrck/bibtex-dashes)
-      (bibtex-beginning-of-entry)
-      (gwbrck/bibtex-abstract)))
-  (bibtex-clean-entry 2))
+(defun bibtex-clean-entry--preclean (&optional _key _called_by_reformat)
+  (let ((case-fold-search t)
+        (bounds)
+        (start (bibtex-beginning-of-entry))
+        (_ (or (looking-at bibtex-any-entry-maybe-empty-head)
+	       (user-error "Not inside a BibTeX entry")))
+        (entry-type (bibtex-type-in-head)))
+    (save-excursion
+      (save-restriction
+        (bibtex-narrow-to-entry)
+        (goto-char (point-min))
+        (while (re-search-forward "[–-——]" nil t)
+          (replace-match "-"))
+        (bibtex-beginning-first-field)
+        (when (setq bounds (bibtex-search-forward-field "journal"))
+          (save-restriction
+            (narrow-to-region (caar bounds) (nth 3 bounds))
+            (goto-char (point-min))
+            (while (re-search-forward "journal[\s]*=" nil t)
+              (replace-match "journaltitle =")))
+          (bibtex-beginning-first-field))
+        (when (setq bounds (bibtex-search-forward-field "abstract"))
+          (kill-region (caar bounds) (nth 3 bounds))
+          (bibtex-beginning-first-field))
+        (when (and (setq bounds (bibtex-search-forward-field "pages"))
+                   (string-match "[0-9]-[0-9]" (bibtex-text-in-field-bounds bounds)))
+          (save-restriction
+            (narrow-to-region (caar bounds) (nth 3 bounds))
+            (goto-char (point-min))
+            (while (search-forward "-" nil t)
+              (replace-match "--")))
+          (bibtex-beginning-first-field))
+        (goto-char (point-min))
+        (re-search-forward (if (eq entry-type 'string)
+                               bibtex-string-maybe-empty-head
+                             bibtex-entry-maybe-empty-head))
+        (if (match-beginning bibtex-key-in-head)
+            (delete-region (match-beginning bibtex-key-in-head)
+                           (match-end bibtex-key-in-head)))))))
 
 
-(define-minor-mode bibtex-clean-mode
-  "A minor mode that keeps bilatex-files as I like."
-  :lighter "bibtex-clean-mode")
+(advice-add 'bibtex-clean-entry :before #'bibtex-clean-entry--preclean)
 
-(define-key bibtex-mode-map [remap bibtex-clean-entry] 'gwbrck/bibtex-clean-entry)
 
-(provide 'bibtex-clean-mode)
-;;; bibtex-clean.el ends here
+(provide 'init-bibtex)
+;;; init-bibtex.el ends here

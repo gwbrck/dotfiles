@@ -604,18 +604,13 @@ targets."
   :init
   (global-flycheck-mode))
 
-
-(use-package bibtex-clean
-  :after bibtex
-  :hook ((bibtex-mode . bibtex-clean-mode)
-         (biblio-mode . bibtex-clean-mode))
+(use-package init-bibtex
   :load-path "lisp/")
 
 (use-package biblio
   :straight t
-  :after bibtex-clean
   :custom
-  (biblio-cleanup-bibtex-function 'gwbrck/bibtex-clean-entry))
+  (biblio-cleanup-bibtex-function #'bibtex-clean-entry))
 
 (use-package citar
   :straight t
@@ -629,8 +624,7 @@ targets."
   (setq citar-symbol-separator "  ")
   :general
   (leader-key-def
-    "fb" 'citar-open
-    "fB" 'citar-open-entry))
+    "fb" 'citar-open))
 
 (use-package citar-org-roam
   :after citar org-roam

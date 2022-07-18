@@ -615,7 +615,7 @@ targets."
 (use-package citar
   :straight t
   :config
-  (add-to-list 'citar-bibliography (concat gwbrck/roam "main.bib"))
+  (add-to-list 'citar-bibliography (concat gwbrck/roam "../main.bib"))
   (add-to-list 'citar-library-paths (concat gwbrck/roam "pdfs"))
   (setq citar-symbols
 	`((file ,(all-the-icons-faicon "file-o" :face 'all-the-icons-green :v-adjust -0.1) . " ")
@@ -644,7 +644,7 @@ targets."
 (use-package oc
   :no-require
   :config
-  (add-to-list 'org-cite-global-bibliography (concat gwbrck/roam "main.bib"))
+  (add-to-list 'org-cite-global-bibliography (concat gwbrck/roam "../main.bib"))
   :custom
   (org-cite-csl-styles-dir "~/.config/csl/styles")
   (org-cite-csl-locales-dir "~/.config/csl/locales")

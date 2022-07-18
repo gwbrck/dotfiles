@@ -610,7 +610,10 @@ targets."
 (use-package biblio
   :straight t
   :custom
-  (biblio-cleanup-bibtex-function #'bibtex-clean-entry))
+  (defun biblio-cleanup-wrapper (&optional _autokey)
+    (ignore-errors
+      (bibtex-clean-entry)))
+  (biblio-cleanup-bibtex-function #'biblio-cleanup-wrapper))
 
 (use-package citar
   :straight t

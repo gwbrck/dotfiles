@@ -117,5 +117,25 @@
 (advice-add 'bibtex-clean-entry :before #'bibtex-clean-entry--preclean)
 
 
+(defun doi2csljson (doi)
+  "Retrieve csl-json information for DOI using crossref API."
+  (interactive "MDOI: ")
+  (let ((url-mime-accept-string "application/vnd.citationstyles.csl+json")
+        (buff (current-buffer)))
+    (with-current-buffer
+        (url-retrieve-synchronously (format "https://doi.org/%s" doi))
+      (goto-char (point-min))
+      (re-search-forward "^$")
+      (delete-region (point) (point-min))
+      (doi2csljson--insert (buffer-string) buff))))
+
+
+(defun doi2csljson--insert (json buff)
+  "Encode raw JSON and inseer it in BUFF."
+  (let ((js (json-parse-string json :object-type 'alist)))
+    (with-current-buffer buff
+      (json-insert js))))
+
+
 (provide 'init-bibtex)
 ;;; init-bibtex.el ends here

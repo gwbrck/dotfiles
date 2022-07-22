@@ -4,6 +4,8 @@
 
 (require 'bibtex)
 
+(defvar main-bib-file nil)
+
 (setq bibtex-dialect 'biblatex)
 
 (setq bibtex-entry-format '(opts-or-alts
@@ -50,7 +52,6 @@
 (add-to-list 'bibtex-autokey-titleword-change-strings '("Ä" . "Ae"))
 (add-to-list 'bibtex-autokey-titleword-change-strings '("Ü" . "Ue"))
 (add-to-list 'bibtex-autokey-titleword-change-strings '("ü" . "ue"))
-
 
 (defun bibtex-clean-entry--preclean (&optional _key _called_by_reformat)
   (let ((case-fold-search t)
@@ -116,26 +117,139 @@
 
 (advice-add 'bibtex-clean-entry :before #'bibtex-clean-entry--preclean)
 
+;; (defun doi2csljson (doi)
+;;   "Retrieve csl-json information for DOI using crossref API."
+;;   (interactive "MDOI: ")
+;;   (let ((url-mime-accept-string "application/vnd.citationstyles.csl+json")
+;;         (buff (current-buffer)))
+;;     (with-current-buffer
+;;         (url-retrieve-synchronously (format "https://doi.org/%s" doi))
+;;       (goto-char (point-min))
+;;       (re-search-forward "^$")
+;;       (delete-region (point) (point-min))
+;;       (doi2csljson--insert (buffer-string) buff))))
+;;
+;;
+;; (defun doi2csljson--insert (json buff)
+;;   "Encode raw JSON and inseer it in BUFF."
+;;   (let ((js (json-parse-string json :object-type 'alist)))
+;;     (with-current-buffer buff
+;;       (json-insert js))))
 
-(defun doi2csljson (doi)
-  "Retrieve csl-json information for DOI using crossref API."
-  (interactive "MDOI: ")
-  (let ((url-mime-accept-string "application/vnd.citationstyles.csl+json")
-        (buff (current-buffer)))
+(defun isbn-to-bibtex (isbn)
+  "Retrieve biblatex information for ISBN using crossref API."
+  (interactive "MISBN: ")
+  (let ((buff
+         (if main-bib-file
+             (find-file main-bib-file)
+           (current-buffer))))
     (with-current-buffer
-        (url-retrieve-synchronously (format "https://doi.org/%s" doi))
+        (url-retrieve-synchronously
+         (format
+          "https://openlibrary.org/api/books?bibkeys=ISBN:%s&jscmd=data&format=json"
+          isbn))
       (goto-char (point-min))
       (re-search-forward "^$")
       (delete-region (point) (point-min))
-      (doi2csljson--insert (buffer-string) buff))))
+      (isbn-to-bibtex--insert (buffer-string) buff))))
 
-
-(defun doi2csljson--insert (json buff)
+(defun isbn-to-bibtex--insert (json buff)
   "Encode raw JSON and inseer it in BUFF."
-  (let ((js (json-parse-string json :object-type 'alist)))
+  (let* ((o (car (json-parse-string json :object-type 'alist)))
+         (title (cdr (assoc 'title o)))
+         (subtitle (cdr (assoc 'subtitle o)))
+         (date (cdr (assoc 'publish_date o)))
+         (nop (cdr (assoc 'number_of_pages o)))
+         (p (cdr (assoc 'pagination o)))
+         (key)
+         (isbn10
+          (mapconcat 'identity
+                     (cdr (assoc 'isbn_10 (cdr (assoc 'identifiers o))))
+                     " "))
+         (isbn13
+          (mapconcat 'identity
+                     (cdr (assoc 'isbn_13 (cdr (assoc 'identifiers o))))
+                     " "))
+         (authors
+          (mapconcat
+           (lambda (x)
+             (cdr (assoc 'name x)))
+           (cdr (assoc 'authors o)) " and "))
+         (publishers
+          (mapconcat
+           (lambda (x)
+             (cdr (assoc 'name x)))
+           (cdr (assoc 'publishers o)) " and "))
+         (locations
+          (mapconcat
+           (lambda (x)
+             (cdr (assoc 'name x)))
+           (cdr (assoc 'publish_places o)) " and ")))
     (with-current-buffer buff
-      (json-insert js))))
-
+      (goto-char (point-max))
+      (insert "\n\n@Book{,\n\n}")
+      (save-excursion
+        (save-restriction
+          (bibtex-narrow-to-entry)
+          (bibtex-beginning-first-field)
+          (when date
+            (bibtex-make-field "year")
+            (backward-char)
+            (insert
+             (let ((year date))
+               (when (string-match "[0-9][0-9][0-9][0-9]" year)
+                 (match-string 0 year))))
+            (bibtex-beginning-first-field))
+          (when authors
+            (bibtex-make-field "author")
+            (backward-char)
+            (insert authors)
+            (bibtex-beginning-first-field))
+          (when title
+            (bibtex-make-field "title")
+            (backward-char)
+            (insert title)
+            (bibtex-beginning-first-field))
+          (when (and locations
+                     (not (string-empty-p locations)))
+            (bibtex-make-field "location")
+            (backward-char)
+            (insert locations)
+            (bibtex-beginning-first-field))
+          (when publishers
+            (bibtex-make-field "publisher")
+            (backward-char)
+            (insert publishers)
+            (bibtex-beginning-first-field))
+          (when (and subtitle
+                     (not (string-empty-p subtitle)))
+            (bibtex-make-field "subtitle")
+            (backward-char)
+            (insert subtitle)
+            (bibtex-beginning-first-field))
+          (when (or nop p)
+            (bibtex-make-field "pages")
+            (backward-char)
+            (insert
+             (if nop
+                 (number-to-string nop)
+               (string-match "[0-9]+" p)
+               (match-string 0 p)))
+            (bibtex-beginning-first-field))
+          (when (or
+                 (not (string-empty-p isbn10))
+                 (not (string-empty-p isbn13)))
+            (bibtex-make-field "isbn")
+            (backward-char)
+            (insert
+             (if (not (string-empty-p isbn13))
+                 isbn13
+               isbn10))
+            (bibtex-beginning-first-field))))
+      (bibtex-clean-entry)
+      (setq key (bibtex-key-in-head))
+      (bibtex-sort-buffer)
+      (bibtex-search-entry key))))
 
 (provide 'init-bibtex)
 ;;; init-bibtex.el ends here

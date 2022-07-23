@@ -605,20 +605,15 @@ targets."
   (global-flycheck-mode))
 
 (use-package init-bibtex
-  :load-path "lisp/")
-
-(use-package biblio
-  :straight t
-  :custom
-  (defun biblio-cleanup-wrapper (&optional _autokey)
-    (ignore-errors
-      (bibtex-clean-entry)))
-  (biblio-cleanup-bibtex-function #'biblio-cleanup-wrapper))
+  :load-path "lisp/"
+  :config
+  (setq main-bib-file (concat gwbrck/roam "../main.bib")))
 
 (use-package citar
   :straight t
+  :after init-bibtex
   :config
-  (add-to-list 'citar-bibliography (concat gwbrck/roam "../main.bib"))
+  (add-to-list 'citar-bibliography main-bib-file)
   (add-to-list 'citar-library-paths (concat gwbrck/roam "pdfs"))
   (setq citar-symbols
 	`((file ,(all-the-icons-faicon "file-o" :face 'all-the-icons-green :v-adjust -0.1) . " ")

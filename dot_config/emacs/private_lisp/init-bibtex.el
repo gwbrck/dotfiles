@@ -3,6 +3,7 @@
 ;;; Code:
 
 (require 'bibtex)
+(require 'url-http)
 
 (defvar main-bib-file nil)
 
@@ -33,25 +34,6 @@
  bibtex-autokey-names 2
  bibtex-autokey-additional-names "-ea"
  bibtex-comma-after-last-field t)
-
-(add-to-list 'bibtex-autokey-name-change-strings '("ß" . "ss"))
-(add-to-list 'bibtex-autokey-name-change-strings '("å" . "a"))
-(add-to-list 'bibtex-autokey-name-change-strings '("Å" . "A"))
-(add-to-list 'bibtex-autokey-name-change-strings '("ö" . "oe"))
-(add-to-list 'bibtex-autokey-name-change-strings '("Ö" . "Oe"))
-(add-to-list 'bibtex-autokey-name-change-strings '("ä" . "ae"))
-(add-to-list 'bibtex-autokey-name-change-strings '("Ä" . "Ae"))
-(add-to-list 'bibtex-autokey-name-change-strings '("Ü" . "Ue"))
-(add-to-list 'bibtex-autokey-name-change-strings '("ü" . "ue"))
-(add-to-list 'bibtex-autokey-titleword-change-strings '("ß" . "ss"))
-(add-to-list 'bibtex-autokey-titleword-change-strings '("å" . "a"))
-(add-to-list 'bibtex-autokey-titleword-change-strings '("Å" . "A"))
-(add-to-list 'bibtex-autokey-titleword-change-strings '("ö" . "oe"))
-(add-to-list 'bibtex-autokey-titleword-change-strings '("Ö" . "Oe"))
-(add-to-list 'bibtex-autokey-titleword-change-strings '("ä" . "ae"))
-(add-to-list 'bibtex-autokey-titleword-change-strings '("Ä" . "Ae"))
-(add-to-list 'bibtex-autokey-titleword-change-strings '("Ü" . "Ue"))
-(add-to-list 'bibtex-autokey-titleword-change-strings '("ü" . "ue"))
 
 (defun bibtex-clean-entry--preclean (&optional _key _called_by_reformat)
   (let ((case-fold-search t)
@@ -135,6 +117,55 @@
 ;;   (let ((js (json-parse-string json :object-type 'alist)))
 ;;     (with-current-buffer buff
 ;;       (json-insert js))))
+
+(defun doi-to-bibtex (doi)
+  "Retrieve csl-json information for DOI using crossref API."
+  (interactive "MDOI: ")
+  (let ((url-mime-accept-string "text/bibliography;style=bibtex")
+        (buff
+         (if main-bib-file
+             (find-file main-bib-file)
+           (current-buffer))))
+    (with-current-buffer
+        (url-retrieve-synchronously (format "https://doi.org/%s" doi))
+      (doi-to-bibtex--insert
+       (decode-coding-string
+        (buffer-substring (string-match "@" (buffer-string)) (point)) 'utf-8)
+       buff))))
+
+(defun doi-to-bibtex--insert (bibtex buff)
+  "Encode raw BIBTEX and insert it in BUFF."
+  (let ((key))
+    (with-current-buffer buff
+      (goto-char (point-max))
+      (insert "\n")
+      (goto-char (point-max))
+      (insert bibtex)
+      (bibtex-clean-entry)
+      (setq key (bibtex-key-in-head))
+      (bibtex-sort-buffer)
+      (bibtex-search-entry key))))
+
+(defun arxiv-id-to-bibtex (arxiv-id)
+  "Retrieve (raw) bibtex information for ARXIV-ID item using arxiv API."
+  (interactive "Marxiv-id: ")
+  (let* ((buff
+          (if main-bib-file
+              (find-file main-bib-file)
+            (current-buffer)))
+         (arxiv-code
+          (with-current-buffer
+              (url-retrieve-synchronously (format "http://adsabs.harvard.edu/cgi-bin/bib_query?arXiv:%s" arxiv-id))
+            (search-forward-regexp "<link rel=\"canonical\" href=\"http://ui.adsabs.harvard.edu/abs/\\(.*\\)/abstract\"/>")
+            (match-string 1)))
+         (bibtex (when arxiv-code
+                   (with-current-buffer
+                       (url-retrieve-synchronously (format "https://ui.adsabs.harvard.edu/abs/%s/exportcitation" arxiv-code))
+                     (when (re-search-forward
+	                    "<textarea.*>\\(.*\\(?:\n.*\\)*?\\(?:\n\\s-*\n\\|\\'\\)\\)</textarea>"
+	                        nil t)
+                       (xml-substitute-special (match-string 1)))))))
+    (doi-to-bibtex--insert bibtex buff)))
 
 (defun isbn-to-bibtex (isbn)
   "Retrieve biblatex information for ISBN using crossref API."

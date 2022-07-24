@@ -4,6 +4,8 @@
 
 (require 'bibtex)
 (require 'url-http)
+(require 'xml)
+(require 'oc)
 
 (defvar main-bib-file nil)
 
@@ -122,21 +124,28 @@
   "Retrieve csl-json information for DOI using crossref API."
   (interactive "MDOI: ")
   (let ((url-mime-accept-string "text/bibliography;style=bibtex")
-        (buff
-         (if main-bib-file
-             (find-file main-bib-file)
-           (current-buffer))))
+        (buff (current-buffer)))
     (with-current-buffer
         (url-retrieve-synchronously (format "https://doi.org/%s" doi))
-      (doi-to-bibtex--insert
+      (bibtex-entry-insert-buffer
        (decode-coding-string
         (buffer-substring (string-match "@" (buffer-string)) (point)) 'utf-8)
        buff))))
 
-(defun doi-to-bibtex--insert (bibtex buff)
-  "Encode raw BIBTEX and insert it in BUFF."
-  (let ((key))
+(defun bibtex-entry-insert-buffer (bibtex buff)
+  "Add BIBTEX and insert it in BUFF or prompted buffers."
+  (let ((key)
+        (target-buffs
+         (with-current-buffer
+             buff
+           (org-cite-list-bibliography-files))))
     (with-current-buffer buff
+      (when (eq major-mode 'bibtex-mode)
+        (add-to-list 'target-buffs (buffer-file-name))))
+    (if (eq (length target-buffs) 1)
+        (find-file (car target-buffs))
+      (find-file (completing-read "Target bib: " target-buffs nil t "main")))
+    (with-current-buffer (current-buffer)
       (goto-char (point-max))
       (insert "\n")
       (goto-char (point-max))
@@ -149,10 +158,7 @@
 (defun arxiv-id-to-bibtex (arxiv-id)
   "Retrieve (raw) bibtex information for ARXIV-ID item using arxiv API."
   (interactive "Marxiv-id: ")
-  (let* ((buff
-          (if main-bib-file
-              (find-file main-bib-file)
-            (current-buffer)))
+  (let* ((buff (current-buffer))
          (arxiv-code
           (with-current-buffer
               (url-retrieve-synchronously (format "http://adsabs.harvard.edu/cgi-bin/bib_query?arXiv:%s" arxiv-id))
@@ -163,17 +169,14 @@
                        (url-retrieve-synchronously (format "https://ui.adsabs.harvard.edu/abs/%s/exportcitation" arxiv-code))
                      (when (re-search-forward
 	                    "<textarea.*>\\(.*\\(?:\n.*\\)*?\\(?:\n\\s-*\n\\|\\'\\)\\)</textarea>"
-	                        nil t)
+	                    nil t)
                        (xml-substitute-special (match-string 1)))))))
-    (doi-to-bibtex--insert bibtex buff)))
+    (bibtex-entry-insert-buffer bibtex buff)))
 
 (defun isbn-to-bibtex (isbn)
   "Retrieve biblatex information for ISBN using crossref API."
   (interactive "MISBN: ")
-  (let ((buff
-         (if main-bib-file
-             (find-file main-bib-file)
-           (current-buffer))))
+  (let ((buff (current-buffer)))
     (with-current-buffer
         (url-retrieve-synchronously
          (format
@@ -182,9 +185,9 @@
       (goto-char (point-min))
       (re-search-forward "^$")
       (delete-region (point) (point-min))
-      (isbn-to-bibtex--insert (buffer-string) buff))))
+      (isbn-to-bibtex--parse (buffer-string) buff))))
 
-(defun isbn-to-bibtex--insert (json buff)
+(defun isbn-to-bibtex--parse (json buff)
   "Encode raw JSON and inseer it in BUFF."
   (let* ((o (car (json-parse-string json :object-type 'alist)))
          (title (cdr (assoc 'title o)))
@@ -216,71 +219,69 @@
            (lambda (x)
              (cdr (assoc 'name x)))
            (cdr (assoc 'publish_places o)) " and ")))
-    (with-current-buffer buff
+    (with-temp-buffer
+      (bibtex-mode)
       (goto-char (point-max))
       (insert "\n\n@Book{,\n\n}")
-      (save-excursion
-        (save-restriction
-          (bibtex-narrow-to-entry)
-          (bibtex-beginning-first-field)
-          (when date
-            (bibtex-make-field "year")
-            (backward-char)
-            (insert
-             (let ((year date))
-               (when (string-match "[0-9][0-9][0-9][0-9]" year)
-                 (match-string 0 year))))
-            (bibtex-beginning-first-field))
-          (when authors
-            (bibtex-make-field "author")
-            (backward-char)
-            (insert authors)
-            (bibtex-beginning-first-field))
-          (when title
-            (bibtex-make-field "title")
-            (backward-char)
-            (insert title)
-            (bibtex-beginning-first-field))
-          (when (and locations
-                     (not (string-empty-p locations)))
-            (bibtex-make-field "location")
-            (backward-char)
-            (insert locations)
-            (bibtex-beginning-first-field))
-          (when publishers
-            (bibtex-make-field "publisher")
-            (backward-char)
-            (insert publishers)
-            (bibtex-beginning-first-field))
-          (when (and subtitle
-                     (not (string-empty-p subtitle)))
-            (bibtex-make-field "subtitle")
-            (backward-char)
-            (insert subtitle)
-            (bibtex-beginning-first-field))
-          (when (or nop p)
-            (bibtex-make-field "pages")
-            (backward-char)
-            (insert
-             (if nop
-                 (number-to-string nop)
-               (string-match "[0-9]+" p)
-               (match-string 0 p)))
-            (bibtex-beginning-first-field))
-          (when (or
-                 (not (string-empty-p isbn10))
-                 (not (string-empty-p isbn13)))
-            (bibtex-make-field "isbn")
-            (backward-char)
-            (insert
-             (if (not (string-empty-p isbn13))
-                 isbn13
-               isbn10))
-            (bibtex-beginning-first-field))))
-      (bibtex-clean-entry)
-      (setq key (bibtex-key-in-head))
-      (bibtex-sort-buffer)
-      (bibtex-search-entry key))))
+      (bibtex-beginning-first-field)
+      (when date
+        (bibtex-make-field "year")
+        (backward-char)
+        (insert
+         (let ((year date))
+           (when (string-match "[0-9][0-9][0-9][0-9]" year)
+             (match-string 0 year))))
+        (bibtex-beginning-first-field))
+      (when authors
+        (bibtex-make-field "author")
+        (backward-char)
+        (insert authors)
+        (bibtex-beginning-first-field))
+      (when title
+        (bibtex-make-field "title")
+        (backward-char)
+        (insert title)
+        (bibtex-beginning-first-field))
+      (when (and locations
+                 (not (string-empty-p locations)))
+        (bibtex-make-field "location")
+        (backward-char)
+        (insert locations)
+        (bibtex-beginning-first-field))
+      (when publishers
+        (bibtex-make-field "publisher")
+        (backward-char)
+        (insert publishers)
+        (bibtex-beginning-first-field))
+      (when (and subtitle
+                 (not (string-empty-p subtitle)))
+        (bibtex-make-field "subtitle")
+        (backward-char)
+        (insert subtitle)
+        (bibtex-beginning-first-field))
+      (when (or nop p)
+        (bibtex-make-field "pages")
+        (backward-char)
+        (insert
+         (if nop
+             (number-to-string nop)
+           (string-match "[0-9]+" p)
+           (match-string 0 p)))
+        (bibtex-beginning-first-field))
+      (when (or
+             (not (string-empty-p isbn10))
+             (not (string-empty-p isbn13)))
+        (bibtex-make-field "isbn")
+        (backward-char)
+        (insert
+         (if (not (string-empty-p isbn13))
+             isbn13
+           isbn10))
+        (bibtex-beginning-first-field))
+      (goto-char (point-max))
+      (insert "\n")
+      (bibtex-entry-insert-buffer (buffer-string) buff))))
+
 
 (provide 'init-bibtex)
 ;;; init-bibtex.el ends here

@@ -642,7 +642,7 @@ targets."
 (use-package oc
   :no-require
   :config
-  (add-to-list 'org-cite-global-bibliography (concat gwbrck/roam "../main.bib"))
+  (add-to-list 'org-cite-global-bibliography main-bib-file)
   :custom
   (org-cite-csl-styles-dir "~/.config/csl/styles")
   (org-cite-csl-locales-dir "~/.config/csl/locales")

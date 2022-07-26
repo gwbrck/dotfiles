@@ -606,11 +606,13 @@ targets."
 
 (use-package init-bibtex
   :load-path "lisp/"
+  :demand t
   :config
   (setq main-bib-file (concat gwbrck/roam "../main.bib")))
 
 (use-package citar
   :straight t
+  :demand t
   :after init-bibtex
   :config
   (add-to-list 'citar-bibliography main-bib-file)
@@ -623,6 +625,30 @@ targets."
   :general
   (leader-key-def
     "fb" 'citar-open))
+
+(use-package pdf-drop-mode
+  :straight (pdf-drop-mode :type git :host github :repo "rougier/pdf-drop-mode")
+  :custom
+  (pdf-drop-search-methods '(doi/metadata
+                             doi/content
+                             arxiv/content))
+  (pdf-drop-search-hook #'pdf-drop-pdf-process)
+  :config
+  (defun pdf-drop-pdf-process (file file-id)
+    (when file-id
+      (cond ((eq 'doi (car file-id))
+             (doi-to-bibtex (cdr file-id)))
+            ((eq 'arxiv (car file-id))
+             (arxiv-id-to-bibtex (cdr file-id))))
+      (let* ((key (with-current-buffer (current-buffer) (bibtex-key-in-head)))
+             (directory (if (cdr citar-library-paths)
+                            (completing-read "Directory: " citar-library-paths)
+                          (car citar-library-paths)))
+             (file-path (expand-file-name key directory))
+             (extension (file-name-extension file)))
+        (copy-file file
+                   (concat file-path "." extension) 1))))
+      (pdf-drop-mode))
 
 (use-package citar-org-roam
   :after citar org-roam

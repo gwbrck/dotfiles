@@ -101,6 +101,8 @@ vim.o.completeopt = 'menuone,noinsert'
 HOME = os.getenv("HOME")
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
+vim.keymap.set('i', '<M-BS>', '<C-w>')
+vim.keymap.set('n', '<M-BS>', 'hdaw')
 
 
 -- Highlight on yank

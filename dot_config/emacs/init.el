@@ -1138,6 +1138,13 @@ current HH:MM time."
   :custom
   (ansible-vault-password-file nil))
 
+(use-package pdf-tools
+  :straight t
+  :custom
+  (pdf-view-use-scaling t)
+  :config
+  (pdf-tools-install :no-query))
+
 (use-package server
   :unless (daemonp)
   :custom

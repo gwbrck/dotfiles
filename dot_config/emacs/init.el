@@ -226,6 +226,12 @@
   :config
   (setq which-key-idle-delay 0.1))
 
+(use-package restclient
+  :straight t)
+
+(use-package ob-restclient
+  :straight t)
+
 (use-package org
   :straight t
   :demand t
@@ -245,7 +251,8 @@
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((R . t)
-     (emacs-lisp . t)))
+     (emacs-lisp . t)
+     (restclient . t)))
   (setq org-ellipsis " ▾")
   (defun gwbrck/org-mode-visual-fill ()
     (setq visual-fill-column-width 110

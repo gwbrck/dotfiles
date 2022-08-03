@@ -230,7 +230,8 @@
   :straight t)
 
 (use-package ob-restclient
-  :straight t)
+  :straight t
+  :after org)
 
 (use-package org
   :straight t

@@ -56,6 +56,10 @@ end
 
 set fish_greeting ""
 
+if ! set -q SSH_AUTH_SOCK;
+    set -x SSH_AUTH_SOCK $XDG_RUNTIME_DIR/ssh-agent.socket
+end
+
 set -Ux PYENV_ROOT $HOME/.config/pyenv
 fish_add_path $PYENV_ROOT/bin
 fish_add_path ~/bin

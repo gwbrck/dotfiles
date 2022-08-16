@@ -1,0 +1,11 @@
+{{- if (eq .chezmoi.os "linux") -}}
+#!/bin/fish
+
+if ! type -q paru
+	sudo pacman -S --needed base-devel
+	git clone https://aur.archlinux.org/paru.git
+	cd paru
+	makepkg -si
+end
+
+{{ end -}}

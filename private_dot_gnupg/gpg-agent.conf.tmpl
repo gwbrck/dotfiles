@@ -3,8 +3,10 @@ pinentry-program /usr/local/bin/pinentry-mac
 {{ end -}}
 
 {{ if eq .chezmoi.os "linux" -}}
+pinentry-program /usr/bin/pinentry-qt
 {{ end -}}
 
+enable-ssh-support
 allow-emacs-pinentry
 allow-loopback-pinentry
 default-cache-ttl 18000

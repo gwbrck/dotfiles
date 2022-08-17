@@ -56,9 +56,10 @@ end
 
 set fish_greeting ""
 
-if ! set -q SSH_AUTH_SOCK;
-    set -x SSH_AUTH_SOCK $XDG_RUNTIME_DIR/ssh-agent.socket
-end
+# Ensure that GPG Agent is used as the SSH agent
+set -e SSH_AUTH_SOCK
+set -e SSH_AGENT_PID
+set -Ux SSH_AUTH_SOCK $(gpgconf --list-dirs agent-ssh-socket)
 
 set -Ux PYENV_ROOT $HOME/.config/pyenv
 fish_add_path $PYENV_ROOT/bin

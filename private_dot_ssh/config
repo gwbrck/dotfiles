@@ -1,7 +1,0 @@
-HashKnownHosts no
-
-Host *
-  AddKeysToAgent yes
-
-Host github.com
-  User git

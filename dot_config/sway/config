@@ -171,4 +171,5 @@ bar {
     swaybar_command waybar
 }
 
+exec "dex -a"
 include /etc/sway/config.d/*

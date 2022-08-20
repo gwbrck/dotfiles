@@ -34,7 +34,12 @@ input * {
 # Read `man 5 sway-input` for more information about this section.
 
 ### Key bindings
-# Basics:
+# Basics
+
+    bindsym XF86MonBrightnessUp exec "light -A 10" 
+    bindsym XF86MonBrightnessDown exec "light -U 10" 
+    bindsym XF86KbdBrightnessUp exec "light -s sysfs/leds/smc::kbd_backlight -A 10" 
+    bindsym XF86KbdBrightnessDown exec "light -s sysfs/leds/smc::kbd_backlight -U 10" 
     # Start a terminal
     bindsym $mod+Return exec $term
     # Kill focused window

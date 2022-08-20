@@ -167,9 +167,8 @@ bindsym $mod+r mode "resize"
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.
-bar {
-    swaybar_command waybar
-}
+exec waybar
+exec "sleep 2;  dex -a"
 
-exec "dex -a"
-include /etc/sway/config.d/*
+#exec_always "systemctl --user import-environment; systemctl --user start sway-session.target"
+#include /etc/sway/config.d/*

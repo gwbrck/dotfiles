@@ -4,6 +4,7 @@
 .config/karabiner
 {{ end }}
 {{ if ne .chezmoi.os "linux" }}
+.config/kwalletrc
 .config/sway
 .config/systemd
 .config/waybar

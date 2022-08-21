@@ -1,0 +1,27 @@
+{{- if (eq .chezmoi.os "linux") -}}
+#!/bin/fish
+
+sudo mkdir -p /etc/interception/dual-function-keys/ 
+echo "
+TIMING:
+  TAP_MILLISEC: 200
+  DOUBLE_TAP_MILLISEC: 0
+
+MAPPINGS:
+  - KEY: KEY_CAPSLOCK
+    TAP: KEY_ESC
+    HOLD: [ KEY_LEFTCTRL, KEY_LEFTMETA, KEY_LEFTALT, KEY_LEFTSHIFT, ]
+  - KEY: KEY_BACKSLASH
+    TAP: KEY_BACKSLASH
+    HOLD: KEY_LEFTCTRL
+" | sudo tee /etc/interception/dual-function-keys/gwbrck-map.yaml
+
+echo "
+- JOB: 'intercept -g /dev/input/by-id/usb-Apple_Inc._Apple_Internal_Keyboard___Trackpad-event-kbd | dual-function-keys -c /etc/interception/dual-function-keys/gwbrck-map.yaml | uinput -d /dev/input/by-id/usb-Apple_Inc._Apple_Internal_Keyboard___Trackpad-event-kbd'
+  DEVICE:
+    NAME: 'Apple Inc. Apple Internal Keyboard / Trackpad'
+" | sudo tee /etc/interception/udevmon.yaml
+
+sudo systemctl enable udevmon.service
+sudo systemctl restart udevmon.service
+{{ end -}}

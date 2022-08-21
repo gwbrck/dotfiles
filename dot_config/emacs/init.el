@@ -72,6 +72,8 @@
   (scroll-bar-mode -1)
   (tool-bar-mode -1)
   (tooltip-mode -1)
+  (when (eq system-type 'gnu/linux)
+    (menu-bar-mode -1))
   (set-fringe-mode 10)
   (defalias 'yes-or-no-p 'y-or-n-p)
   (setq visible-bell t)

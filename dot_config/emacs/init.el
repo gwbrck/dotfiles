@@ -99,7 +99,9 @@
 (use-package files
   :no-require t
   :config
-  (setq insert-directory-program "gls")
+  (if (eq system-type 'gnu/linux)
+      (setq insert-directory-program "ls")
+    (setq insert-directory-program "gls"))
   (setq backup-directory-alist '(("." . "~/.config/emacs/backup")))
   (setq backup-by-copying t)
   (setq version-control t)
@@ -1090,10 +1092,10 @@ current HH:MM time."
   :straight t
   :commands vterm
   :general
-  ("C-s-'" 'vterm)
+  ("M-'" 'vterm)
   :config
   (if (eq system-type 'gnu/linux)
-      (setq vterm-shell "/bin/fish --login")
+      (setq vterm-shell "/bin/fish")
     (setq vterm-shell "/usr/local/bin/fish --login"))
   (setq term-prompt-regexp "^∃[0-9]*❯ \\|❯ ")
   (setq vterm-max-scrollback 10000))

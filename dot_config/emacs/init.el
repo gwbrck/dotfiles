@@ -1076,7 +1076,9 @@ current HH:MM time."
 
 (use-package term
   :config
-  (setq explicit-shell-file-name "/usr/local/bin/fish")
+  (if (eq system-type 'gnu/linux)
+      (setq explicit-shell-file-name "/bin/fish")
+    (setq explicit-shell-file-name "/usr/local/bin/fish"))
   (setq explicit-fish-args '("-l"))
   (setq term-prompt-regexp "^∃[0-9]*❯ \\|❯ "))
 
@@ -1090,7 +1092,9 @@ current HH:MM time."
   :general
   ("C-s-'" 'vterm)
   :config
-  (setq vterm-shell "/usr/local/bin/fish --login")
+  (if (eq system-type 'gnu/linux)
+      (setq vterm-shell "/bin/fish --login")
+    (setq vterm-shell "/usr/local/bin/fish --login"))
   (setq term-prompt-regexp "^∃[0-9]*❯ \\|❯ ")
   (setq vterm-max-scrollback 10000))
 

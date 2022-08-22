@@ -49,10 +49,6 @@ input * {
     bindsym XF86KbdBrightnessDown exec "light -s sysfs/leds/smc::kbd_backlight -U 10"
 
     bindsym $hyper+e exec "emacsclient -c -n -s ~/.cache/emacsserver/emacsen || emacs --bg-daemon=~/.cache/emacsserver/emacsen"
-    bindsym $hyper+h exec "wtype -P left -p left"
-    bindsym $hyper+l exec "wtype -P right -p right"
-    bindsym $hyper+j exec "wtype -P down -p down"
-    bindsym $hyper+k exec "wtype -P up -p up"
     bindsym $hyper+u exec "wtype {"
     bindsym $hyper+i exec "wtype }"
     bindsym $hyper+m exec "wtype ["

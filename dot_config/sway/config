@@ -1,6 +1,7 @@
 # Logo key. Use Mod1 for Alt.
 
 default_border pixel 2
+font Cantarell Bold 8
 set $mod Mod4
 set $hyper Control+Shift+Mod1+Mod4
 

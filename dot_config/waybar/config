@@ -16,7 +16,7 @@
     "position": "top",
 
     // If height property would be not present, it'd be calculated dynamically
-    "height": 32,
+    "height": 24,
 
     "modules-left": [
         "sway/workspaces",
@@ -184,17 +184,17 @@
       "interval": 3,
       "format": "{icon} {temperatureC}°C",
       "format-icons": [
-          "", // Icon: temperature-empty
-          "", // Icon: temperature-quarter
-          "", // Icon: temperature-half
+          "",  // Icon: temperature-full
           "", // Icon: temperature-three-quarters
-          ""  // Icon: temperature-full
+          "", // Icon: temperature-half
+          "", // Icon: temperature-quarter
+          "" // Icon: temperature-empty
       ],
       "tooltip": true
     },
 
     "tray": {
-        "icon-size": 21,
+        "icon-size": 18,
         "spacing": 10
     }
 

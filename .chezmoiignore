@@ -11,4 +11,6 @@ bin/interception-pipe1
 .config/waybar
 .config/wofi
 .config/swaylock
+.local/share/dark-mode.d
+.local/share/light-mode.d
 {{ end }}

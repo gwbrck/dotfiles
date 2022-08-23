@@ -1,0 +1,22 @@
+font=Cantarell 10
+icons=1
+icon-path=/usr/share/icons/Arc
+default-timeout=60000
+layer=overlay
+
+[mode=light]
+text-color=#2c313c
+background-color=#CED5E6
+progress-color=over #CFD6E6
+
+[mode=dark]
+background-color=#2D303B
+border-color=#404552
+text-color=#FFFFFF
+progress-color=over #404552
+
+[app-name=volctl]
+anchor=top-center
+format=%b
+text-alignment=center
+width=300

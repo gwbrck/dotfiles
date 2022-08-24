@@ -450,17 +450,12 @@
                           "org.freedesktop.impl.portal.Settings"
                           "SettingChanged"
                           #'theme--handle-dbus-event)
-    (let ((scheme (cdr (car (dbus-get-all-properties
-                             :session
-                             "org.freedesktop.impl.portal.desktop.darkman"
-                             "/org/freedesktop/portal/desktop"
-                             "org.freedesktop.impl.portal.Settings")))))
-      (cond
-       ((eq 1 scheme)
-        (gwbrck/apply-theme 'dark))
-       ((eq 2 scheme)
-        (gwbrck/apply-theme 'light))
-       (t (message "I don't know how to handle scheme: %s" scheme))))))
+    (gwbrck/apply-theme (intern (dbus-get-property
+                                 :session ;;BUS
+                                 "nl.whynothugo.darkman" ;; SERVICE
+                                 "/nl/whynothugo/darkman" ;;PATH
+                                 "nl.whynothugo.darkman" ;;INTERFACE
+                                 "Mode")))))
 
 (use-package vertico
   :straight t

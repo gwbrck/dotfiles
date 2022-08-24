@@ -1,0 +1,3 @@
+import:
+  - ~/.config/alacritty/main.yml
+  - ~/.config/alacritty/colors.yml

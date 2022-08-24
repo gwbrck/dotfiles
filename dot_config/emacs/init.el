@@ -381,7 +381,15 @@
             (lambda (frame)
               (with-selected-frame frame
                 (gwbrck/set-font-faces))))
-  (gwbrck/set-font-faces))
+  (gwbrck/set-font-faces)
+
+  (defun gwbrck/apply-theme (appearance)
+    "Load theme, taking current system APPEARANCE into consideration."
+    (mapc #'disable-theme custom-enabled-themes)
+    (pcase appearance
+      ('light (load-theme 'doom-one-light t))
+      ('dark (load-theme 'doom-vibrant t)))
+    (gwbrck/set-font-faces)))
 
 (use-package calendar
   :custom
@@ -407,14 +415,7 @@
 
 (use-package emacs
   :when (equal system-type 'darwin)
-  :init
-  (defun gwbrck/apply-theme (appearance)
-    "Load theme, taking current system APPEARANCE into consideration."
-    (mapc #'disable-theme custom-enabled-themes)
-    (pcase appearance
-      ('light (load-theme 'doom-one-light t))
-      ('dark (load-theme 'doom-vibrant t)))
-    (gwbrck/set-font-faces))
+  :config
   (add-hook 'ns-system-appearance-change-functions #'gwbrck/apply-theme)
   (when (equal system-type 'darwin)
     (defun ns-raise-emacs ()
@@ -428,6 +429,38 @@
     (add-hook 'after-make-frame-functions 'ns-raise-emacs-with-frame)
     (when (display-graphic-p)
       (ns-raise-emacs))))
+
+(use-package emacs
+  :when (equal system-type 'gnu/linux)
+  :config
+  (defun theme--handle-dbus-event (a setting values)
+    "Handler for FreeDesktop theme changes."
+    (let ((scheme (car values)))
+      (cond
+       ((eq 1 scheme)
+        (gwbrck/apply-theme 'dark))
+       ((eq 2 scheme)
+        (gwbrck/apply-theme 'light))
+       (t (message "I don't know how to handle scheme: %s" scheme)))))
+  (when (message (getenv "DBUS_SESSION_BUS_ADDRESS"))
+    (require 'dbus)
+    (dbus-register-signal :session
+                          "org.freedesktop.portal"
+                          "/org/freedesktop/portal/desktop"
+                          "org.freedesktop.impl.portal.Settings"
+                          "SettingChanged"
+                          #'theme--handle-dbus-event)
+    (let ((scheme (cdr (car (dbus-get-all-properties
+                             :session
+                             "org.freedesktop.impl.portal.desktop.darkman"
+                             "/org/freedesktop/portal/desktop"
+                             "org.freedesktop.impl.portal.Settings")))))
+      (cond
+       ((eq 1 scheme)
+        (gwbrck/apply-theme 'dark))
+       ((eq 2 scheme)
+        (gwbrck/apply-theme 'light))
+       (t (message "I don't know how to handle scheme: %s" scheme))))))
 
 (use-package vertico
   :straight t
@@ -978,6 +1011,9 @@ current HH:MM time."
 (use-package json-mode
   :straight t
   :mode "\\.js\\(?:on\\|[hl]int\\(?:rc\\)?\\)\\'")
+
+(use-package lua-mode
+  :straight t)
 
 (use-package format-all
   :straight t)

@@ -13,44 +13,47 @@ vim.api.nvim_create_autocmd("BufWritePost", { command = "PackerCompile", group =
 local use = require('packer').use
 require('packer').startup(function()
         use {
-                "lewis6991/gitsigns.nvim",
-                config = function()
-                        require('gitsigns').setup()
-                end
+           "lewis6991/gitsigns.nvim",
+           config = function()
+              require('gitsigns').setup()
+           end
         }
         use "wbthomason/packer.nvim"
         use "jalvesaq/Nvim-R"
         use "vim-pandoc/vim-pandoc-syntax"
         use "tpope/vim-surround"
+        use({ "sewdohe/nvim-adapt" })
         use "jiangmiao/auto-pairs"
         use "neovim/nvim-lspconfig"
         use "nvim-lua/plenary.nvim"
         use "nvim-lua/telescope.nvim"
         use "nvim-lua/popup.nvim"
-        use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate",
-                config = function()
-                        require 'nvim-treesitter.configs'.setup {
-                                ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-                                highlight = { enable = true },
-                                incremental_selection = {
-                                        enable = true,
-                                        keymaps = {
-                                                init_selection = 'gnn',
-                                                node_incremental = 'grn',
-                                                scope_incremental = 'grc',
-                                                node_decremental = 'grm',
-                                        },
-                                },
-                                indent = {
-                                        enable = true,
-                                },
-                        }
-                end }
         use {
-                "norcalli/nvim-colorizer.lua",
-                config = function()
-                        require 'colorizer'.setup()
-                end
+           'nvim-treesitter/nvim-treesitter',
+           run = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
+           config = function()
+              require 'nvim-treesitter.configs'.setup {
+                 ensure_installed = "all",
+                 highlight = { enable = true },
+                 incremental_selection = {
+                    enable = true,
+                    keymaps = {
+                       init_selection = 'gnn',
+                       node_incremental = 'grn',
+                       scope_incremental = 'grc',
+                       node_decremental = 'grm',
+                    },
+                 },
+                 indent = {
+                    enable = true,
+                 },
+                                                      }
+        end }
+        use {
+           "norcalli/nvim-colorizer.lua",
+           config = function()
+              require 'colorizer'.setup()
+           end
         }
         use "vim-pandoc/vim-pandoc"
         use "nvim-lua/lsp-status.nvim"
@@ -82,6 +85,12 @@ vim.g.loaded_netrwSettings = 1
 --Set colorscheme
 vim.o.termguicolors = true
 vim.cmd [[colorscheme edge]]
+
+if vim.fn.has('linux') == 1 then
+   -- require("nvim-adapt")
+   require("nvim-darkman")
+end
+
 
 vim.o.relativenumber = true
 vim.o.mouse = 'a'

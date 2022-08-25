@@ -189,8 +189,14 @@ bindsym $mod+r mode "resize"
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.
+
 exec waybar
+
 exec mako
+
+exec "systemctl --user import-environment WAYLAND_DISPLAY"
+exec "dbus-update-activation-environment WAYLAND_DISPLAY"
+# exec "dbus-update-activation-environment"
 exec "sleep 2;  dex -a -e sway"
 
 #exec_always "systemctl --user import-environment; systemctl --user start sway-session.target"

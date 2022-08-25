@@ -47,6 +47,9 @@ input * {
     bindsym XF86MonBrightnessDown exec "light -U 10" 
     bindsym XF86KbdBrightnessUp exec "light -s sysfs/leds/smc::kbd_backlight -A 10" 
     bindsym XF86KbdBrightnessDown exec "light -s sysfs/leds/smc::kbd_backlight -U 10"
+    bindsym XF86AudioMute exec "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+    bindsym XF86AudioLowerVolume exec "pactl set-sink-volume @DEFAULT_SINK@ -5%"
+    bindsym XF86AudioRaiseVolume exec "pactl set-sink-volume @DEFAULT_SINK@ +5%" 
 
     bindsym $hyper+e exec "emacsclient -c -n -s ~/.cache/emacsserver/emacsen || emacs --bg-daemon=~/.cache/emacsserver/emacsen"
     bindsym $hyper+u exec "wtype {"
@@ -193,9 +196,9 @@ bindsym $mod+r mode "resize"
 exec waybar
 
 exec mako
-
-exec "systemctl --user import-environment WAYLAND_DISPLAY"
-exec "dbus-update-activation-environment WAYLAND_DISPLAY"
+exec "darkman get"
+exec_always "systemctl --user import-environment WAYLAND_DISPLAY"
+exec_always "dbus-update-activation-environment WAYLAND_DISPLAY"
 # exec "dbus-update-activation-environment"
 exec "sleep 2;  dex -a -e sway"
 

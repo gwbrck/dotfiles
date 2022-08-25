@@ -101,7 +101,7 @@ vim.o.listchars = 'tab:» ,eol:↲'
 
 vim.o.signcolumn = 'auto:2'
 
-vim.o.clipboard = 'unnamed'
+vim.o.clipboard = 'unnamedplus'
 vim.o.breakindent = true
 --Case insensitive searching UNLESS /C or capital in search
 vim.o.ignorecase = true

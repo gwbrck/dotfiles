@@ -444,18 +444,21 @@
        (t (message "I don't know how to handle scheme: %s" scheme)))))
   (when (message (getenv "DBUS_SESSION_BUS_ADDRESS"))
     (require 'dbus)
+    (theme--handle-dbus-event
+     nil
+     nil
+     (dbus-call-method :session
+                       "org.freedesktop.impl.portal.desktop.darkman"
+                       "/org/freedesktop/portal/desktop"
+                       "org.freedesktop.impl.portal.Settings"
+                       "Read"
+                       "org.freedesktop.appearance" "color-scheme"))
     (dbus-register-signal :session
-                          "org.freedesktop.portal"
+                          "org.freedesktop.impl.portal.desktop.darkman"
                           "/org/freedesktop/portal/desktop"
                           "org.freedesktop.impl.portal.Settings"
                           "SettingChanged"
-                          #'theme--handle-dbus-event)
-    (gwbrck/apply-theme (intern (dbus-get-property
-                                 :session ;;BUS
-                                 "nl.whynothugo.darkman" ;; SERVICE
-                                 "/nl/whynothugo/darkman" ;;PATH
-                                 "nl.whynothugo.darkman" ;;INTERFACE
-                                 "Mode")))))
+                          #'theme--handle-dbus-event)))
 
 (use-package vertico
   :straight t

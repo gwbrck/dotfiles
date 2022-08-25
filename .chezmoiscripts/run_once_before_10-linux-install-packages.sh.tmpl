@@ -2,10 +2,24 @@
 #!/bin/fish
 
 if ! type -q paru
+        set CWD $pwd
+        mkdir ~/paruinstall/
+        cd ~/paruinstall
 	sudo pacman -S --needed base-devel
 	git clone https://aur.archlinux.org/paru.git
 	cd paru
 	makepkg -si
+        cd $CWD
+        set -e CWD
 end
+
+if ! type -q darkman
+        paru -S darkman
+        systemctl --user enable --now darkman.service
+end
+
+paru -S nerd-fonts-ubuntu-mono
+paru -S wev
+
 
 {{ end -}}

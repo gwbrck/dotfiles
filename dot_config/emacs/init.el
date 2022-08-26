@@ -1194,7 +1194,11 @@ current HH:MM time."
   :custom
   (pdf-view-use-scaling t)
   :config
-  (pdf-tools-install :no-query))
+  (pdf-tools-install :no-query)
+  :general
+  ("SPC" nil :keymaps 'pdf-view-mode-map)
+  ("SPC" nil :keymaps 'pdf-view-mode-map :states 'normal))
+
 
 (use-package server
   :unless (daemonp)

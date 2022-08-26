@@ -1,31 +1,12 @@
 {{- if (eq .chezmoi.os "linux") -}}
 #!/bin/fish
 
-if ! type -q paru
-        set CWD $pwd
-        mkdir ~/paruinstall/
-        cd ~/paruinstall
-	sudo pacman -S --needed base-devel
-	git clone https://aur.archlinux.org/paru.git
-	cd paru
-	makepkg -si
-        cd $CWD
-        set -e CWD
-end
-
-if ! type -q darkman
-        paru -S darkman
-        systemctl --user enable --now darkman.service
-end
-
-paru -S nerd-fonts-ubuntu-mono
-paru -S wev
-
 sudo pacman -S --needed alacritty
 sudo pacman -S --needed arc-gtk-theme
 sudo pacman -S --needed arc-icon-theme
 sudo pacman -S --needed archlinux-keyring
 sudo pacman -S --needed bat
+sudo pacman -S --needed cantarell-fonts
 sudo pacman -S --needed chezmoi
 sudo pacman -S --needed clang
 sudo pacman -S --needed cmake
@@ -41,6 +22,7 @@ sudo pacman -S --needed gzip
 sudo pacman -S --needed interception-dual-function-keys
 sudo pacman -S --needed interception-tools
 sudo pacman -S --needed jq
+sudo pacman -S --needed kanshi
 sudo pacman -S --needed kio
 sudo pacman -S --needed kwallet
 sudo pacman -S --needed kwallet-pam
@@ -80,5 +62,30 @@ sudo pacman -S --needed which
 sudo pacman -S --needed wl-clipboard
 sudo pacman -S --needed wofi
 sudo pacman -S --needed zip
+
+if ! type -q paru
+        set CWD $pwd
+        mkdir ~/paruinstall/
+        cd ~/paruinstall
+	sudo pacman -S --needed base-devel
+	git clone https://aur.archlinux.org/paru.git
+	cd paru
+	makepkg -si
+        cd $CWD
+        set -e CWD
+end
+
+if ! type -q darkman
+        paru -S darkman
+        systemctl --user enable --now darkman.service
+end
+
+if ! fc-list | grep -qi "ubuntu"    
+        paru -S nerd-fonts-ubuntu-mono
+end
+
+if ! type -q wev
+        paru -S wev
+end
 
 {{ end -}}

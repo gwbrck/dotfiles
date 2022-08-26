@@ -1160,6 +1160,7 @@ current HH:MM time."
 
 (use-package openwith
   :straight t
+  :when (equal system-type 'darwin)
   :demand t
   :custom
   (openwith-associations '(("\\.pdf\\'" "open" (file))))

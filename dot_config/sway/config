@@ -200,6 +200,7 @@ exec_always "systemctl --user import-environment WAYLAND_DISPLAY"
 exec_always "dbus-update-activation-environment WAYLAND_DISPLAY"
 # exec "dbus-update-activation-environment"
 exec "sleep 2;  dex -a -e sway"
+exec "emacs --bg-daemon=~/.cache/emacsserver/emacsen"
 
 #exec_always "systemctl --user import-environment; systemctl --user start sway-session.target"
 #include /etc/sway/config.d/*

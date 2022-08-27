@@ -1193,12 +1193,18 @@ current HH:MM time."
   :straight t
   :custom
   (pdf-view-use-scaling t)
+  :init
+  ;;Prevent cursor of beeing visible
+  (add-hook 'pdf-view-mode-hook
+            (lambda ()
+              (set (make-local-variable 'evil-normal-state-cursor) (list nil))))
   :config
+  (add-to-list 'pdf-tools-enabled-modes 'pdf-view-auto-slice-minor-mode)
+  (add-to-list 'pdf-tools-enabled-modes 'pdf-view-themed-minor-mode)
   (pdf-tools-install :no-query)
   :general
   ("SPC" nil :keymaps 'pdf-view-mode-map)
   ("SPC" nil :keymaps 'pdf-view-mode-map :states 'normal))
-
 
 (use-package server
   :unless (daemonp)

@@ -1158,14 +1158,14 @@ current HH:MM time."
   :straight t
   :hook (dired-mode . all-the-icons-dired-mode))
 
-(use-package openwith
-  :straight t
-  :when (equal system-type 'darwin)
-  :demand t
-  :custom
-  (openwith-associations '(("\\.pdf\\'" "open" (file))))
-  :init
-  (openwith-mode t))
+;;(use-package openwith
+;;  :straight t
+;;  :when (equal system-type 'darwin)
+;;  :demand t
+;;  :custom
+;;  (openwith-associations '(("\\.pdf\\'" "open" (file))))
+;;  :init
+;;  (openwith-mode t))
 
 (use-package dired-hide-dotfiles
   :straight t 

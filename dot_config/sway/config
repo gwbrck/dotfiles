@@ -65,7 +65,7 @@ input * {
     bindsym $mod+Shift+q kill
     # Start your launcher
     bindsym $mod+d exec $menu
-    bindsym $hyper+e exec "emacsclient -c -n -s ~/.cache/emacsserver/emacsen || emacs --bg-daemon=~/.cache/emacsserver/emacsen"
+    bindsym $hyper+e exec "emacsclient -cn || emacs --bg-daemon"
     bindsym $hyper+f exec "firefox"
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -201,7 +201,7 @@ exec_always "systemctl --user import-environment WAYLAND_DISPLAY"
 exec_always "dbus-update-activation-environment WAYLAND_DISPLAY"
 # exec "dbus-update-activation-environment"
 exec "sleep 2;  dex -a -e sway"
-exec "emacs --bg-daemon=~/.cache/emacsserver/emacsen"
+exec "emacs --bg-daemon"
 
 #exec_always "systemctl --user import-environment; systemctl --user start sway-session.target"
 #include /etc/sway/config.d/*

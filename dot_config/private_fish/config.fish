@@ -2,6 +2,7 @@ if status is-interactive
     alias latex-update="sudo tlmgr update --self --all"
     alias biber-cash-reset="rm -rf `biber --cache`"
     alias cm='chezmoi'
+    alias em='emacsclient -cn -a ""'
     alias cmcd='chezmoi cd'
     alias cmgst='chezmoi git status'
     alias cmgaa='chezmoi git add --all'

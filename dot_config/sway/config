@@ -51,7 +51,6 @@ input * {
     bindsym XF86AudioLowerVolume exec "pamixer -d 5"
     bindsym XF86AudioRaiseVolume exec "pamixer -i 5" 
 
-    bindsym $hyper+e exec "emacsclient -c -n -s ~/.cache/emacsserver/emacsen || emacs --bg-daemon=~/.cache/emacsserver/emacsen"
     bindsym $hyper+u exec "wtype {"
     bindsym $hyper+i exec "wtype }"
     bindsym $hyper+m exec "wtype ["
@@ -66,6 +65,8 @@ input * {
     bindsym $mod+Shift+q kill
     # Start your launcher
     bindsym $mod+d exec $menu
+    bindsym $hyper+e exec "emacsclient -c -n -s ~/.cache/emacsserver/emacsen || emacs --bg-daemon=~/.cache/emacsserver/emacsen"
+    bindsym $hyper+f exec "firefox"
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
     # Despite the name, also works for non-floating windows.

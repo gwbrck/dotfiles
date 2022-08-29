@@ -1208,9 +1208,9 @@ current HH:MM time."
 
 (use-package server
   :unless (daemonp)
-  :custom
-  (server-socket-dir "~/.cache/emacsserver")
-  (server-name "emacsen")
+  ;;:custom
+  ;;(server-socket-dir "~/.cache/emacsserver")
+  ;;(server-name "emacsen")
   :config
   (unless (server-running-p)
   (server-start)))

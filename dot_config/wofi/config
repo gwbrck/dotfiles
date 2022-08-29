@@ -1,1 +1,7 @@
-insensitive = true
+mode=drun
+filter_rate=100
+allow_markup=true
+allow_images=true
+prompt=Search
+insensitive=true
+no_actions=true

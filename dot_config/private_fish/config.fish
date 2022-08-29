@@ -70,7 +70,8 @@ set -Ux PIPENV_VENV_IN_PROJECT 1
 set -Ux PIPENV_PYTHON $PYENV_ROOT/shims/python
 
 set -Ux VISUAL "emacsclient -c"
-set -Ux EDITOR nvim
+set -Ux EDITOR "emacsclient -c"
+set -Ux ALTERNATE_EDITOR nvim
 
 status is-login; and pyenv init --path | source
 status is-interactive; and pyenv init - | source

@@ -13,7 +13,7 @@ set $term alacritty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu wofi --show run
+set $menu wofi
 
 
 
@@ -65,7 +65,7 @@ input * {
     bindsym $mod+Shift+q kill
     # Start your launcher
     bindsym $mod+d exec $menu
-    bindsym $hyper+e exec "emacsclient -cn || emacs --bg-daemon"
+    bindsym $hyper+e exec "emacsclient -cn -a ''"
     bindsym $hyper+f exec "firefox"
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.

@@ -68,7 +68,7 @@ fish_add_path ~/bin
 set -Ux PIPENV_VENV_IN_PROJECT 1 
 set -Ux PIPENV_PYTHON $PYENV_ROOT/shims/python
 
-set -Ux VISUAL "emacsclient -c -s $HOME/.cache/emacsserver/emacsen"
+set -Ux VISUAL "emacsclient -c"
 set -Ux EDITOR nvim
 
 status is-login; and pyenv init --path | source

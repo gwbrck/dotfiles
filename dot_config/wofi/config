@@ -1,7 +1,9 @@
 mode=drun
 filter_rate=100
-allow_markup=true
 allow_images=true
+image_size=20
 prompt=Search
 insensitive=true
-no_actions=true
+term=alacritty
+key_expand=Tab
+parse_search=true

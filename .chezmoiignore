@@ -14,4 +14,5 @@ bin/interception-pipe1
 .config/swaylock
 .local/share/dark-mode.d
 .local/share/light-mode.d
+.local/share/applications
 {{ end }}

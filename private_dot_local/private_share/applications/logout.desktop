@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Logout
+Icon=xfsm-logout.png
+Exec=swaymsg exit
+Terminal=false

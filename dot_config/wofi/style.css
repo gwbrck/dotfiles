@@ -1,25 +1,18 @@
 /* The whole wofi window */
 #window {
-  border: 1px solid #333333; /* Sway palette: unfocused/border */
-  background-color: #222222; /* Sway palette: unfocused/background */
-  font-family: system-ui, sans-serif;
+  font-family: Cantarell;
 }
 
 /* Search input */
 #input {
   margin: 4px;
-  border: 1px solid #222222; /* Sway palette: unfocused/background */
+  border: 1px solid;
   border-radius: 0;
-  color: #ffffff; /* Sway palette: unfocused/text */
-  background-color: #333333; /* Sway palette: unfocused/border */
   font-size: 14px;
 }
 
-#input:focus {
-  background-color: #285577; /* Sway palette: focused/background */
-}
 
-/* Box that contains search bar and entries */
+/* Box that contains search bar and entries */
 #outer-box {
   padding: 4px;
 }
@@ -33,8 +26,13 @@
 /* Box containing all entries */
 #inner-box {
   margin: 0 4px;
-  color: #888888; /* Sway palette: unfocused/text */
 }
+
+#text {
+    margin-left: 0.5rem;
+    
+}
+
 /* Box containing all entries (not sure what's the difference to #inner-box) */
 #entry {}
 
@@ -44,8 +42,3 @@
 }
 
 /* A single entry, selected */
-#entry:selected {
-  outline: none;
-  color: #ffffff; /* Sway palette: focused/text */
-  background-color: #285577; /* Sway palette: focused/background */
-}

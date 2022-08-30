@@ -3,7 +3,6 @@
 default_border pixel 2
 font Cantarell Bold 8
 set $mod Mod4
-set $hyper Control+Mod1+Mod4
 
 set $left h
 set $down j
@@ -51,15 +50,7 @@ input * {
     bindsym XF86AudioLowerVolume exec "pamixer -d 5"
     bindsym XF86AudioRaiseVolume exec "pamixer -i 5" 
 
-    bindsym $hyper+u exec "wtype {"
-    bindsym $hyper+i exec "wtype }"
-    bindsym $hyper+m exec "wtype ["
-    bindsym $hyper+comma exec "wtype ]"
-    bindsym $hyper+plus exec "wtype \~"
-    bindsym $hyper+ssharp exec "wtype '\\\'"
-    bindsym $hyper+less exec "wtype '|'"
-    bindsym $hyper+q exec "wtype '@'"
-    bindsym $hyper+d exec "darkman toggle"
+    bindsym $mod+t exec "darkman toggle"
 
     # Start a terminal
     bindsym $mod+Return exec $term
@@ -67,8 +58,7 @@ input * {
     bindsym $mod+Shift+q kill
     # Start your launcher
     bindsym $mod+d exec $menu
-    bindsym $hyper+e exec "emacsclient -cn -a ''"
-    bindsym $hyper+f exec "firefox"
+    bindsym $mod+e exec "emacsclient -cn -a ''"
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
     # Despite the name, also works for non-floating windows.

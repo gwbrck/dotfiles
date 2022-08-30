@@ -12,9 +12,6 @@ set $term alacritty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu wofi
-
-
 
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
@@ -57,6 +54,9 @@ input * {
     # Kill focused window
     bindsym $mod+Shift+q kill
     # Start your launcher
+    bindsym $mod+d exec "wofi --show=drun"
+    bindsym $mod+shift+d exec "wofi --show=run"
+
     bindsym $mod+d exec $menu
     bindsym $mod+e exec "emacsclient -cn -a ''"
     # Drag floating windows by holding down $mod and left mouse button.

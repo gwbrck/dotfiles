@@ -12,23 +12,23 @@
 
 @keyframes blink-warning {
     70% {
-        color: white;
+        color: @theme_text_color;
     }
 
     to {
-        color: white;
-        background-color: orange;
+        color: @theme_text_color;
+        background-color: @warning_color;
     }
 }
 
 @keyframes blink-critical {
     70% {
-      color: white;
+      color: @theme_text_color;
     }
 
     to {
-        color: white;
-        background-color: red;
+        color: @theme_text_color;
+        background-color: @error_color;
     }
 }
 
@@ -48,8 +48,8 @@
 
 /* The whole bar */
 #waybar {
-    background-color: #222222; /* Sway palette: unfocused/background */
-    color: #ffffff; /* Sway palette: focused/text */
+    background-color: @theme_bg_color; /* Sway palette: unfocused/background */
+    color: @theme_text_color; /* Sway palette: focused/text */
     font-family: Cantarell;
     font-size: 14px;
 }
@@ -85,11 +85,11 @@
 }
 
 #battery.warning {
-    color: orange;
+    color: @warning_color;
 }
 
 #battery.critical {
-    color: red;
+    color: @error_color;
 }
 
 #battery.warning.discharging {
@@ -117,11 +117,11 @@
 }
 
 #cpu.warning {
-    color: orange;
+    color: @warning_color;
 }
 
 #cpu.critical {
-    color: red;
+    color: @error_color;
 }
 
 #custom-keyboard-layout {
@@ -135,18 +135,18 @@
 }
 
 #memory.warning {
-    color: orange;
+    color: @warning_color;
 }
 
 #memory.critical {
-    color: red;
+    color: @error_color;
     animation-name: blink-critical;
     animation-duration: 2s;
 }
 
 #mode {
-    color: #ffffff; /* Sway palette: urgent/text */
-    background-color: #900000; /* Sway palette: urgent/background */
+    color: @theme_text_color; /* Sway palette: urgent/text */
+    background-color: @theme_bg_color; /* Sway palette: urgent/background */
     margin-left: 0;
     /* To compensate for the top border and still have vertical centering */
     padding: 0 16px;
@@ -157,7 +157,7 @@
 }
 
 #network.disconnected {
-    color: orange;
+    color: @warning_color;
 }
 
 #pulseaudio {
@@ -173,7 +173,7 @@
 }
 
 #temperature.critical {
-    color: red;
+    color: @warning_color;
 }
 
 #tray {
@@ -186,12 +186,10 @@
 }
 
 #workspaces button {
-    border-top: 2px solid transparent;
-    /* To compensate for the top border and still have vertical centering */
     padding-bottom: 2px;
     padding-left: 15px;
     padding-right: 18px;
-    color: #888888; /* Sway palette: unfocused/text */
+    color: @theme_text_color; /* Sway palette: unfocused/text */
 }
 
 #workspaces button:hover {
@@ -202,19 +200,16 @@
 }
 
 #workspaces button.visible {
-    border-color: #333333; /* Sway palette focused_inactive/border */
-    color: #ffffff; /* Sway palette: focused_inactive/text */
-    background-color: #5f676a; /* Sway palette focused_inactive/background */
+    color: @theme_text_color; /* Sway palette: focused_inactive/text */
+    background-color: @theme_selected_bg_color; /* Sway palette focused_inactive/background */
 }
 
 #workspaces button.focused {
-    border-color: #4c7899; /* Sway palette: focused/border */
-    color: #ffffff; /* Sway palette: focused/text */
-    background-color: #285577; /* Sway palette: focused/background */
+    color: @theme_text_color; /* Sway palette: focused/text */
+    background-color: @theme_selected_bg_color; /* Sway palette: focused/background */
 }
 
 #workspaces button.urgent {
-    border-color: #2f343a; /* Sway palette: urgent/border */
-    color: #ffffff; /* Sway palette: urgent/text */
-    background-color: #900000; /* Sway palette: urgent/background */
+    color: @theme_text_color; /* Sway palette: urgent/text */
+    background-color: @warning_color; /* Sway palette: urgent/background */
 }

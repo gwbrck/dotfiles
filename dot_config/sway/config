@@ -3,7 +3,7 @@
 default_border pixel 2
 font Cantarell Bold 8
 set $mod Mod4
-set $hyper Control+Shift+Mod1+Mod4
+set $hyper Control+Mod1+Mod4
 
 set $left h
 set $down j
@@ -57,6 +57,8 @@ input * {
     bindsym $hyper+comma exec "wtype ]"
     bindsym $hyper+plus exec "wtype \~"
     bindsym $hyper+ssharp exec "wtype '\\\'"
+    bindsym $hyper+less exec "wtype '|'"
+    bindsym $hyper+q exec "wtype '@'"
     bindsym $hyper+d exec "darkman toggle"
 
     # Start a terminal

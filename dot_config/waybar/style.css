@@ -186,6 +186,7 @@
 }
 
 #workspaces button {
+    background-color: @theme_unfocused_bg_color;
     padding-bottom: 2px;
     padding-left: 15px;
     padding-right: 18px;
@@ -200,12 +201,12 @@
 }
 
 #workspaces button.visible {
-    color: @theme_text_color; /* Sway palette: focused_inactive/text */
+    color: @theme_selected_fg_color; /* Sway palette: focused_inactive/text */
     background-color: @theme_selected_bg_color; /* Sway palette focused_inactive/background */
 }
 
 #workspaces button.focused {
-    color: @theme_text_color; /* Sway palette: focused/text */
+    color: @theme_selected_fg_color; /* Sway palette: focused/text */
     background-color: @theme_selected_bg_color; /* Sway palette: focused/background */
 }
 

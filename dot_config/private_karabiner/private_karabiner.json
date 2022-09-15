@@ -2,7 +2,8 @@
     "global": {
         "check_for_updates_on_startup": true,
         "show_in_menu_bar": false,
-        "show_profile_name_in_menu_bar": false
+        "show_profile_name_in_menu_bar": false,
+        "unsafe_ui": false
     },
     "profiles": [
         {
@@ -85,6 +86,13 @@
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "modifier_hyper",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
                                 "description": " h = left",
                                 "from": {
                                     "key_code": "h",
@@ -100,16 +108,16 @@
                                         "key_code": "left_arrow"
                                     }
                                 ],
-                                "conditions": [
-                                    {
-                                        "type": "variable_if",
-                                        "name": "modifier_hyper",
-                                        "value": 1
-                                    }
-                                ],
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "modifier_hyper",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
                                 "description": " j = down",
                                 "from": {
                                     "key_code": "j",
@@ -125,16 +133,16 @@
                                         "key_code": "down_arrow"
                                     }
                                 ],
-                                "conditions": [
-                                    {
-                                        "type": "variable_if",
-                                        "name": "modifier_hyper",
-                                        "value": 1
-                                    }
-                                ],
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "modifier_hyper",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
                                 "description": " k = up",
                                 "from": {
                                     "key_code": "k",
@@ -150,16 +158,16 @@
                                         "key_code": "up_arrow"
                                     }
                                 ],
-                                "conditions": [
-                                    {
-                                        "type": "variable_if",
-                                        "name": "modifier_hyper",
-                                        "value": 1
-                                    }
-                                ],
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "modifier_hyper",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
                                 "description": " l = right",
                                 "from": {
                                     "key_code": "l",
@@ -175,16 +183,16 @@
                                         "key_code": "right_arrow"
                                     }
                                 ],
-                                "conditions": [
-                                    {
-                                        "type": "variable_if",
-                                        "name": "modifier_hyper",
-                                        "value": 1
-                                    }
-                                ],
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "modifier_hyper",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
                                 "description": " + = tilde",
                                 "from": {
                                     "key_code": "close_bracket",
@@ -203,16 +211,16 @@
                                         ]
                                     }
                                 ],
-                                "conditions": [
-                                    {
-                                        "type": "variable_if",
-                                        "name": "modifier_hyper",
-                                        "value": 1
-                                    }
-                                ],
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "modifier_hyper",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
                                 "description": " i = curly bracket closed",
                                 "from": {
                                     "key_code": "i",
@@ -231,16 +239,16 @@
                                         ]
                                     }
                                 ],
-                                "conditions": [
-                                    {
-                                        "type": "variable_if",
-                                        "name": "modifier_hyper",
-                                        "value": 1
-                                    }
-                                ],
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "modifier_hyper",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
                                 "description": " u = curly bracket open",
                                 "from": {
                                     "key_code": "u",
@@ -259,16 +267,16 @@
                                         ]
                                     }
                                 ],
-                                "conditions": [
-                                    {
-                                        "type": "variable_if",
-                                        "name": "modifier_hyper",
-                                        "value": 1
-                                    }
-                                ],
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "modifier_hyper",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
                                 "description": " m = squared bracket open",
                                 "from": {
                                     "key_code": "m",
@@ -287,16 +295,16 @@
                                         ]
                                     }
                                 ],
-                                "conditions": [
-                                    {
-                                        "type": "variable_if",
-                                        "name": "modifier_hyper",
-                                        "value": 1
-                                    }
-                                ],
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "modifier_hyper",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
                                 "description": " , = squared bracket closed",
                                 "from": {
                                     "key_code": "comma",
@@ -315,16 +323,16 @@
                                         ]
                                     }
                                 ],
-                                "conditions": [
-                                    {
-                                        "type": "variable_if",
-                                        "name": "modifier_hyper",
-                                        "value": 1
-                                    }
-                                ],
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "modifier_hyper",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
                                 "description": " ß = Backslasch",
                                 "from": {
                                     "key_code": "hyphen",
@@ -343,16 +351,16 @@
                                         ]
                                     }
                                 ],
-                                "conditions": [
-                                    {
-                                        "type": "variable_if",
-                                        "name": "modifier_hyper",
-                                        "value": 1
-                                    }
-                                ],
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "modifier_hyper",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
                                 "description": " q = @",
                                 "from": {
                                     "key_code": "q",
@@ -371,16 +379,16 @@
                                         ]
                                     }
                                 ],
-                                "conditions": [
-                                    {
-                                        "type": "variable_if",
-                                        "name": "modifier_hyper",
-                                        "value": 1
-                                    }
-                                ],
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "modifier_hyper",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
                                 "description": " e = €",
                                 "from": {
                                     "key_code": "e",
@@ -399,16 +407,16 @@
                                         ]
                                     }
                                 ],
-                                "conditions": [
-                                    {
-                                        "type": "variable_if",
-                                        "name": "modifier_hyper",
-                                        "value": 1
-                                    }
-                                ],
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "modifier_hyper",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
                                 "description": " < = pipe",
                                 "from": {
                                     "key_code": "grave_accent_and_tilde",
@@ -425,13 +433,6 @@
                                         "modifiers": [
                                             "right_option"
                                         ]
-                                    }
-                                ],
-                                "conditions": [
-                                    {
-                                        "type": "variable_if",
-                                        "name": "modifier_hyper",
-                                        "value": 1
                                     }
                                 ],
                                 "type": "basic"
@@ -499,7 +500,8 @@
                     },
                     "ignore": false,
                     "manipulate_caps_lock_led": true,
-                    "simple_modifications": []
+                    "simple_modifications": [],
+                    "treat_as_built_in_keyboard": false
                 },
                 {
                     "disable_built_in_keyboard_if_exists": true,
@@ -512,38 +514,8 @@
                     },
                     "ignore": false,
                     "manipulate_caps_lock_led": false,
-                    "simple_modifications": [
-                        {
-                            "from": {
-                                "key_code": "grave_accent_and_tilde"
-                            },
-                            "to": [
-                                {
-                                    "key_code": "non_us_backslash"
-                                }
-                            ]
-                        },
-                        {
-                            "from": {
-                                "key_code": "non_us_backslash"
-                            },
-                            "to": [
-                                {
-                                    "key_code": "grave_accent_and_tilde"
-                                }
-                            ]
-                        },
-                        {
-                            "from": {
-                                "key_code": "non_us_pound"
-                            },
-                            "to": [
-                                {
-                                    "key_code": "backslash"
-                                }
-                            ]
-                        }
-                    ]
+                    "simple_modifications": [],
+                    "treat_as_built_in_keyboard": false
                 },
                 {
                     "disable_built_in_keyboard_if_exists": false,
@@ -556,7 +528,8 @@
                     },
                     "ignore": true,
                     "manipulate_caps_lock_led": false,
-                    "simple_modifications": []
+                    "simple_modifications": [],
+                    "treat_as_built_in_keyboard": false
                 },
                 {
                     "disable_built_in_keyboard_if_exists": false,
@@ -569,7 +542,8 @@
                     },
                     "ignore": false,
                     "manipulate_caps_lock_led": false,
-                    "simple_modifications": []
+                    "simple_modifications": [],
+                    "treat_as_built_in_keyboard": false
                 },
                 {
                     "disable_built_in_keyboard_if_exists": false,
@@ -582,7 +556,22 @@
                     },
                     "ignore": true,
                     "manipulate_caps_lock_led": false,
-                    "simple_modifications": []
+                    "simple_modifications": [],
+                    "treat_as_built_in_keyboard": false
+                },
+                {
+                    "disable_built_in_keyboard_if_exists": false,
+                    "fn_function_keys": [],
+                    "identifiers": {
+                        "is_keyboard": false,
+                        "is_pointing_device": true,
+                        "product_id": 636,
+                        "vendor_id": 1452
+                    },
+                    "ignore": true,
+                    "manipulate_caps_lock_led": false,
+                    "simple_modifications": [],
+                    "treat_as_built_in_keyboard": false
                 }
             ],
             "fn_function_keys": [

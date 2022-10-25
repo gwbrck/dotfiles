@@ -59,7 +59,10 @@ require('packer').startup(function()
         use "nvim-lua/lsp-status.nvim"
         use "vigoux/LanguageTool.nvim"
         use "kyazdani42/nvim-web-devicons"
-        use "sainnhe/edge"
+        use {
+		"sainnhe/edge",
+		config = 'vim.cmd [[colorscheme edge]]'
+	}
         use "dhruvasagar/vim-table-mode"
         use "hrsh7th/nvim-cmp" -- Autocompletion plugin
         use "hrsh7th/cmp-nvim-lsp" -- LSP source for nvim-cmp
@@ -84,7 +87,6 @@ vim.g.loaded_netrwSettings = 1
 
 --Set colorscheme
 vim.o.termguicolors = true
-vim.cmd [[colorscheme edge]]
 
 if vim.fn.has('linux') == 1 then
    -- require("nvim-adapt")
@@ -159,8 +161,8 @@ local on_attach = function(_, bufnr)
 end
 
 -- nvim-cmp supports additional completion capabilities
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- Enable the following language servers
 local servers = { 'clangd', 'rust_analyzer', 'sumneko_lua', 'tsserver', 'pylsp', 'r_language_server', 'bashls' }

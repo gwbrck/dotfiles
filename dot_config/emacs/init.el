@@ -169,7 +169,7 @@
     "bks" '(kill-some-buffers :wk "kill some buffers")
     "bkk" '(kill-this-buffer :wk "kill this buffer")
     "w" '(evil-window-map :which-key "windows")
-    "s" '(flyspell-mode :wk "spell")))
+    "s" '(languagetool-server-mode :which-key "windows")))
 
 (use-package evil-org
   :straight t
@@ -863,44 +863,63 @@ current HH:MM time."
 (use-package ox-moderncv
   :load-path "lisp/")
   
-(use-package flyspell
-  :hook ((flyspell-mode . flyspell-buffer)
-         (flyspell-mode . synosaurus-mode)
-         (flyspell-mode . evil-normalize-keymaps))
-  :after evil
-  :config
-  (assoc-delete-all 'flyspell-mode minor-mode-map-alist)
-  (setq flyspell-mode-map (make-sparse-keymap))
-  (add-to-list 'minor-mode-map-alist `(flyspell-mode . ,flyspell-mode-map))
-  (cond ((executable-find "enchant-2")  (progn
-                                          (setq-default ispell-program-name "enchant-2")
-                                          (setq ispell-dictionary   "de_DE")))
-        ((executable-find "hunspell")   (progn
-                                          (setq-default ispell-program-name "hunspell")
-                                          (setq ispell-really-hunspell t)
-                                          (setq ispell-dictionary   "de_DE")))
-        ((executable-find "aspell")     (progn
-                                          (setq-default ispell-program-name "aspell")
-                                          (setq ispell-dictionary   "de_DE"))))
-  :general
-  (leader-key-def-minor
-    :keymaps 'flyspell-mode-map
-    "s" nil
-    "s" '(:ignore t :wk "spell")
-    "sn" '(flyspell-goto-next-error :wk "next error")
-    "sv" '(evil-prev-flyspell-error :wk "preVious error")))
+;; (use-package flyspell
+;;   :hook ((flyspell-mode . flyspell-buffer)
+;;          (flyspell-mode . synosaurus-mode)
+;;          (flyspell-mode . evil-normalize-keymaps))
+;;   :after evil
+;;   :config
+;;   (assoc-delete-all 'flyspell-mode minor-mode-map-alist)
+;;   (setq flyspell-mode-map (make-sparse-keymap))
+;;   (add-to-list 'minor-mode-map-alist `(flyspell-mode . ,flyspell-mode-map))
+;;   (cond ((executable-find "enchant-2")  (progn
+;;                                           (setq-default ispell-program-name "enchant-2")
+;;                                           (setq ispell-dictionary   "de_DE")))
+;;         ((executable-find "hunspell")   (progn
+;;                                           (setq-default ispell-program-name "hunspell")
+;;                                           (setq ispell-really-hunspell t)
+;;                                           (setq ispell-dictionary   "de_DE")))
+;;         ((executable-find "aspell")     (progn
+;;                                           (setq-default ispell-program-name "aspell")
+;;                                           (setq ispell-dictionary   "de_DE"))))
+;;   :general
+;;   (leader-key-def-minor
+;;     :keymaps 'flyspell-mode-map
+;;     "s" nil
+;;     "s" '(:ignore t :wk "spell")
+;;     "sn" '(flyspell-goto-next-error :wk "next error")
+;;     "sv" '(evil-prev-flyspell-error :wk "preVious error")))
+;;
+;; (use-package flyspell-correct
+;;   :straight t
+;;   :after flyspell
+;;   :general
+;;   (leader-key-def-minor
+;;     :keymaps 'flyspell-mode-map
+;;     "ss" 'flyspell-correct-wrapper))
+;;
 
-(use-package flyspell-correct
+(use-package languagetool
   :straight t
-  :after flyspell
+  :init
+  (setq languagetool-server-url "https://api.languagetoolplus.com"
+        languagetool-server-port 443)
+  (setq languagetool-api-key (password-store-get-field "nebenkosten/languagetool" "api-key")
+        languagetool-username (password-store-get-field "nebenkosten/languagetool" "Username"))
+  (setq languagetool-server-mode-map (make-sparse-keymap))
+  (add-to-list 'minor-mode-map-alist `(languagetool-server-mode . ,languagetool-server-mode-map))
+  :hook ((languagetool-server-mode . synosaurus-mode))
   :general
   (leader-key-def-minor
-    :keymaps 'flyspell-mode-map
-    "ss" 'flyspell-correct-wrapper))
+    :keymaps 'languagetool-server-mode-map
+    "s" '(:ignore t :wk "spell")
+    "ss" '(languagetool-server-mode :wk "server mode")
+    "sb" '(languagetool-correct-buffer :wk "correct buffer")
+    "sp" '(languagetool-correct-at-point :wk "correct at point")
+    "sp" '(languagetool-set-language :wk "correct at point")))
 
 (use-package synosaurus
   :straight t
-  :after flyspell
   :init
   (setq synosaurus-backend 'synosaurus-backend-openthesaurus)
   (setq synosaurus-choose-method 'default)
@@ -910,8 +929,7 @@ current HH:MM time."
   (add-to-list 'minor-mode-map-alist `(synosaurus-mode . ,synosaurus-mode-map))
   :general
   (leader-key-def-minor
-    :keymaps 'flyspell-mode-map
-    "so" '(:ignore t :wk "openthesaurus")
+    :keymaps 'languagetool-server-mode-map
     "si" '(synosaurus-choose-and-insert :wk "synonym insert")
     "sc" '(synosaurus-choose-and-replace :wk "caw with synonym")))
 

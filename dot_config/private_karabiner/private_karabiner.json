@@ -469,7 +469,7 @@
                       "^co\\.zeit\\.hyperterm$",
                       "^co\\.zeit\\.hyper$",
                       "^org\\.gnu\\.Emacs$",
-                      "^io\\.alacritty$",
+                      "^org\\.alacritty$",
                       "^net\\.kovidgoyal\\.kitty$",
                       "^tv\\.parsec\\.www$"
                     ],
@@ -522,7 +522,7 @@
                       "^co\\.zeit\\.hyperterm$",
                       "^co\\.zeit\\.hyper$",
                       "^org\\.gnu\\.Emacs$",
-                      "^io\\.alacritty$",
+                      "^org\\.alacritty$",
                       "^net\\.kovidgoyal\\.kitty$",
                       "^tv\\.parsec\\.www$"
                     ],
@@ -575,7 +575,7 @@
                       "^co\\.zeit\\.hyperterm$",
                       "^org\\.gnu\\.Emacs$",
                       "^co\\.zeit\\.hyper$",
-                      "^io\\.alacritty$",
+                      "^org\\.alacritty$",
                       "^net\\.kovidgoyal\\.kitty$",
                       "^tv\\.parsec\\.www$"
                     ],
@@ -633,7 +633,7 @@
                       "^co\\.zeit\\.hyperterm$",
                       "^org\\.gnu\\.Emacs$",
                       "^co\\.zeit\\.hyper$",
-                      "^io\\.alacritty$",
+                      "^org\\.alacritty$",
                       "^net\\.kovidgoyal\\.kitty$",
                       "^tv\\.parsec\\.www$"
                     ],
@@ -691,7 +691,7 @@
                       "^co\\.zeit\\.hyperterm$",
                       "^org\\.gnu\\.Emacs$",
                       "^co\\.zeit\\.hyper$",
-                      "^io\\.alacritty$",
+                      "^org\\.alacritty$",
                       "^net\\.kovidgoyal\\.kitty$",
                       "^tv\\.parsec\\.www$"
                     ],
@@ -749,7 +749,7 @@
                       "^co\\.zeit\\.hyperterm$",
                       "^org\\.gnu\\.Emacs$",
                       "^co\\.zeit\\.hyper$",
-                      "^io\\.alacritty$",
+                      "^org\\.alacritty$",
                       "^net\\.kovidgoyal\\.kitty$",
                       "^tv\\.parsec\\.www$"
                     ],
@@ -807,7 +807,7 @@
                       "^co\\.zeit\\.hyperterm$",
                       "^org\\.gnu\\.Emacs$",
                       "^co\\.zeit\\.hyper$",
-                      "^io\\.alacritty$",
+                      "^org\\.alacritty$",
                       "^net\\.kovidgoyal\\.kitty$",
                       "^tv\\.parsec\\.www$"
                     ],
@@ -865,7 +865,7 @@
                       "^co\\.zeit\\.hyperterm$",
                       "^org\\.gnu\\.Emacs$",
                       "^co\\.zeit\\.hyper$",
-                      "^io\\.alacritty$",
+                      "^org\\.alacritty$",
                       "^net\\.kovidgoyal\\.kitty$",
                       "^tv\\.parsec\\.www$"
                     ],
@@ -923,7 +923,7 @@
                       "^co\\.zeit\\.hyperterm$",
                       "^org\\.gnu\\.Emacs$",
                       "^co\\.zeit\\.hyper$",
-                      "^io\\.alacritty$",
+                      "^org\\.alacritty$",
                       "^net\\.kovidgoyal\\.kitty$",
                       "^tv\\.parsec\\.www$"
                     ],
@@ -981,7 +981,7 @@
                       "^co\\.zeit\\.hyperterm$",
                       "^org\\.gnu\\.Emacs$",
                       "^co\\.zeit\\.hyper$",
-                      "^io\\.alacritty$",
+                      "^org\\.alacritty$",
                       "^net\\.kovidgoyal\\.kitty$",
                       "^tv\\.parsec\\.www$"
                     ],
@@ -1226,7 +1226,7 @@
                       "^co\\.zeit\\.hyperterm$",
                       "^org\\.gnu\\.Emacs$",
                       "^co\\.zeit\\.hyper$",
-                      "^io\\.alacritty$",
+                      "^org\\.alacritty$",
                       "^net\\.kovidgoyal\\.kitty$",
                       "^tv\\.parsec\\.www$"
                     ],

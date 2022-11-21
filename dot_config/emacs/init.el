@@ -585,7 +585,7 @@ targets."
   :custom
   (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
   (corfu-auto t)                 ;; Enable auto completion
-  (corfu-echo-documentation t) ;; Do not show documentation in the echo area
+  (corfu-echo-documentation t)
   (corfu-scroll-margin 5)        ;; Use scroll margin
   (corfu-preview-current t)
   (corfu-preselect-first nil)
@@ -944,63 +944,47 @@ current HH:MM time."
 (use-package tree-sitter-langs
   :straight t)
 
-(use-package lsp-mode
-  :straight t
-  :commands (lsp)
+(use-package ts-fold
+  :straight (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold")
+  :after tree-sitter
+  :config
+  (setq ts-fold-replacement "  [...]  ")
+  (add-hook 'tree-sitter-after-on-hook #'ts-fold-mode))
+
+(use-package eldoc
   :custom
-  (lsp-completion-provider nil)
-  (lsp-keep-workspace-alive nil)
-  (lsp-keymap-prefix "C-c l")
-  :init
+  (eldoc-echo-area-use-multiline-p nil)
+  (eldoc-echo-area-prefer-doc-buffer t)
+  (eldoc-echo-area-display-truncation-message nil))
+
+(use-package eldoc-box
+  :straight t)
+
+(use-package eglot
+  :config
+  (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
   (defun gwbrck/start-pylsp ()
     "Function to start python lsp"
     (when (pipenv-project?)
       (pipenv-mode)
       (pipenv-activate)
       (unless (pipenv-executable-find "pylsp")
-        (pipenv--force-wait (pipenv-install "--dev python-lsp-server[all]")))
-      (setq-local lsp-pylsp-plugins-jedi-environment pyvenv-virtual-env)
-      (setq-local lsp-pylsp-server-command (pipenv-executable-find "pylsp"))
-      (let ((root (lsp-workspace-root)))
-        (if (boundp 'gwbrck/py-projd)
-            (add-to-list 'gwbrck/py-projd root)
-        (setq gwbrck/py-projd (list root))))
-      (add-hook
-       'lsp-after-uninitialized-functions
-       (lambda (ws)
-         (when (member (lsp--workspace-root ws) gwbrck/py-projd)
-           (pipenv-deactivate))))
-      (lsp)))
-  (defun gwbrck/corfu-lsp ()
-     "Using orderless instead of default-lsp"
-     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-           '(orderless)))
-  :hook
-  (lsp-completion-mode . gwbrck/corfu-lsp)
-  (c-mode . lsp)
-  (c++-mode . lsp)
-  (ess-r-mode . lsp)
-  (python-mode . gwbrck/start-pylsp)
-  (typescript-mode . lsp)
-  (json-mode . lsp)
-  (java-mode . lsp)
-  (lsp-mode . lsp-enable-which-key-integration))
-
-(use-package lsp-ui
-  :straight t
-  :hook (lsp-mode . lsp-ui-mode)
+        (pipenv--force-wait (pipenv-install "--dev python-lsp-server[all]"))))
+    (eglot-ensure))
   :custom
-  (lsp-ui-sideline-enable nil)
-  (lsp-ui-doc-include-signature t))
+  (eglot-autoshutdown t)
+  (eldoc-echo-area-prefer-doc-buffer t)
+  :hook
+  (c-mode . eglot-ensure)
+  (c++-mode . eglot-ensure)
+  (ess-r-mode . eglot-ensure)
+  (python-mode . eglot-ensure)
+  (typescript-mode . eglot-ensure)
+  (json-mode . eglot-ensure)
+  (java-mode . eglot-ensure))
 
-(use-package consult-lsp
+(use-package consult-eglot
   :straight t)
-
-(use-package lsp-java
-  :straight t
-  :after dap-mode lsp-mode
-  :config
-  (require 'dap-java))
 
 (use-package typescript-mode
   :straight t
@@ -1049,11 +1033,6 @@ current HH:MM time."
   :straight t
   :ensure t)
 
-(use-package dap-mode
-  :straight t
-  :after lsp-mode
-  :config (dap-auto-configure-mode))
-
 (use-package magit
   :straight t
   :commands (magit-add-section-hook)
@@ -1075,40 +1054,6 @@ current HH:MM time."
     "fp" '(project-find-file :wk "project find")
     "dp" '(project-dired :wk "project dired")
     "bkp" '(project-kill-buffers :wk "kill project")))
-
-(use-package treemacs
-  :straight t
-  :defer t
-  :init
-  (setq treemacs-follow-after-init t
-        treemacs-is-never-other-window t)
-  :config
-  ;; Don't follow the cursor
-  (treemacs-follow-mode t)
-  (treemacs-filewatch-mode t))
-
-(use-package treemacs-all-the-icons
-  :straight t
-  :after (treemacs)
-  :config
-  (treemacs-load-theme "all-the-icons"))
-
-(use-package treemacs-evil
-  :straight t
-  :ensure t
-  :after (evil treemacs))
-
-(use-package treemacs-magit
-  :straight t
-  :ensure t
-  :after (treemacs magit))
-
-(use-package lsp-treemacs
-  :straight t
-  :after (treemacs lsp)
-  :init
-  (lsp-treemacs-sync-mode 1)
-  (setq lsp-treemacs-theme "all-the-icons"))
 
 (use-package evil-nerd-commenter
   :straight t

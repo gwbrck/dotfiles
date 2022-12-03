@@ -3,20 +3,21 @@
 ;;; Emacs Startup File --- initialization for Emacs
 ;;; Package --- Summary
 ;;; Code:
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 6))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
 
-(straight-use-package 'use-package)
+(require 'package)
+
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+                         ("elpa" . "https://elpa.gnu.org/packages/")))
+
+(package-initialize)
+(unless package-archive-contents
+  (package-refresh-contents))
+
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+
+(require 'use-package)
 
 (use-package custom
   :no-require t
@@ -59,10 +60,10 @@
 
 (use-package password-store
   ;;also comes with brew installation of pass
-  :straight t)
+  :ensure t)
 
 (use-package password-store-otp
-  :straight t)
+  :ensure t)
 
 (use-package emacs
   :init
@@ -95,7 +96,7 @@
   :demand t
   :init
   (pixel-scroll-precision-mode))
-  
+
 (use-package files
   :no-require t
   :config
@@ -110,12 +111,12 @@
   (setq kept-old-versions 5))
 
 (use-package ns-auto-titlebar
-  :straight t
+  :ensure t
   :when (equal system-type 'darwin)
   :init (ns-auto-titlebar-mode +1))
 
 (use-package evil
-  :straight t
+  :ensure t
   :demand t
   :init
   (setq evil-cross-lines t)
@@ -129,7 +130,7 @@
   (evil-mode 1))
 
 (use-package general
-  :straight t
+  :ensure t
   :after evil
   :config
   (general-unbind 'motion "SPC")
@@ -149,7 +150,7 @@
 
 (use-package evil-collection
   :after evil
-  :straight t
+  :ensure t
   :config
   (global-set-key (kbd "s-<backspace>") #'delete-indentation)
   (evil-collection-init)
@@ -172,7 +173,7 @@
     "s" '(languagetool-server-mode :which-key "windows")))
 
 (use-package evil-org
-  :straight t
+  :ensure t
   :after org
   :hook (org-mode . (lambda () evil-org-mode))
   :config
@@ -182,7 +183,7 @@
   (evil-org-agenda-set-keys))
 
 (use-package evil-snipe
-  :straight t
+  :ensure t
   :after evil-collection
   :config
   (evil-snipe-mode +1)
@@ -190,7 +191,7 @@
   (setq evil-snipe-scope 'buffer))
 
 (use-package evil-surround
-  :straight t
+  :ensure t
   :after evil-collection
   :config
   (global-evil-surround-mode 1))
@@ -202,7 +203,6 @@
 
 (use-package pulse
   :custom (pulse-flag t)
-  :straight (:type built-in)
   :config
   (defun gwbrck/evil-yank-advice (orig-fn beg end &rest args)
     (pulse-momentary-highlight-region beg end 'highlight)
@@ -215,30 +215,30 @@
   (electric-pair-mode))
 
 (use-package all-the-icons
-  :straight t)
+  :ensure t)
 
 (use-package minions
-  :straight t
+  :ensure t
   :config
   (setq minions-mode-line-lighter "[↑]")
   :init (minions-mode 1))
 
 (use-package which-key
-  :straight t
+  :ensure t
   :init (which-key-mode)
   :diminish which-key-mode
   :config
   (setq which-key-idle-delay 0.1))
 
 (use-package restclient
-  :straight t)
+  :ensure t)
 
 (use-package ob-restclient
-  :straight t
+  :ensure t
   :after org)
 
 (use-package org
-  :straight t
+  :ensure t
   :demand t
   :hook ((org-mode . gwbrck/org-mode-setup))
   :custom
@@ -330,12 +330,12 @@
   (add-to-list 'org-structure-template-alist '("R" . "src R")))
 
 (use-package visual-fill-column
-  :straight t
+  :ensure t
   :after org
   :hook (org-mode . gwbrck/org-mode-visual-fill))
 
 (use-package org-bullets
-  :straight t
+  :ensure t
   :after org
   :hook (org-mode . org-bullets-mode)
   :custom
@@ -343,14 +343,14 @@
 
 (use-package org-contrib
   :after org
-  :straight t
+  :ensure t
   :init
   (require 'ox-extra)
   (ox-extras-activate '(ignore-headlines)))
 
 (use-package org-make-toc
   :after org
-  :straight t
+  :ensure t
   :hook (org-mode . org-make-toc-mode))
 
 (use-package faces
@@ -399,12 +399,12 @@
   ("SPC" nil :states 'normal :keymaps 'calendar-mode-map))
 
 (use-package doom-themes
-  :straight t
+  :ensure t
   :custom
   (doom-themes-padded-modeline 5))
 
 (use-package modus-themes
-  :straight t
+  :ensure t
   :init
   (setq modus-themes-completions
         (quote ((matches . (background))
@@ -461,14 +461,14 @@
                           #'theme--handle-dbus-event)))
 
 (use-package vertico
-  :straight t
+  :ensure t
   :init
   (vertico-mode)
   (setq vertico-resize t)
   (setq vertico-cycle t))
 
 (use-package orderless
-  :straight t
+  :ensure t
   :init
   (setq completion-styles '(orderless)
         completion-category-defaults nil
@@ -479,7 +479,7 @@
   (savehist-mode))
 
 (use-package emacs
-  :straight t
+  :ensure t
   :init
   (defun crm-indicator (args)
     (cons (concat "[CRM] " (car args)) (cdr args)))
@@ -494,12 +494,12 @@
   (setq enable-recursive-minibuffers t))
 
 (use-package marginalia
-  :straight t
+  :ensure t
   :init
   (marginalia-mode))
 
 (use-package consult
-  :straight t
+  :ensure t
   :general
   ("C-s" 'consult-line)
   (leader-key-def
@@ -524,7 +524,7 @@
             (car (project-roots project))))))
 
 (use-package embark
-  :straight t
+  :ensure t
   :bind
   (("C-." . embark-act)         ;; pick some comfortable binding
    ("C-," . embark-dwim)        ;; good alternative: M-.
@@ -574,14 +574,14 @@ targets."
   (delete '(kill-buffer embark--confirm) embark-pre-action-hooks))
 
 (use-package embark-consult
-  :straight t
+  :ensure t
   :after (embark consult)
   :demand t
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package corfu
-  :straight t
+  :ensure t
   :custom
   (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
   (corfu-auto t)                 ;; Enable auto completion
@@ -597,7 +597,8 @@ targets."
         [backtab] 'corfu-previous
         "SPC" 'corfu-insert-separator)
   :init
-  (global-corfu-mode))
+  (global-corfu-mode)
+  (corfu-popupinfo-mode))
   ;;(defun safe-global-corfu-mode ()
   ;;  (when (display-graphic-p)
   ;;    (global-corfu-mode)))
@@ -605,12 +606,8 @@ targets."
   ;;    (add-hook 'server-after-make-frame-hook #'safe-global-corfu-mode)
   ;;  (safe-global-corfu-mode)))
 
-(use-package corfu-doc
-  :straight t
-  :hook (corfu-mode . corfu-doc-mode))
-
 (use-package kind-icon
-  :straight t
+  :ensure t
   :after corfu
   :custom
   (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
@@ -618,7 +615,7 @@ targets."
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 (use-package cape
-  :straight t
+  :ensure t
   :init
   (add-to-list 'completion-at-point-functions #'cape-file))
 
@@ -628,7 +625,7 @@ targets."
   ("SPC" nil :keymaps 'help-mode-map :states 'normal))
 
 (use-package helpful
-  :straight t
+  :ensure t
   :general
   ([remap describe-function] 'helpful-function
    [remap describe-symbol] 'helpful-symbol
@@ -637,13 +634,13 @@ targets."
    [remap describe-key] 'helpful-key))
 
 (use-package elisp-demos
-  :straight t
+  :ensure t
   :after helpful
   :init
   (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
 
 (use-package flycheck
-  :straight t
+  :ensure t
   :init
   (global-flycheck-mode))
 
@@ -654,7 +651,7 @@ targets."
   (setq main-bib-file (concat gwbrck/roam "../main.bib")))
 
 (use-package citar
-  :straight t
+  :ensure t
   :demand t
   :after init-bibtex
   :config
@@ -669,8 +666,10 @@ targets."
   (leader-key-def
     "fb" 'citar-open))
 
+(unless (package-installed-p 'pdf-drop-mode)
+  (package-vc-install "https://github.com/rougier/pdf-drop-mode.git"))
+
 (use-package pdf-drop-mode
-  :straight (pdf-drop-mode :type git :host github :repo "rougier/pdf-drop-mode")
   :custom
   (pdf-drop-search-methods '(doi/metadata
                              doi/content
@@ -695,7 +694,7 @@ targets."
 
 (use-package citar-org-roam
   :after citar org-roam
-  :straight (citar-org-roam :type git :host github :repo "emacs-citar/citar-org-roam")
+  :ensure t
   :custom
   (citar-org-roam-subdir "annotaions")
   (citar-org-roam-note-title-template "${author editor} (${year}) :: ${title}")
@@ -703,7 +702,7 @@ targets."
   (citar-org-roam-mode))
 
 (use-package citar-embark
-  :straight t
+  :ensure t
   :after citar embark
   :no-require
   :config (citar-embark-mode))
@@ -724,7 +723,7 @@ targets."
             "C-c b" 'org-cite-insert))
 
 (use-package org-roam
-  :straight t
+  :ensure t
   :after org
   :demand t
   :init
@@ -767,7 +766,7 @@ current HH:MM time."
 	     (org-get-cursor-date (equal with-time 1))))
         (call-interactively 'org-roam-capture-agenda))))
 
-  (setq org-roam-capture-templates 
+  (setq org-roam-capture-templates
         '(("m" "main" plain "%?"
            :target
            (file+head "main/${slug}.org" "#+title: ${title}\n")
@@ -799,7 +798,7 @@ current HH:MM time."
     "o" 'org-roam-capture))
 
 (use-package org-caldav
-  :straight t
+  :ensure t
   :after org-roam
   :config
   (advice-add 'org-caldav-sync :after #'org-save-all-org-buffers)
@@ -815,7 +814,7 @@ current HH:MM time."
   :after org
   :init
   (setq org-export-default-language "de-de")
-  (add-to-list 'org-export-smart-quotes-alist 
+  (add-to-list 'org-export-smart-quotes-alist
                '("de-de"
                  (primary-opening   :utf-8 "\"" :html "&ldquo;" :latex "\\enquote{"  :texinfo "``")
                  (primary-closing   :utf-8 "\"" :html "&rdquo;" :latex "}"           :texinfo "''")
@@ -842,13 +841,13 @@ current HH:MM time."
   (add-to-list 'org-latex-packages-alist '("shorthands=off, AUTO" "babel" t))
   (add-to-list 'org-latex-packages-alist '("" "csquotes"))
   ;;(add-to-list 'org-latex-packages-alist '("style=apa, backend=biber, natbib=true" "biblatex"))
-  (add-to-list 'org-latex-packages-alist '("" "minted")) 
-  (add-to-list 'org-latex-packages-alist '("" "setspace")) 
-  (add-to-list 'org-latex-packages-alist '("" "xspace")) 
-  (add-to-list 'org-latex-packages-alist '("" "pdflscape")) 
-  (add-to-list 'org-latex-packages-alist '("" "longtable")) 
-  (add-to-list 'org-latex-packages-alist '("" "array")) 
-  (add-to-list 'org-latex-packages-alist '("" "multirow")) 
+  (add-to-list 'org-latex-packages-alist '("" "minted"))
+  (add-to-list 'org-latex-packages-alist '("" "setspace"))
+  (add-to-list 'org-latex-packages-alist '("" "xspace"))
+  (add-to-list 'org-latex-packages-alist '("" "pdflscape"))
+  (add-to-list 'org-latex-packages-alist '("" "longtable"))
+  (add-to-list 'org-latex-packages-alist '("" "array"))
+  (add-to-list 'org-latex-packages-alist '("" "multirow"))
   (add-to-list 'org-latex-packages-alist '("" "float"))
   (add-to-list 'org-latex-packages-alist '("" "subfig"))
   (add-to-list 'org-latex-packages-alist '("" "colortbl"))
@@ -862,7 +861,7 @@ current HH:MM time."
 
 (use-package ox-moderncv
   :load-path "lisp/")
-  
+
 ;; (use-package flyspell
 ;;   :hook ((flyspell-mode . flyspell-buffer)
 ;;          (flyspell-mode . synosaurus-mode)
@@ -891,7 +890,7 @@ current HH:MM time."
 ;;     "sv" '(evil-prev-flyspell-error :wk "preVious error")))
 ;;
 ;; (use-package flyspell-correct
-;;   :straight t
+;;   :ensure t
 ;;   :after flyspell
 ;;   :general
 ;;   (leader-key-def-minor
@@ -900,7 +899,7 @@ current HH:MM time."
 ;;
 
 (use-package languagetool
-  :straight t
+  :ensure t
   :init
   (setq languagetool-server-url "https://api.languagetoolplus.com"
         languagetool-server-port 443)
@@ -919,7 +918,7 @@ current HH:MM time."
     "sp" '(languagetool-set-language :wk "correct at point")))
 
 (use-package synosaurus
-  :straight t
+  :ensure t
   :init
   (setq synosaurus-backend 'synosaurus-backend-openthesaurus)
   (setq synosaurus-choose-method 'default)
@@ -933,23 +932,23 @@ current HH:MM time."
     "si" '(synosaurus-choose-and-insert :wk "synonym insert")
     "sc" '(synosaurus-choose-and-replace :wk "caw with synonym")))
 
-(use-package tree-sitter
-  :straight t
-  :init
-  (global-tree-sitter-mode)
-  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
-  :config
-  (setf (alist-get 'typescript-tsx-mode tree-sitter-major-mode-language-alist) 'tsx))
-
-(use-package tree-sitter-langs
-  :straight t)
-
-(use-package ts-fold
-  :straight (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold")
-  :after tree-sitter
-  :config
-  (setq ts-fold-replacement "  [...]  ")
-  (add-hook 'tree-sitter-after-on-hook #'ts-fold-mode))
+;; (use-package tree-sitter
+;;   :ensure t
+;;   :init
+;;   (global-tree-sitter-mode)
+;;   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
+;;   :config
+;;   (setf (alist-get 'typescript-tsx-mode tree-sitter-major-mode-language-alist) 'tsx))
+;;
+;; (use-package tree-sitter-langs
+;;   :ensure t)
+;;
+;; (use-package ts-fold
+;;   :ensure (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold")
+;;   :after tree-sitter
+;;   :config
+;;   (setq ts-fold-replacement "  [...]  ")
+;;   (add-hook 'tree-sitter-after-on-hook #'ts-fold-mode))
 
 (use-package eldoc
   :custom
@@ -958,7 +957,7 @@ current HH:MM time."
   (eldoc-echo-area-display-truncation-message nil))
 
 (use-package eldoc-box
-  :straight t)
+  :ensure t)
 
 (use-package eglot
   :config
@@ -984,10 +983,10 @@ current HH:MM time."
   (java-mode . eglot-ensure))
 
 (use-package consult-eglot
-  :straight t)
+  :ensure t)
 
 (use-package typescript-mode
-  :straight t
+  :ensure t
   :mode (rx ".ts" string-end)
   :custom
   (typescript-indent-level 2)
@@ -996,7 +995,7 @@ current HH:MM time."
   (add-to-list 'auto-mode-alist (cons (rx ".tsx" string-end) #'typescript-tsx-mode)))
 
 (use-package npm-mode
-  :straight t
+  :ensure t
   :config
   (add-to-list 'which-key-replacement-alist '((nil . "npm-mode-") . (nil . "")))
   (add-to-list 'which-key-replacement-alist '((nil . "npm-mode-npm-") . (nil . "")))
@@ -1006,35 +1005,35 @@ current HH:MM time."
 
 (use-package yaml-mode
   :mode "\\.yml\\'"
-  :straight t)
+  :ensure t)
 
 (use-package json-mode
-  :straight t
+  :ensure t
   :mode "\\.js\\(?:on\\|[hl]int\\(?:rc\\)?\\)\\'")
 
 (use-package lua-mode
-  :straight t)
+  :ensure t)
 
 (use-package format-all
-  :straight t)
+  :ensure t)
 
 (use-package pipenv
-  :straight t
+  :ensure t
   :custom
   (pipenv-with-projectile nil)
   (pipenv-with-flycheck nil))
 
 (use-package yasnippet
-  :straight t
+  :ensure t
   :init
   (yas-global-mode 1))
 
 (use-package yasnippet-snippets
-  :straight t
+  :ensure t
   :ensure t)
 
 (use-package magit
-  :straight t
+  :ensure t
   :commands (magit-add-section-hook)
   :config
   (magit-add-section-hook 'magit-status-sections-hook
@@ -1056,22 +1055,22 @@ current HH:MM time."
     "bkp" '(project-kill-buffers :wk "kill project")))
 
 (use-package evil-nerd-commenter
-  :straight t
+  :ensure t
   :general
   ("M-/" 'evilnc-comment-or-uncomment-lines))
 
 (use-package rainbow-delimiters
-  :straight t
+  :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package ess
-  :straight t
+  :ensure t
   :config
   (setq ess-use-eldoc nil)
   (setq ess-use-flymake nil))
 
 (use-package fish-mode
-  :straight t)
+  :ensure t)
 
 (use-package term
   :config
@@ -1082,11 +1081,11 @@ current HH:MM time."
   (setq term-prompt-regexp "^∃[0-9]*❯ \\|❯ "))
 
 (use-package eterm-256color
-  :straight t
+  :ensure t
   :hook (term-mode . eterm-256color-mode))
 
 (use-package vterm
-  :straight t
+  :ensure t
   :commands vterm
   :general
   ("M-'" 'vterm)
@@ -1115,14 +1114,14 @@ current HH:MM time."
     "SPC" nil))
 
 (use-package dired-single
-  :straight t)
+  :ensure t)
 
 (use-package all-the-icons-dired
-  :straight t
+  :ensure t
   :hook (dired-mode . all-the-icons-dired-mode))
 
 ;;(use-package openwith
-;;  :straight t
+;;  :ensure t
 ;;  :when (equal system-type 'darwin)
 ;;  :demand t
 ;;  :custom
@@ -1131,14 +1130,14 @@ current HH:MM time."
 ;;  (openwith-mode t))
 
 (use-package dired-hide-dotfiles
-  :straight t 
+  :ensure t
   :hook (dired-mode . dired-hide-dotfiles-mode)
   :config
   (evil-collection-define-key 'normal 'dired-mode-map
     "H" 'dired-hide-dotfiles-mode))
 
 (use-package chezmoi
-  :straight t
+  :ensure t
   :general
   (leader-key-def
     "fd" '(chezmoi-find :wk "dotfiles")
@@ -1147,13 +1146,13 @@ current HH:MM time."
     "xcw" 'chezmoi-write))
 
 (use-package ansible
-  :straight t
+  :ensure t
   :hook (yaml-mode . ansible)
   :custom
   (ansible-vault-password-file nil))
 
 (use-package pdf-tools
-  :straight t
+  :ensure t
   :custom
   (pdf-view-use-scaling t)
   :init

@@ -4,20 +4,13 @@
 ;;; Package --- Summary
 ;;; Code:
 
-(require 'package)
-
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("nongnu" . "https://elpa.nongnu.org/nongnu/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
-
 (package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))
 
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-
-(require 'use-package)
 
 (use-package custom
   :no-require t
@@ -940,8 +933,7 @@ current HH:MM time."
 ;;   :config
 ;;   (setf (alist-get 'typescript-tsx-mode tree-sitter-major-mode-language-alist) 'tsx))
 ;;
-;; (use-package tree-sitter-langs
-;;   :ensure t)
+
 ;;
 ;; (use-package ts-fold
 ;;   :ensure (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold")

@@ -2,11 +2,13 @@
 #!/bin/bash
 set -eufo pipefail
 
-echo "/usr/local/bin/fish" | sudo tee -a /etc/shells
-chsh -s /usr/local/bin/fish
+if ! grep -q "/usr/local/bin/fish" /etc/shells; then
+   echo "/usr/local/bin/fish" | sudo tee -a /etc/shells
+   chsh -s /usr/local/bin/fish
+fi
 
-echo "$(whoami) ALL = (root) NOPASSWD: $(which yabai) --load-sa" | sudo tee -a /private/etc/sudoers.d/yabai
-# sudo yabai --load-sa
+echo "$(whoami) ALL = (root) NOPASSWD: sha256:$(shasum -a 256 $(which yabai)) --load-sa" | sudo tee /private/etc/sudoers.d/yabai
+sudo yabai --load-sa
 
 
 brew services start yabai

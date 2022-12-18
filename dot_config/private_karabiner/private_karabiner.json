@@ -1156,6 +1156,7 @@
                     "bundle_identifiers": [
                       "^org\\.macports\\.X11$",
                       "^co\\.zeit\\.hyper$",
+                      "^org\\.alacritty$",
                       "^org\\.gnu\\.Emacs$",
                       "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
                       "^com\\.microsoft\\.rdc\\.macos$",

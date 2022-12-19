@@ -954,13 +954,20 @@ current HH:MM time."
 (use-package eglot
   :config
   (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
-  (defun gwbrck/start-pylsp ()
+  (defun start-pyright ()
     "Function to start python lsp"
     (when (pipenv-project?)
       (pipenv-mode)
       (pipenv-activate)
-      (unless (pipenv-executable-find "pylsp")
-        (pipenv--force-wait (pipenv-install "--dev python-lsp-server[all]"))))
+      (let* ((path (expand-file-name "~/.local/share/virtualenvs/"))
+             (name (string-trim (pipenv--get-executables-dir) path "/bin")))
+        (save-window-excursion
+          (modify-dir-local-variable nil 'eglot-workspace-configuration
+                                     `(:pyright
+                                       (:venvPath ,path
+                                                  :venv ,name))
+                                     'add-or-replace)
+          (save-buffer))))
     (eglot-ensure))
   :custom
   (eglot-autoshutdown t)
@@ -969,7 +976,7 @@ current HH:MM time."
   (c-mode . eglot-ensure)
   (c++-mode . eglot-ensure)
   (ess-r-mode . eglot-ensure)
-  (python-mode . eglot-ensure)
+  (python-mode . start-pyright)
   (typescript-mode . eglot-ensure)
   (json-mode . eglot-ensure)
   (java-mode . eglot-ensure))

@@ -66,12 +66,7 @@ set -Ux GPG_TTY $(tty)
 set -Ux PYENV_ROOT $HOME/.config/pyenv
 fish_add_path $PYENV_ROOT/bin
 fish_add_path ~/bin
-set -Ux PIPENV_VENV_IN_PROJECT 1 
 set -Ux PIPENV_PYTHON $PYENV_ROOT/shims/python
-
-set -Ux VISUAL "emacsclient -c"
-set -Ux EDITOR "emacsclient -c"
-set -Ux ALTERNATE_EDITOR nvim
 
 status is-login; and pyenv init --path | source
 status is-interactive; and pyenv init - | source

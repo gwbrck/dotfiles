@@ -592,12 +592,6 @@ targets."
   :init
   (global-corfu-mode)
   (corfu-popupinfo-mode))
-  ;;(defun safe-global-corfu-mode ()
-  ;;  (when (display-graphic-p)
-  ;;    (global-corfu-mode)))
-  ;;(if (daemonp)
-  ;;    (add-hook 'server-after-make-frame-hook #'safe-global-corfu-mode)
-  ;;  (safe-global-corfu-mode)))
 
 (use-package kind-icon
   :ensure t
@@ -925,23 +919,6 @@ current HH:MM time."
     "si" '(synosaurus-choose-and-insert :wk "synonym insert")
     "sc" '(synosaurus-choose-and-replace :wk "caw with synonym")))
 
-;; (use-package tree-sitter
-;;   :ensure t
-;;   :init
-;;   (global-tree-sitter-mode)
-;;   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
-;;   :config
-;;   (setf (alist-get 'typescript-tsx-mode tree-sitter-major-mode-language-alist) 'tsx))
-;;
-
-;;
-;; (use-package ts-fold
-;;   :ensure (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold")
-;;   :after tree-sitter
-;;   :config
-;;   (setq ts-fold-replacement "  [...]  ")
-;;   (add-hook 'tree-sitter-after-on-hook #'ts-fold-mode))
-
 (use-package eldoc
   :custom
   (eldoc-echo-area-use-multiline-p nil)
@@ -1124,15 +1101,6 @@ current HH:MM time."
   :ensure t
   :hook (dired-mode . all-the-icons-dired-mode))
 
-;;(use-package openwith
-;;  :ensure t
-;;  :when (equal system-type 'darwin)
-;;  :demand t
-;;  :custom
-;;  (openwith-associations '(("\\.pdf\\'" "open" (file))))
-;;  :init
-;;  (openwith-mode t))
-
 (use-package dired-hide-dotfiles
   :ensure t
   :hook (dired-mode . dired-hide-dotfiles-mode)
@@ -1157,8 +1125,6 @@ current HH:MM time."
 
 (use-package pdf-tools
   :ensure t
-  :custom
-  (pdf-view-use-scaling t)
   :init
   ;;Prevent cursor of beeing visible
   (add-hook 'pdf-view-mode-hook
@@ -1174,9 +1140,6 @@ current HH:MM time."
 
 (use-package server
   :unless (daemonp)
-  ;;:custom
-  ;;(server-socket-dir "~/.cache/emacsserver")
-  ;;(server-name "emacsen")
   :config
   (unless (server-running-p)
   (server-start)))

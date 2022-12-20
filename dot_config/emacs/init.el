@@ -956,18 +956,26 @@ current HH:MM time."
   (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
   (defun start-pyright ()
     "Function to start python lsp"
-    (when (pipenv-project?)
-      (pipenv-mode)
-      (pipenv-activate)
-      (let* ((path (expand-file-name "~/.local/share/virtualenvs/"))
-             (name (string-trim (pipenv--get-executables-dir) path "/bin")))
-        (save-window-excursion
-          (modify-dir-local-variable nil 'eglot-workspace-configuration
-                                     `(:pyright
-                                       (:venvPath ,path
-                                                  :venv ,name))
-                                     'add-or-replace)
-          (save-buffer))))
+    (pyvenv-mode 1)
+    (when (locate-dominating-file default-directory "Pipfile")
+      (unless (file-exists-p ".dir-locals.el")
+        (if-let ((bin (executable-find "pipenv")))
+            (let ((full (string-trim (shell-command-to-string (concat bin " --venv")))))
+              (unless (file-exists-p full)
+                (error (concat "Error: " full)))
+              (let ((name (file-name-base (string-trim full)))
+                    (path (file-name-directory (string-trim full))))
+                (save-window-excursion
+                  (modify-dir-local-variable nil 'eglot-workspace-configuration
+                                             `(:pyright
+                                               (:venvPath ,path
+                                                          :venv ,name))
+                                             'add-or-replace)
+                  (save-buffer))
+                (save-window-excursion
+                  (modify-dir-local-variable nil 'pyvenv-activate full 'add-or-replace)
+                  (save-buffer))))
+          (error "Pipenv not found"))))
     (eglot-ensure))
   :custom
   (eglot-autoshutdown t)
@@ -1016,11 +1024,8 @@ current HH:MM time."
 (use-package format-all
   :ensure t)
 
-(use-package pipenv
-  :ensure t
-  :custom
-  (pipenv-with-projectile nil)
-  (pipenv-with-flycheck nil))
+(use-package pyvenv
+  :ensure t)
 
 (use-package yasnippet
   :ensure t

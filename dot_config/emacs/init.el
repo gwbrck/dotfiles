@@ -1005,12 +1005,8 @@ current HH:MM time."
 
 (use-package typescript-mode
   :ensure t
-  :mode (rx ".ts" string-end)
   :custom
-  (typescript-indent-level 2)
-  :init
-  (define-derived-mode typescript-tsx-mode typescript-mode "typescript-tsx")
-  (add-to-list 'auto-mode-alist (cons (rx ".tsx" string-end) #'typescript-tsx-mode)))
+  (typescript-indent-level 2))
 
 (use-package npm-mode
   :ensure t

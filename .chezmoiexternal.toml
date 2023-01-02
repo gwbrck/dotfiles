@@ -23,10 +23,3 @@
     type = "file"
     url = "https://raw.githubusercontent.com/citation-style-language/locales/master/locales-en-US.xml"
     refreshPeriod = "168h"
-
-[".config/emacs/tree-sitter"]
-    type = "archive"
-    url = "https://github.com/casouri/tree-sitter-module/releases/download/v2.1/libs-macos-x64.zip"
-    exact = true
-    stripComponents = 1
-    refreshPeriod = "168h"

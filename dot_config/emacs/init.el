@@ -653,10 +653,10 @@ targets."
   (leader-key-def
     "fb" 'citar-open))
 
-(unless (package-installed-p 'pdf-drop-mode)
-  (package-vc-install "https://github.com/rougier/pdf-drop-mode.git"))
-
 (use-package pdf-drop-mode
+  :init
+  (unless (package-installed-p 'pdf-drop-mode)
+    (package-vc-install "https://github.com/rougier/pdf-drop-mode.git"))
   :custom
   (pdf-drop-search-methods '(doi/metadata
                              doi/content
@@ -927,6 +927,34 @@ current HH:MM time."
 
 (use-package eldoc-box
   :ensure t)
+
+(use-package treesit-parser-manager
+  :init
+  (unless (package-installed-p 'treesit-parser-manager)
+    (package-vc-install "https://codeberg.org/ckruse/treesit-parser-manager.git"))
+  :commands (treesit-parser-manager-install-grammars
+             treesit-parser-manager-update-grammars
+             treesit-parser-manager-install-or-update-grammars
+             treesit-parser-manager-remove-grammar)
+  :custom
+  (treesit-parser-manager-grammars
+   '(("https://github.com/tree-sitter/tree-sitter-rust"
+      ("tree-sitter-rust"))
+     ("https://github.com/ikatyang/tree-sitter-toml"
+      ("tree-sitter-toml"))
+     ("https://github.com/tree-sitter/tree-sitter-typescript"
+      ("tree-sitter-typescript/tsx" "tree-sitter-typescript/typescript"))
+     ("https://github.com/tree-sitter/tree-sitter-javascript"
+      ("tree-sitter-javascript"))
+     ("https://github.com/tree-sitter/tree-sitter-css"
+      ("tree-sitter-css"))
+     ("https://github.com/serenadeai/tree-sitter-scss"
+      ("tree-sitter-scss"))
+     ("https://github.com/tree-sitter/tree-sitter-json"
+      ("tree-sitter-json"))))
+  :config
+  (add-to-list 'treesit-extra-load-path treesit-parser-manager-target-directory)
+  :hook (emacs-startup . treesit-parser-manager-install-grammars))
 
 (use-package eglot
   :config

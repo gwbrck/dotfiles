@@ -996,6 +996,7 @@ current HH:MM time."
   (c++-mode . eglot-ensure)
   (ess-r-mode . eglot-ensure)
   (python-mode . start-pyright)
+  (tsx-ts-mode . eglot-ensure)
   (typescript-mode . eglot-ensure)
   (json-mode . eglot-ensure)
   (java-mode . eglot-ensure))

@@ -684,7 +684,7 @@ targets."
   :ensure t
   :custom
   (citar-org-roam-subdir "annotaions")
-  (citar-org-roam-note-title-template "${author editor} (${year}) :: ${title}")
+  (citar-org-roam-note-title-template "${author editor} (${year}): ${title}")
   :config
   (citar-org-roam-mode))
 

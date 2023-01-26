@@ -233,29 +233,24 @@
 (use-package org
   :ensure t
   :demand t
-  :hook ((org-mode . gwbrck/org-mode-setup))
+  :hook ((org-mode . gwbrck/set-font-faces)
+         (org-mode . visual-line-mode)
+         (org-mode . visual-fill-column-mode)
+         (org-mode . variable-pitch-mode))
   :custom
   (org-default-notes-file (concat gwbrck/roam "INBOX.org"))
   (org-clock-clocktable-default-properties '(:maxlevel 4 :scope agenda))
   (org-archive-location (concat gwbrck/roam "archiv.org::* From %s"))
   (org-archive-subtree-save-file-p t)
   (org-startup-folded t)
+  (org-startup-indented t)
   :init
-  (defun gwbrck/org-mode-setup ()
-    (org-indent-mode)
-    (variable-pitch-mode 1)
-    (gwbrck/set-font-faces)
-    (visual-line-mode 1))
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((R . t)
      (emacs-lisp . t)
      (restclient . t)))
   (setq org-ellipsis " ▾")
-  (defun gwbrck/org-mode-visual-fill ()
-    (setq visual-fill-column-width 110
-          visual-fill-column-center-text t)
-    (visual-fill-column-mode 1))
   :config
   (add-to-list 'org-tags-exclude-from-inheritance "tasks")
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
@@ -325,7 +320,9 @@
 (use-package visual-fill-column
   :ensure t
   :after org
-  :hook (org-mode . gwbrck/org-mode-visual-fill))
+  :custom
+  (visual-fill-column-width 110)
+  (visual-fill-column-center-text t))
 
 (use-package org-bullets
   :ensure t
@@ -352,8 +349,8 @@
     (set-face-attribute 'default nil :font "Fira Code" :height 120)
     (set-face-attribute 'fixed-pitch nil :font "Fira Code" :height 1.0)
     (set-face-attribute 'variable-pitch nil :font "Cantarell" :weight 'regular :height 1.0)
-    (dolist (face '((org-level-1 . 1.2)
-                    (org-level-2 . 1.1)
+    (dolist (face '((org-level-1 . 1.3)
+                    (org-level-2 . 1.2)
                     (org-level-3 . 1.1)
                     (org-level-4 . 1.0)
                     (org-level-5 . 1.0)
@@ -849,6 +846,32 @@ current HH:MM time."
 (use-package ox-moderncv
   :load-path "lisp/")
 
+(use-package consult-org-roam
+   :ensure t
+   :after org-roam
+   :init
+   (require 'consult-org-roam)
+   ;; Activate the minor mode
+   (consult-org-roam-mode 1)
+   :custom
+   ;; Use `ripgrep' for searching with `consult-org-roam-search'
+   (consult-org-roam-grep-func #'consult-ripgrep)
+   ;; Configure a custom narrow key for `consult-buffer'
+   (consult-org-roam-buffer-narrow-key ?r)
+   ;; Display org-roam buffers right after non-org-roam buffers
+   ;; in consult-buffer (and not down at the bottom)
+   (consult-org-roam-buffer-after-buffers t)
+   :config
+   ;; Eventually suppress previewing for certain functions
+   (consult-customize
+    consult-org-roam-forward-links
+    :preview-key (kbd "M-."))
+   :bind
+   ;; Define some convenient keybindings as an addition
+   ("C-c n e" . consult-org-roam-file-find)
+   ("C-c n b" . consult-org-roam-backlinks)
+   ("C-c n l" . consult-org-roam-forward-links)
+   ("C-c n r" . consult-org-roam-search))
 ;; (use-package flyspell
 ;;   :hook ((flyspell-mode . flyspell-buffer)
 ;;          (flyspell-mode . synosaurus-mode)

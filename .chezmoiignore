@@ -4,6 +4,9 @@ bin/interception-pipe1
 .config/skhd
 .config/karabiner
 {{ end }}
+{{ if ne .chezmoi.os "windows" }}
+ ahk
+{{ end }}
 {{ if ne .chezmoi.os "linux" }}
 .config/mako
 .config/kwalletrc

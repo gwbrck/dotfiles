@@ -988,27 +988,30 @@ current HH:MM time."
 (use-package eglot
   :config
   (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
-  (defun start-pyright ()
+  (defun start-pylsp ()
     "Function to start python lsp"
     (pyvenv-mode 1)
     (when (locate-dominating-file default-directory "Pipfile")
       (unless (file-exists-p ".dir-locals.el")
         (if-let ((bin (executable-find "pipenv")))
-            (let ((full (string-trim (shell-command-to-string (concat bin " --venv")))))
-              (unless (file-exists-p full)
-                (error (concat "Error: " full)))
-              (let ((name (file-name-base (string-trim full)))
-                    (path (file-name-directory (string-trim full))))
-                (save-window-excursion
-                  (modify-dir-local-variable nil 'eglot-workspace-configuration
-                                             `(:pyright
-                                               (:venvPath ,path
-                                                          :venv ,name))
-                                             'add-or-replace)
-                  (save-buffer))
-                (save-window-excursion
-                  (modify-dir-local-variable nil 'pyvenv-activate full 'add-or-replace)
-                  (save-buffer))))
+            (let ((path (string-trim (shell-command-to-string (concat bin " --venv --quiet")))))
+              (unless (file-exists-p path)
+                (error (concat "Error: pipenv --venv returned:" path)))
+              (save-window-excursion
+                (modify-dir-local-variable nil 'eglot-workspace-configuration
+                                           `(:pylsp .
+                                                     ((:plugins
+                                                       (:jedi_completion (:fuzzy t)
+                                                       :jedi (:environment ,path)))))
+                                           'add-or-replace)
+                (save-buffer))
+              (save-window-excursion
+                (modify-dir-local-variable nil 'pyvenv-activate path 'add-or-replace)
+                (save-buffer))
+              (unless (let ((exec-path (concat path "/bin")))
+                        (executable-find "pylsp"))
+                (message "Install pylsp...")
+                (shell-command (concat bin " install --dev python-lsp-server[all]"))))
           (error "Pipenv not found"))))
     (eglot-ensure))
   :custom
@@ -1018,7 +1021,7 @@ current HH:MM time."
   (c-mode . eglot-ensure)
   (c++-mode . eglot-ensure)
   (ess-r-mode . eglot-ensure)
-  (python-mode . start-pyright)
+  (python-mode . start-pylsp)
   (tsx-ts-mode . eglot-ensure)
   (typescript-mode . eglot-ensure)
   (json-mode . eglot-ensure)

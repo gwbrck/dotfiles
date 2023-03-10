@@ -1095,7 +1095,10 @@ current HH:MM time."
     "p" '(:keymap project-prefix-map :wk "projects")
     "fp" '(project-find-file :wk "project find")
     "dp" '(project-dired :wk "project dired")
-    "bkp" '(project-kill-buffers :wk "kill project")))
+    "bkp" '(project-kill-buffers :wk "kill project"))
+  :config
+  (unless (cl-member-if (lambda (s) (string-match "/Code/" s)) (project-known-project-roots))
+    (project-remember-projects-under "~/Code/" t)))
 
 (use-package evil-nerd-commenter
   :ensure t

@@ -38,6 +38,11 @@
   (set-keyboard-coding-system 'utf-8)
   (prefer-coding-system 'utf-8))
 
+(use-package with-editor
+  :when (equal system-type 'darwin)
+  :config
+  (setq with-editor-emacsclient-executable (executable-find "emacsclient")))
+
 (use-package epg
   :config
   (defun pinentry-loopback-after-init ()

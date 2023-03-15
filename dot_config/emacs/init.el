@@ -696,6 +696,14 @@ targets."
   :no-require
   :config (citar-embark-mode))
 
+(use-package org-cite-csl-activate
+  :init
+  (unless (package-installed-p 'org-cite-csl-activate)
+    (package-vc-install "https://github.com/andras-simonyi/org-cite-csl-activate.git"))
+  :hook
+  (org-mode . org-cite-csl-activate-render-all)
+  (org-mode . cursor-sensor-mode))
+
 (use-package oc
   :no-require
   :config
@@ -705,7 +713,7 @@ targets."
   (org-cite-csl-locales-dir "~/.config/csl/locales")
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
-  (org-cite-activate-processor 'citar)
+  (org-cite-activate-processor 'csl-activate)
   (org-cite-export-processors '((t csl "apa.csl")))
   :general
   (:keymaps 'org-mode-map

@@ -794,18 +794,18 @@ current HH:MM time."
     "fn" 'org-roam-node-find
     "o" 'org-roam-capture))
 
-(use-package org-caldav
-  :ensure t
-  :after org-roam
-  :config
-  (advice-add 'org-caldav-sync :after #'org-save-all-org-buffers)
-  :general
-  ("SPC" nil :keymaps 'org-caldav-sync-results-mode-map)
-  ("SPC" nil :states 'normal :keymaps 'org-caldav-sync-results-mode-map))
-
-(use-package vulpea-org-roam-caldav
-  :after org-caldav
-  :load-path "lisp/")
+;; (use-package org-caldav
+;;   :ensure t
+;;   :after org-roam
+;;   :config
+;;   (advice-add 'org-caldav-sync :after #'org-save-all-org-buffers)
+;;   :general
+;;   ("SPC" nil :keymaps 'org-caldav-sync-results-mode-map)
+;;   ("SPC" nil :states 'normal :keymaps 'org-caldav-sync-results-mode-map))
+;; 
+;; (use-package vulpea-org-roam-caldav
+;;   :after org-caldav
+;;   :load-path "lisp/")
 
 (use-package ox
   :after org

@@ -136,7 +136,10 @@
       (bibtex-clean-entry)
       (setq key (bibtex-key-in-head))
       (bibtex-sort-buffer)
-      (bibtex-search-entry key))))
+      (bibtex-search-entry key)
+      (when (y-or-n-p (concat "Add " key " to Leseliste?"))
+        (kill-new key)
+        (org-capture t "L")))))
 
 (defun arxiv-id-to-bibtex (arxiv-id)
   "Retrieve (raw) bibtex information for ARXIV-ID item using arxiv API."

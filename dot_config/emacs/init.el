@@ -243,7 +243,7 @@
          (org-mode . visual-fill-column-mode)
          (org-mode . variable-pitch-mode))
   :custom
-  (org-default-notes-file (concat gwbrck/roam "INBOX.org"))
+  (org-default-notes-file (concat gwbrck/roam "journal.org"))
   (org-clock-clocktable-default-properties '(:maxlevel 4 :scope agenda))
   (org-archive-location (concat gwbrck/roam "archiv.org::* From %s"))
   (org-archive-subtree-save-file-p t)
@@ -257,22 +257,33 @@
      (restclient . t)))
   (setq org-ellipsis " ▾")
   :config
-  (add-to-list 'org-tags-exclude-from-inheritance "tasks")
+  (setq org-capture-templates
+        '(("l"
+           "neue Literatur"
+           entry
+           (file+olp "journal.org" "Literaturarbeit")
+           "** TODO [cite/t:@%(citar-org-select-key)] %(org-set-tags-command) \n %?")
+          ("L"
+           "neue Literatur (key in killring)"
+           entry
+           (file+olp "journal.org" "Literaturarbeit")
+           "** TODO [cite/t:@%c] %(org-set-tags-command) \n %?")))
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
   (advice-add 'org-archive-subtree :after 'org-save-all-org-buffers)
   (setq org-tag-alist
         '((:endgroup)
-          ("Konspekt" . ?K)
-          ("Exzerpt" . ?E)
-          ("fun" . ?c)
-          ("work" . ?w)
-          ("personal" . ?p))))
+          ("discovery" . ?d)
+          ("litReview" . ?l)
+          ("mustRead" . ?r)
+          ("theory" . ?t)
+          ("code" . ?c)
+          ("method" . ?m))))
 
 (use-package org-agenda
   :after org
-  ;; agenda files are defined by vulpea functions (orgroam)
-  ;;(setq org-agenda-files (directory-files-recursively gwbrck/roam "\\.org$"))
   :custom
+  ;; agenda files are defined by vulpea functions (orgroam)
+  (org-agenda-files (concat gwbrck/roam "journal.org"))
   (org-agenda-columns-add-appointments-to-effort-sum t)
   (org-agenda-start-with-log-mode t)
   (org-log-done 'note)
@@ -283,30 +294,7 @@
   ("SPC" nil :keymaps 'org-agenda-mode-map)
   ("SPC" nil :keymaps 'org-agenda-mode-map :states 'motion)
   (leader-key-def
-    "a" '(org-agenda :wk "agenda"))
-  :config
-  (setq org-agenda-custom-commands
-        '(("f" "fun"
-           ((tags-todo "fun" ((org-agenda-overriding-header "FUN TODOs")))))
-          ("A" "all dashboard"
-           ((agenda "" ((org-agenda-span 1)
-                        (org-agenda-archives-mode t)
-                        (org-agenda-clockreport-mode t)))
-            (alltodo "" ((org-agenda-overriding-header "Non schedueled TODOs")))))
-          ("W" "all week dashboard"
-           ((agenda "" ((org-agenda-span 7)
-                        (org-agenda-archives-mode t)
-                        (org-agenda-clockreport-mode t)
-                        (org-agenda-clockreport-parameter-plist '(:link t :maxlever 4 :block thisweek))))
-            (alltodo "" ((org-agenda-overriding-header "Non schedueled TODOs")))))
-          ("w" "default week dashboard"
-           ((agenda "" ((org-agenda-span 7)
-                        (org-agenda-tag-filter-preset '("-fun"))))
-            (tags-todo "-fun" ((org-agenda-overriding-header "TODOs")))))
-          ("a" "default dashboard"
-           ((agenda "" ((org-agenda-span 1)
-                        (org-agenda-tag-filter-preset '("-fun"))))
-            (tags-todo "-fun" ((org-agenda-overriding-header "TODOs"))))))))
+    "a" '(org-agenda :wk "agenda")))
 
 (use-package ox-icalendar
   :after org
@@ -319,6 +307,7 @@
   :init
   (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("get" . "src restclient"))
   (add-to-list 'org-structure-template-alist '("py" . "src python"))
   (add-to-list 'org-structure-template-alist '("R" . "src R")))
 
@@ -762,31 +751,17 @@ current HH:MM time."
       (let ((org-overriding-default-time
 	     (org-get-cursor-date (equal with-time 1))))
         (call-interactively 'org-roam-capture-agenda))))
-
   (setq org-roam-capture-templates
-        '(("m" "main" plain "%?"
+        '(("n" "new note" plain "%?"
            :target
            (file+head "main/${slug}.org" "#+title: ${title}\n")
            :immediate-finish t
            :unnarrowed t)
-          ("a" "annotation" plain "%?"
-           :target
-           (file+head "annotations/${title}.org" "#+title: ${title}\n")
-           :immediate-finish t
-           :unnarrowed t)
-          ("p" "project" plain "%?"
+          ("p" "new project" plain "%?"
            :target
            (file+head "projects/${title}.org" "#+title: ${title}")
            :immediate-finish t
-           :unnarrowed t)
-          ("t" "INBOX Task" plain "* TODO ${slug} %?\n"
-           :target
-           (file+head+olp "INBOX.org" "#+title: INBOX\n" ("Tasks"))
-           :unnarrowed t)
-          ("n" "INBOX Note" plain "* %?\n"
-           :target (node "INBOX")
-           :immediate-finish t
-           :unnarroed t)))
+           :unnarrowed t)))
   (advice-add 'org-roam-refile :after 'org-save-all-org-buffers)
   (org-roam-setup)
   :general

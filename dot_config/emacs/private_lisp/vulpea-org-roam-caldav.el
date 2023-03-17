@@ -1,3 +1,4 @@
+(add-to-list 'org-tags-exclude-from-inheritance "tasks")
 (setq org-caldav-inbox (concat org-roam-directory "caldav.org"))
 (setq org-icalendar-timezone "Europe/Berlin")
 (setq org-caldav-url (auth-source-pass-get "org-caldav-url" "nebenkosten/nextcloud_(privat)"))

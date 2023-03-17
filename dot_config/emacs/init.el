@@ -267,7 +267,12 @@
            "neue Literatur (key in killring)"
            entry
            (file+olp "journal.org" "Literaturarbeit")
-           "** TODO [cite/t:@%c] %(org-set-tags-command) \n %?")))
+           "** TODO [cite/t:@%c] %(org-set-tags-command) \n %?")
+          ("t"
+           "task"
+           entry
+           (file+olp "journal.org" "Aufgaben")
+           "** TODO %? %(org-set-tags-command)")))
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
   (advice-add 'org-archive-subtree :after 'org-save-all-org-buffers)
   (setq org-tag-alist
@@ -277,7 +282,10 @@
           ("mustRead" . ?r)
           ("theory" . ?t)
           ("code" . ?c)
-          ("method" . ?m))))
+          ("method" . ?m)))
+  :general
+  (leader-key-def
+    "o" '(org-capture :wk "capture")))
 
 (use-package org-agenda
   :after org
@@ -718,69 +726,10 @@ targets."
   (org-roam-directory gwbrck/roam)
   (org-roam-completion-everywhere t)
   :config
-  (setq org-roam-db-node-include-function
-        (lambda ()
-          (not (member "ARCHIVE" (org-get-tags)))))
-  (cl-defmethod org-roam-node-type ((node org-roam-node))
-    "Return the TYPE of NODE."
-    (condition-case nil
-        (file-name-nondirectory
-         (directory-file-name
-          (file-name-directory
-           (file-relative-name (org-roam-node-file node) org-roam-directory))))
-      (error "")))
-  (setq org-roam-node-display-template
-        (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-  (defun org-roam-capture-agenda ()
-    (interactive)
-    (org-roam-capture- :node (org-roam-node-read
-                              nil
-                              (lambda (node)
-                                (member "tasks" (org-roam-node-tags node))))
-                       :templates '(("p" "tasks tag" plain "* TODO %?\nSCHEDULED: %t"
-                                     :target (file+head+olp "${slug}-%<%Y%m%d%H%M%S>.org"
-                                                            "#+title: ${title}\n"
-                                                            ("Tasks"))))))
-  (defun org-agenda-capture (&optional with-time)
-    "Call `org-capture' with the date at point.
-With a `C-1' prefix, use the HH:MM value at point (if any) or the
-current HH:MM time."
-    (interactive "P")
-    (if (not (eq major-mode 'org-agenda-mode))
-        (user-error "You cannot do this outside of agenda buffers")
-      (let ((org-overriding-default-time
-	     (org-get-cursor-date (equal with-time 1))))
-        (call-interactively 'org-roam-capture-agenda))))
-  (setq org-roam-capture-templates
-        '(("n" "new note" plain "%?"
-           :target
-           (file+head "main/${slug}.org" "#+title: ${title}\n")
-           :immediate-finish t
-           :unnarrowed t)
-          ("p" "new project" plain "%?"
-           :target
-           (file+head "projects/${title}.org" "#+title: ${title}")
-           :immediate-finish t
-           :unnarrowed t)))
-  (advice-add 'org-roam-refile :after 'org-save-all-org-buffers)
   (org-roam-setup)
   :general
   (leader-key-def
-    "fn" 'org-roam-node-find
-    "o" 'org-roam-capture))
-
-;; (use-package org-caldav
-;;   :ensure t
-;;   :after org-roam
-;;   :config
-;;   (advice-add 'org-caldav-sync :after #'org-save-all-org-buffers)
-;;   :general
-;;   ("SPC" nil :keymaps 'org-caldav-sync-results-mode-map)
-;;   ("SPC" nil :states 'normal :keymaps 'org-caldav-sync-results-mode-map))
-;; 
-;; (use-package vulpea-org-roam-caldav
-;;   :after org-caldav
-;;   :load-path "lisp/")
+    "fn" 'org-roam-node-find))
 
 (use-package ox
   :after org

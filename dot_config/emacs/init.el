@@ -283,7 +283,7 @@
   :after org
   :custom
   ;; agenda files are defined by vulpea functions (orgroam)
-  (org-agenda-files (concat gwbrck/roam "journal.org"))
+  (org-agenda-files `(,(concat gwbrck/roam "journal.org")))
   (org-agenda-columns-add-appointments-to-effort-sum t)
   (org-agenda-start-with-log-mode t)
   (org-log-done 'note)

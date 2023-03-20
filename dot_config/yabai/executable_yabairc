@@ -40,7 +40,7 @@ yabai -m rule --add app=Spotify sticky=on grid=16:16:1:1:14:14 manage=off
 yabai -m rule --add app=WhatsApp sticky=on grid=16:16:1:1:14:14 manage=off
 yabai -m rule --add app=Steam manage=off
 yabai -m rule --add app=Mail space=4
-yabai -m rule --add app=Calendar space=4 manage=off
+yabai -m rule --add app=Kalender sticky=on grid=16:16:1:1:14:14 manage=off
 yabai -m rule --add app=Systemeinstellungen manage=off
 
 

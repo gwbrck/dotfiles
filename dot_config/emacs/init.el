@@ -650,7 +650,10 @@ targets."
   (setq citar-symbol-separator "  ")
   :general
   (leader-key-def
-    "fb" 'citar-open))
+    "fb" 'citar-open)
+  :hook
+  (LaTeX-mode . citar-capf-setup)
+  (org-mode . citar-capf-setup))
 
 (use-package pdf-drop-mode
   :init

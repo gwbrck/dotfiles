@@ -638,15 +638,38 @@ targets."
 
 (use-package citar
   :ensure t
-  :demand t
   :after init-bibtex
   :config
   (add-to-list 'citar-bibliography main-bib-file)
   (add-to-list 'citar-library-paths (concat gwbrck/roam "pdfs"))
-  (setq citar-symbols
-	`((file ,(all-the-icons-faicon "file-o" :face 'all-the-icons-green :v-adjust -0.1) . " ")
-          (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue :v-adjust -0.3) . " ")
-          (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange :v-adjust 0.01) . " ")))
+  (setq citar-indicator-files-icons
+    (citar-indicator-create
+     :symbol (all-the-icons-faicon
+              "file-o"
+              :face 'all-the-icons-green
+              :v-adjust -0.1)
+     :function #'citar-has-files
+     :tag "has:files"))
+  (setq citar-indicator-links-icons
+    (citar-indicator-create
+     :symbol (all-the-icons-octicon
+              "link"
+              :face 'all-the-icons-orange
+              :v-adjust 0.01)
+     :function #'citar-has-links
+     :tag "has:links"))
+  (setq citar-indicator-notes-icons
+    (citar-indicator-create
+     :symbol (all-the-icons-material
+              "speaker_notes"
+              :face 'all-the-icons-blue
+              :v-adjust -0.3)
+     :function #'citar-has-notes
+     :tag "has:notes"))
+  (setq citar-indicators
+        (list citar-indicator-files-icons
+              citar-indicator-links-icons
+              citar-indicator-notes-icons))
   (setq citar-symbol-separator "  ")
   :general
   (leader-key-def

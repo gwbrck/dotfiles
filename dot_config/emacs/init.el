@@ -649,6 +649,7 @@ targets."
               :face 'all-the-icons-green
               :v-adjust -0.1)
      :function #'citar-has-files
+     :padding "  "
      :tag "has:files"))
   (setq citar-indicator-links-icons
     (citar-indicator-create
@@ -657,6 +658,7 @@ targets."
               :face 'all-the-icons-orange
               :v-adjust 0.01)
      :function #'citar-has-links
+     :padding "  "
      :tag "has:links"))
   (setq citar-indicator-notes-icons
     (citar-indicator-create
@@ -665,12 +667,12 @@ targets."
               :face 'all-the-icons-blue
               :v-adjust -0.3)
      :function #'citar-has-notes
+     :padding "  "
      :tag "has:notes"))
   (setq citar-indicators
         (list citar-indicator-files-icons
               citar-indicator-links-icons
               citar-indicator-notes-icons))
-  (setq citar-symbol-separator "  ")
   :general
   (leader-key-def
     "fb" 'citar-open)

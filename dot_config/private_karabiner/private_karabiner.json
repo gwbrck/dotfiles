@@ -442,36 +442,8 @@
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^com\\.microsoft\\.rdc$",
-                      "^com\\.microsoft\\.rdc\\.mac$",
-                      "^com\\.microsoft\\.rdc\\.macos$",
-                      "^com\\.microsoft\\.rdc\\.osx\\.beta$",
-                      "^net\\.sf\\.cord$",
-                      "^com\\.thinomenon\\.RemoteDesktopConnection$",
-                      "^com\\.itap-mobile\\.qmote$",
-                      "^com\\.nulana\\.remotixmac$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
-                      "^com\\.teamviewer\\.TeamViewer$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.2X\\.Client\\.Mac$",
-                      "^com\\.vmware\\.fusion$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.vmware\\.view$",
-                      "^com\\.parallels\\.desktop$",
-                      "^com\\.parallels\\.vm$",
-                      "^com\\.parallels\\.desktop\\.console$",
-                      "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-                      "^com\\.citrix\\.XenAppViewer$",
-                      "^com\\.vmware\\.proxyApp\\.",
-                      "^com\\.parallels\\.winapp\\.",
-                      "^org\\.macports\\.X11$",
-                      "^co\\.zeit\\.hyperterm$",
-                      "^co\\.zeit\\.hyper$",
-                      "^org\\.gnu\\.Emacs$",
                       "^org\\.alacritty$",
-                      "^net\\.kovidgoyal\\.kitty$",
-                      "^tv\\.parsec\\.www$"
+                      "^org\\.gnu\\.Emacs$"
                     ],
                     "type": "frontmost_application_unless"
                   }
@@ -495,36 +467,8 @@
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^com\\.microsoft\\.rdc$",
-                      "^com\\.microsoft\\.rdc\\.mac$",
-                      "^com\\.microsoft\\.rdc\\.macos$",
-                      "^com\\.microsoft\\.rdc\\.osx\\.beta$",
-                      "^net\\.sf\\.cord$",
-                      "^com\\.thinomenon\\.RemoteDesktopConnection$",
-                      "^com\\.itap-mobile\\.qmote$",
-                      "^com\\.nulana\\.remotixmac$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
-                      "^com\\.teamviewer\\.TeamViewer$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.2X\\.Client\\.Mac$",
-                      "^com\\.vmware\\.fusion$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.vmware\\.view$",
-                      "^com\\.parallels\\.desktop$",
-                      "^com\\.parallels\\.vm$",
-                      "^com\\.parallels\\.desktop\\.console$",
-                      "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-                      "^com\\.citrix\\.XenAppViewer$",
-                      "^com\\.vmware\\.proxyApp\\.",
-                      "^com\\.parallels\\.winapp\\.",
-                      "^org\\.macports\\.X11$",
-                      "^co\\.zeit\\.hyperterm$",
-                      "^co\\.zeit\\.hyper$",
-                      "^org\\.gnu\\.Emacs$",
                       "^org\\.alacritty$",
-                      "^net\\.kovidgoyal\\.kitty$",
-                      "^tv\\.parsec\\.www$"
+                      "^org\\.gnu\\.Emacs$"
                     ],
                     "type": "frontmost_application_unless"
                   }
@@ -548,36 +492,8 @@
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^com\\.microsoft\\.rdc$",
-                      "^com\\.microsoft\\.rdc\\.mac$",
-                      "^com\\.microsoft\\.rdc\\.macos$",
-                      "^com\\.microsoft\\.rdc\\.osx\\.beta$",
-                      "^net\\.sf\\.cord$",
-                      "^com\\.thinomenon\\.RemoteDesktopConnection$",
-                      "^com\\.itap-mobile\\.qmote$",
-                      "^com\\.nulana\\.remotixmac$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
-                      "^com\\.teamviewer\\.TeamViewer$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.2X\\.Client\\.Mac$",
-                      "^com\\.vmware\\.fusion$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.vmware\\.view$",
-                      "^com\\.parallels\\.desktop$",
-                      "^com\\.parallels\\.vm$",
-                      "^com\\.parallels\\.desktop\\.console$",
-                      "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-                      "^com\\.citrix\\.XenAppViewer$",
-                      "^com\\.vmware\\.proxyApp\\.",
-                      "^com\\.parallels\\.winapp\\.",
-                      "^org\\.macports\\.X11$",
-                      "^co\\.zeit\\.hyperterm$",
-                      "^org\\.gnu\\.Emacs$",
-                      "^co\\.zeit\\.hyper$",
                       "^org\\.alacritty$",
-                      "^net\\.kovidgoyal\\.kitty$",
-                      "^tv\\.parsec\\.www$"
+                      "^org\\.gnu\\.Emacs$"
                     ],
                     "type": "frontmost_application_unless"
                   }
@@ -600,100 +516,14 @@
             ]
           },
           {
-            "description": "Ctrl+Z => Cmd+Z (Undo)",
+            "description": "Ctrl+Z => Cmd+Z (Undo) (DE_de: y)",
             "manipulators": [
               {
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^com\\.microsoft\\.rdc$",
-                      "^com\\.microsoft\\.rdc\\.mac$",
-                      "^com\\.microsoft\\.rdc\\.macos$",
-                      "^com\\.microsoft\\.rdc\\.osx\\.beta$",
-                      "^net\\.sf\\.cord$",
-                      "^com\\.thinomenon\\.RemoteDesktopConnection$",
-                      "^com\\.itap-mobile\\.qmote$",
-                      "^com\\.nulana\\.remotixmac$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
-                      "^com\\.teamviewer\\.TeamViewer$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.2X\\.Client\\.Mac$",
-                      "^com\\.vmware\\.fusion$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.vmware\\.view$",
-                      "^com\\.parallels\\.desktop$",
-                      "^com\\.parallels\\.vm$",
-                      "^com\\.parallels\\.desktop\\.console$",
-                      "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-                      "^com\\.citrix\\.XenAppViewer$",
-                      "^com\\.vmware\\.proxyApp\\.",
-                      "^com\\.parallels\\.winapp\\.",
-                      "^org\\.macports\\.X11$",
-                      "^co\\.zeit\\.hyperterm$",
-                      "^org\\.gnu\\.Emacs$",
-                      "^co\\.zeit\\.hyper$",
                       "^org\\.alacritty$",
-                      "^net\\.kovidgoyal\\.kitty$",
-                      "^tv\\.parsec\\.www$"
-                    ],
-                    "type": "frontmost_application_unless"
-                  }
-                ],
-                "from": {
-                  "key_code": "z",
-                  "modifiers": {
-                    "mandatory": ["control"],
-                    "optional": ["any"]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "z",
-                    "modifiers": ["left_command"]
-                  }
-                ],
-                "type": "basic"
-              }
-            ]
-          },
-          {
-            "description": "Ctrl+Y => Cmd+Shift+Y (Redo)",
-            "manipulators": [
-              {
-                "conditions": [
-                  {
-                    "bundle_identifiers": [
-                      "^com\\.microsoft\\.rdc$",
-                      "^com\\.microsoft\\.rdc\\.mac$",
-                      "^com\\.microsoft\\.rdc\\.macos$",
-                      "^com\\.microsoft\\.rdc\\.osx\\.beta$",
-                      "^net\\.sf\\.cord$",
-                      "^com\\.thinomenon\\.RemoteDesktopConnection$",
-                      "^com\\.itap-mobile\\.qmote$",
-                      "^com\\.nulana\\.remotixmac$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
-                      "^com\\.teamviewer\\.TeamViewer$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.2X\\.Client\\.Mac$",
-                      "^com\\.vmware\\.fusion$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.vmware\\.view$",
-                      "^com\\.parallels\\.desktop$",
-                      "^com\\.parallels\\.vm$",
-                      "^com\\.parallels\\.desktop\\.console$",
-                      "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-                      "^com\\.citrix\\.XenAppViewer$",
-                      "^com\\.vmware\\.proxyApp\\.",
-                      "^com\\.parallels\\.winapp\\.",
-                      "^org\\.macports\\.X11$",
-                      "^co\\.zeit\\.hyperterm$",
-                      "^org\\.gnu\\.Emacs$",
-                      "^co\\.zeit\\.hyper$",
-                      "^org\\.alacritty$",
-                      "^net\\.kovidgoyal\\.kitty$",
-                      "^tv\\.parsec\\.www$"
+                      "^org\\.gnu\\.Emacs$"
                     ],
                     "type": "frontmost_application_unless"
                   }
@@ -707,8 +537,8 @@
                 },
                 "to": [
                   {
-                    "key_code": "z",
-                    "modifiers": ["left_command", "left_shift"]
+                    "key_code": "y",
+                    "modifiers": ["left_command"]
                   }
                 ],
                 "type": "basic"
@@ -722,36 +552,8 @@
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^com\\.microsoft\\.rdc$",
-                      "^com\\.microsoft\\.rdc\\.mac$",
-                      "^com\\.microsoft\\.rdc\\.macos$",
-                      "^com\\.microsoft\\.rdc\\.osx\\.beta$",
-                      "^net\\.sf\\.cord$",
-                      "^com\\.thinomenon\\.RemoteDesktopConnection$",
-                      "^com\\.itap-mobile\\.qmote$",
-                      "^com\\.nulana\\.remotixmac$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
-                      "^com\\.teamviewer\\.TeamViewer$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.2X\\.Client\\.Mac$",
-                      "^com\\.vmware\\.fusion$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.vmware\\.view$",
-                      "^com\\.parallels\\.desktop$",
-                      "^com\\.parallels\\.vm$",
-                      "^com\\.parallels\\.desktop\\.console$",
-                      "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-                      "^com\\.citrix\\.XenAppViewer$",
-                      "^com\\.vmware\\.proxyApp\\.",
-                      "^com\\.parallels\\.winapp\\.",
-                      "^org\\.macports\\.X11$",
-                      "^co\\.zeit\\.hyperterm$",
-                      "^org\\.gnu\\.Emacs$",
-                      "^co\\.zeit\\.hyper$",
                       "^org\\.alacritty$",
-                      "^net\\.kovidgoyal\\.kitty$",
-                      "^tv\\.parsec\\.www$"
+                      "^org\\.gnu\\.Emacs$"
                     ],
                     "type": "frontmost_application_unless"
                   }
@@ -780,36 +582,8 @@
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^com\\.microsoft\\.rdc$",
-                      "^com\\.microsoft\\.rdc\\.mac$",
-                      "^com\\.microsoft\\.rdc\\.macos$",
-                      "^com\\.microsoft\\.rdc\\.osx\\.beta$",
-                      "^net\\.sf\\.cord$",
-                      "^com\\.thinomenon\\.RemoteDesktopConnection$",
-                      "^com\\.itap-mobile\\.qmote$",
-                      "^com\\.nulana\\.remotixmac$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
-                      "^com\\.teamviewer\\.TeamViewer$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.2X\\.Client\\.Mac$",
-                      "^com\\.vmware\\.fusion$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.vmware\\.view$",
-                      "^com\\.parallels\\.desktop$",
-                      "^com\\.parallels\\.vm$",
-                      "^com\\.parallels\\.desktop\\.console$",
-                      "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-                      "^com\\.citrix\\.XenAppViewer$",
-                      "^com\\.vmware\\.proxyApp\\.",
-                      "^com\\.parallels\\.winapp\\.",
-                      "^org\\.macports\\.X11$",
-                      "^co\\.zeit\\.hyperterm$",
-                      "^org\\.gnu\\.Emacs$",
-                      "^co\\.zeit\\.hyper$",
                       "^org\\.alacritty$",
-                      "^net\\.kovidgoyal\\.kitty$",
-                      "^tv\\.parsec\\.www$"
+                      "^org\\.gnu\\.Emacs$"
                     ],
                     "type": "frontmost_application_unless"
                   }
@@ -838,36 +612,8 @@
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^com\\.microsoft\\.rdc$",
-                      "^com\\.microsoft\\.rdc\\.mac$",
-                      "^com\\.microsoft\\.rdc\\.macos$",
-                      "^com\\.microsoft\\.rdc\\.osx\\.beta$",
-                      "^net\\.sf\\.cord$",
-                      "^com\\.thinomenon\\.RemoteDesktopConnection$",
-                      "^com\\.itap-mobile\\.qmote$",
-                      "^com\\.nulana\\.remotixmac$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
-                      "^com\\.teamviewer\\.TeamViewer$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.2X\\.Client\\.Mac$",
-                      "^com\\.vmware\\.fusion$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.vmware\\.view$",
-                      "^com\\.parallels\\.desktop$",
-                      "^com\\.parallels\\.vm$",
-                      "^com\\.parallels\\.desktop\\.console$",
-                      "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-                      "^com\\.citrix\\.XenAppViewer$",
-                      "^com\\.vmware\\.proxyApp\\.",
-                      "^com\\.parallels\\.winapp\\.",
-                      "^org\\.macports\\.X11$",
-                      "^co\\.zeit\\.hyperterm$",
-                      "^org\\.gnu\\.Emacs$",
-                      "^co\\.zeit\\.hyper$",
                       "^org\\.alacritty$",
-                      "^net\\.kovidgoyal\\.kitty$",
-                      "^tv\\.parsec\\.www$"
+                      "^org\\.gnu\\.Emacs$"
                     ],
                     "type": "frontmost_application_unless"
                   }
@@ -896,36 +642,8 @@
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^com\\.microsoft\\.rdc$",
-                      "^com\\.microsoft\\.rdc\\.mac$",
-                      "^com\\.microsoft\\.rdc\\.macos$",
-                      "^com\\.microsoft\\.rdc\\.osx\\.beta$",
-                      "^net\\.sf\\.cord$",
-                      "^com\\.thinomenon\\.RemoteDesktopConnection$",
-                      "^com\\.itap-mobile\\.qmote$",
-                      "^com\\.nulana\\.remotixmac$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
-                      "^com\\.teamviewer\\.TeamViewer$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.2X\\.Client\\.Mac$",
-                      "^com\\.vmware\\.fusion$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.vmware\\.view$",
-                      "^com\\.parallels\\.desktop$",
-                      "^com\\.parallels\\.vm$",
-                      "^com\\.parallels\\.desktop\\.console$",
-                      "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-                      "^com\\.citrix\\.XenAppViewer$",
-                      "^com\\.vmware\\.proxyApp\\.",
-                      "^com\\.parallels\\.winapp\\.",
-                      "^org\\.macports\\.X11$",
-                      "^co\\.zeit\\.hyperterm$",
-                      "^org\\.gnu\\.Emacs$",
-                      "^co\\.zeit\\.hyper$",
                       "^org\\.alacritty$",
-                      "^net\\.kovidgoyal\\.kitty$",
-                      "^tv\\.parsec\\.www$"
+                      "^org\\.gnu\\.Emacs$"
                     ],
                     "type": "frontmost_application_unless"
                   }
@@ -954,36 +672,8 @@
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^com\\.microsoft\\.rdc$",
-                      "^com\\.microsoft\\.rdc\\.mac$",
-                      "^com\\.microsoft\\.rdc\\.macos$",
-                      "^com\\.microsoft\\.rdc\\.osx\\.beta$",
-                      "^net\\.sf\\.cord$",
-                      "^com\\.thinomenon\\.RemoteDesktopConnection$",
-                      "^com\\.itap-mobile\\.qmote$",
-                      "^com\\.nulana\\.remotixmac$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
-                      "^com\\.teamviewer\\.TeamViewer$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.2X\\.Client\\.Mac$",
-                      "^com\\.vmware\\.fusion$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.vmware\\.view$",
-                      "^com\\.parallels\\.desktop$",
-                      "^com\\.parallels\\.vm$",
-                      "^com\\.parallels\\.desktop\\.console$",
-                      "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-                      "^com\\.citrix\\.XenAppViewer$",
-                      "^com\\.vmware\\.proxyApp\\.",
-                      "^com\\.parallels\\.winapp\\.",
-                      "^org\\.macports\\.X11$",
-                      "^co\\.zeit\\.hyperterm$",
-                      "^org\\.gnu\\.Emacs$",
-                      "^co\\.zeit\\.hyper$",
                       "^org\\.alacritty$",
-                      "^net\\.kovidgoyal\\.kitty$",
-                      "^tv\\.parsec\\.www$"
+                      "^org\\.gnu\\.Emacs$"
                     ],
                     "type": "frontmost_application_unless"
                   }
@@ -1012,36 +702,8 @@
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^com\\.microsoft\\.rdc$",
-                      "^com\\.microsoft\\.rdc\\.mac$",
-                      "^com\\.microsoft\\.rdc\\.macos$",
-                      "^com\\.microsoft\\.rdc\\.osx\\.beta$",
-                      "^net\\.sf\\.cord$",
-                      "^com\\.thinomenon\\.RemoteDesktopConnection$",
-                      "^com\\.itap-mobile\\.qmote$",
-                      "^com\\.nulana\\.remotixmac$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
-                      "^com\\.teamviewer\\.TeamViewer$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.2X\\.Client\\.Mac$",
-                      "^com\\.vmware\\.fusion$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.vmware\\.view$",
-                      "^com\\.parallels\\.desktop$",
-                      "^com\\.parallels\\.vm$",
-                      "^com\\.parallels\\.desktop\\.console$",
-                      "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-                      "^com\\.citrix\\.XenAppViewer$",
-                      "^com\\.vmware\\.proxyApp\\.",
-                      "^com\\.parallels\\.winapp\\.",
-                      "^org\\.macports\\.X11$",
-                      "^co\\.zeit\\.hyperterm$",
-                      "^org\\.gnu\\.Emacs$",
-                      "^co\\.zeit\\.hyper$",
                       "^org\\.alacritty$",
-                      "^net\\.kovidgoyal\\.kitty$",
-                      "^tv\\.parsec\\.www$"
+                      "^org\\.gnu\\.Emacs$"
                     ],
                     "type": "frontmost_application_unless"
                   }
@@ -1070,30 +732,8 @@
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^com\\.microsoft\\.rdc$",
-                      "^com\\.microsoft\\.rdc\\.mac$",
-                      "^com\\.microsoft\\.rdc\\.macos$",
-                      "^com\\.microsoft\\.rdc\\.osx\\.beta$",
-                      "^net\\.sf\\.cord$",
-                      "^com\\.thinomenon\\.RemoteDesktopConnection$",
-                      "^com\\.itap-mobile\\.qmote$",
-                      "^com\\.nulana\\.remotixmac$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
-                      "^com\\.teamviewer\\.TeamViewer$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.2X\\.Client\\.Mac$",
-                      "^com\\.vmware\\.fusion$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.vmware\\.view$",
-                      "^com\\.parallels\\.desktop$",
-                      "^com\\.parallels\\.vm$",
-                      "^com\\.parallels\\.desktop\\.console$",
-                      "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-                      "^com\\.citrix\\.XenAppViewer$",
-                      "^com\\.vmware\\.proxyApp\\.",
-                      "^com\\.parallels\\.winapp\\.",
-                      "^tv\\.parsec\\.www$"
+                      "^org\\.alacritty$",
+                      "^org\\.gnu\\.Emacs$"
                     ],
                     "type": "frontmost_application_unless"
                   }
@@ -1121,12 +761,8 @@
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^org\\.macports\\.X11$",
-                      "^co\\.zeit\\.hyper$",
-                      "^org\\.gnu\\.Emacs$",
-                      "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-                      "^com\\.microsoft\\.rdc\\.macos$",
-                      "^tv\\.parsec\\.www$"
+                      "^org\\.alacritty$",
+                      "^org\\.gnu\\.Emacs$"
                     ],
                     "type": "frontmost_application_unless"
                   }
@@ -1155,13 +791,8 @@
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^org\\.macports\\.X11$",
-                      "^co\\.zeit\\.hyper$",
                       "^org\\.alacritty$",
-                      "^org\\.gnu\\.Emacs$",
-                      "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-                      "^com\\.microsoft\\.rdc\\.macos$",
-                      "^tv\\.parsec\\.www$"
+                      "^org\\.gnu\\.Emacs$"
                     ],
                     "type": "frontmost_application_unless"
                   }
@@ -1190,12 +821,8 @@
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^org\\.macports\\.X11$",
-                      "^co\\.zeit\\.hyper$",
-                      "^org\\.gnu\\.Emacs$",
-                      "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-                      "^com\\.microsoft\\.rdc\\.macos$",
-                      "^tv\\.parsec\\.www$"
+                      "^org\\.alacritty$",
+                      "^org\\.gnu\\.Emacs$"
                     ],
                     "type": "frontmost_application_unless"
                   }
@@ -1224,12 +851,8 @@
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^org\\.mozilla\\.firefox$",
-                      "^org\\.mozilla\\.nightly$",
-                      "^com\\.microsoft\\.Edge",
-                      "^com\\.google\\.Chrome$",
-                      "^com\\.brave\\.Browser$",
-                      "^com\\.apple\\.Safari$"
+                      "^org\\.alacritty$",
+                      "^org\\.gnu\\.Emacs$"
                     ],
                     "type": "frontmost_application_if"
                   }
@@ -1258,36 +881,8 @@
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^com\\.microsoft\\.rdc$",
-                      "^com\\.microsoft\\.rdc\\.mac$",
-                      "^com\\.microsoft\\.rdc\\.macos$",
-                      "^com\\.microsoft\\.rdc\\.osx\\.beta$",
-                      "^net\\.sf\\.cord$",
-                      "^com\\.thinomenon\\.RemoteDesktopConnection$",
-                      "^com\\.itap-mobile\\.qmote$",
-                      "^com\\.nulana\\.remotixmac$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer$",
-                      "^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
-                      "^com\\.teamviewer\\.TeamViewer$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.2X\\.Client\\.Mac$",
-                      "^com\\.vmware\\.fusion$",
-                      "^com\\.vmware\\.horizon$",
-                      "^com\\.vmware\\.view$",
-                      "^com\\.parallels\\.desktop$",
-                      "^com\\.parallels\\.vm$",
-                      "^com\\.parallels\\.desktop\\.console$",
-                      "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
-                      "^com\\.citrix\\.XenAppViewer$",
-                      "^com\\.vmware\\.proxyApp\\.",
-                      "^com\\.parallels\\.winapp\\.",
-                      "^org\\.macports\\.X11$",
-                      "^co\\.zeit\\.hyperterm$",
-                      "^org\\.gnu\\.Emacs$",
-                      "^co\\.zeit\\.hyper$",
                       "^org\\.alacritty$",
-                      "^net\\.kovidgoyal\\.kitty$",
-                      "^tv\\.parsec\\.www$"
+                      "^org\\.gnu\\.Emacs$"
                     ],
                     "type": "frontmost_application_unless"
                   }
@@ -1342,48 +937,7 @@
           },
           "ignore": false,
           "manipulate_caps_lock_led": true,
-          "simple_modifications": [
-            {
-              "from": {
-                "key_code": "left_command"
-              },
-              "to": [
-                {
-                  "key_code": "left_option"
-                }
-              ]
-            },
-            {
-              "from": {
-                "key_code": "left_option"
-              },
-              "to": [
-                {
-                  "key_code": "left_command"
-                }
-              ]
-            },
-            {
-              "from": {
-                "key_code": "right_command"
-              },
-              "to": [
-                {
-                  "key_code": "right_option"
-                }
-              ]
-            },
-            {
-              "from": {
-                "key_code": "right_option"
-              },
-              "to": [
-                {
-                  "key_code": "right_command"
-                }
-              ]
-            }
-          ],
+          "simple_modifications": [],
           "treat_as_built_in_keyboard": false
         },
         {
@@ -1397,69 +951,6 @@
           },
           "ignore": true,
           "manipulate_caps_lock_led": false,
-          "simple_modifications": [],
-          "treat_as_built_in_keyboard": false
-        },
-        {
-          "disable_built_in_keyboard_if_exists": false,
-          "fn_function_keys": [],
-          "identifiers": {
-            "is_keyboard": true,
-            "is_pointing_device": true,
-            "product_id": 8800,
-            "vendor_id": 17498
-          },
-          "ignore": true,
-          "manipulate_caps_lock_led": true,
-          "simple_modifications": [],
-          "treat_as_built_in_keyboard": false
-        },
-        {
-          "disable_built_in_keyboard_if_exists": false,
-          "fn_function_keys": [],
-          "identifiers": {
-            "is_keyboard": true,
-            "is_pointing_device": false,
-            "product_id": 8800,
-            "vendor_id": 17498
-          },
-          "ignore": false,
-          "manipulate_caps_lock_led": true,
-          "simple_modifications": [
-            {
-              "from": {
-                "key_code": "grave_accent_and_tilde"
-              },
-              "to": [
-                {
-                  "key_code": "non_us_backslash"
-                }
-              ]
-            },
-            {
-              "from": {
-                "key_code": "non_us_backslash"
-              },
-              "to": [
-                {
-                  "key_code": "grave_accent_and_tilde"
-                }
-              ]
-            }
-          ],
-          "treat_as_built_in_keyboard": false
-        },
-        {
-          "disable_built_in_keyboard_if_exists": false,
-          "fn_function_keys": [],
-          "identifiers": {
-            "is_keyboard": true,
-            "is_pointing_device": true,
-            "product_id": 45091,
-            "vendor_id": 1133
-          },
-          "ignore": true,
-          "manipulate_caps_lock_led": true,
           "simple_modifications": [],
           "treat_as_built_in_keyboard": false
         },
@@ -1482,9 +973,23 @@
           "fn_function_keys": [],
           "identifiers": {
             "is_keyboard": true,
+            "is_pointing_device": true,
+            "product_id": 8800,
+            "vendor_id": 17498
+          },
+          "ignore": true,
+          "manipulate_caps_lock_led": true,
+          "simple_modifications": [],
+          "treat_as_built_in_keyboard": false
+        },
+        {
+          "disable_built_in_keyboard_if_exists": false,
+          "fn_function_keys": [],
+          "identifiers": {
+            "is_keyboard": true,
             "is_pointing_device": false,
-            "product_id": 12325,
-            "vendor_id": 1203
+            "product_id": 8800,
+            "vendor_id": 17498
           },
           "ignore": false,
           "manipulate_caps_lock_led": true,
@@ -1516,10 +1021,24 @@
           "disable_built_in_keyboard_if_exists": false,
           "fn_function_keys": [],
           "identifiers": {
+            "is_keyboard": true,
+            "is_pointing_device": false,
+            "product_id": 50475,
+            "vendor_id": 1133
+          },
+          "ignore": false,
+          "manipulate_caps_lock_led": true,
+          "simple_modifications": [],
+          "treat_as_built_in_keyboard": false
+        },
+        {
+          "disable_built_in_keyboard_if_exists": false,
+          "fn_function_keys": [],
+          "identifiers": {
             "is_keyboard": false,
             "is_pointing_device": true,
-            "product_id": 9488,
-            "vendor_id": 2362
+            "product_id": 50475,
+            "vendor_id": 1133
           },
           "ignore": true,
           "manipulate_caps_lock_led": false,

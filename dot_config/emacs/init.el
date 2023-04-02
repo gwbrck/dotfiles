@@ -21,7 +21,7 @@
 
 (use-package emacs
   :init
-  (setq gwbrck/roam "~/Nextcloud/roam/")
+  (setq gwbrck/roam "~/Documents/Bib/roam/")
   (setq org-directory gwbrck/roam)
   (setq default-directory "~/"))
 

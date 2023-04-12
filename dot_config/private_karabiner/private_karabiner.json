@@ -854,7 +854,7 @@
                       "^org\\.alacritty$",
                       "^org\\.gnu\\.Emacs$"
                     ],
-                    "type": "frontmost_application_if"
+                    "type": "frontmost_application_unless"
                   }
                 ],
                 "from": {

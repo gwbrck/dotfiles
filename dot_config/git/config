@@ -1,15 +1,7 @@
 [user]
 	name = Gregor
-
-{{ if eq .chezmoi.os "darwin" -}}
-[credential]
-	helper = osxkeychain
-{{ end -}}
-
-{{ if eq .chezmoi.os "linux" -}}
 [credential]
 	helper = !pass-git-helper $@
-{{ end -}}
 [core]
 	excludesFile = ~/.config/git/ignore
 [init]

@@ -60,6 +60,7 @@ set fish_greeting ""
 # Ensure that GPG Agent is used as the SSH agent
 set -e SSH_AUTH_SOCK
 set -e SSH_AGENT_PID
+set -Ux PASSWORD_STORE_DIR $HOME/Documents/Archiv/Pass
 set -Ux SSH_AUTH_SOCK $(gpgconf --list-dirs agent-ssh-socket)
 set -Ux GPG_TTY $(tty)
 

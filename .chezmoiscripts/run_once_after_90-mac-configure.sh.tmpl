@@ -7,14 +7,6 @@ if ! grep -q "/usr/local/bin/fish" /etc/shells; then
    chsh -s /usr/local/bin/fish
 fi
 
-echo "$(whoami) ALL = (root) NOPASSWD: sha256:$(shasum -a 256 $(which yabai)) --load-sa" | sudo tee /private/etc/sudoers.d/yabai
-sudo yabai --load-sa
-
-
-brew services start yabai
-brew services start skhd
-
-
 if ! grep -q ".Rproj.user" /Applications/Nextcloud.app/Contents/Resources/sync-exclude.lst; then
    echo ".Ruserdata" | sudo tee -a /Applications/Nextcloud.app/Contents/Resources/sync-exclude.lst
    echo ".Rproj.user*" | sudo tee -a /Applications/Nextcloud.app/Contents/Resources/sync-exclude.lst

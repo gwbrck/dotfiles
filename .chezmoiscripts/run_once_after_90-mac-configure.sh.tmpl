@@ -7,10 +7,5 @@ if ! grep -q "/usr/local/bin/fish" /etc/shells; then
    chsh -s /usr/local/bin/fish
 fi
 
-if ! grep -q ".Rproj.user" /Applications/Nextcloud.app/Contents/Resources/sync-exclude.lst; then
-   echo ".Ruserdata" | sudo tee -a /Applications/Nextcloud.app/Contents/Resources/sync-exclude.lst
-   echo ".Rproj.user*" | sudo tee -a /Applications/Nextcloud.app/Contents/Resources/sync-exclude.lst
-fi
-
 {{ end -}}
 

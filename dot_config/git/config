@@ -1,5 +1,5 @@
 [user]
-	name = Gregor
+	name = gwbrck
 [credential]
 	helper = !pass-git-helper $@
 [core]

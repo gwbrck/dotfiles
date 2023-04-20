@@ -68,6 +68,8 @@
   (setq native-comp-async-report-warnings-errors nil)
   (setq inhibit-startup-message t)
   (setq frame-resize-pixelwise t)
+  (add-to-list 'default-frame-alist '(height . 60))
+  (add-to-list 'default-frame-alist '(width . 120))
   (scroll-bar-mode -1)
   (tool-bar-mode -1)
   (tooltip-mode -1)
@@ -379,7 +381,7 @@
     "Load theme, taking current system APPEARANCE into consideration."
     (mapc #'disable-theme custom-enabled-themes)
     (pcase appearance
-      ('light (load-theme 'doom-one-light t))
+      ('light (load-theme 'doom-solarized-light t))
       ('dark (load-theme 'doom-vibrant t)))
     (gwbrck/set-font-faces)))
 
@@ -395,15 +397,10 @@
   :custom
   (doom-themes-padded-modeline 5))
 
-(use-package modus-themes
+(use-package solaire-mode
   :ensure t
-  :init
-  (setq modus-themes-completions
-        (quote ((matches . (background))
-                (selection . (extrabold intense accented))
-                (popup . (extrabold intense accented)))))
-  (setq modus-themes-org-blocks 'gray-background)
-  (setq modus-themes-mode-line '(borderless 6)))
+  :config
+  (solaire-global-mode +1))
 
 (use-package emacs
   :when (equal system-type 'darwin)

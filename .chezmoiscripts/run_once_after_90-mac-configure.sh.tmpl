@@ -7,5 +7,11 @@ if ! grep -q "/usr/local/bin/fish" /etc/shells; then
    chsh -s /usr/local/bin/fish
 fi
 
+defaults write com.lwouis.alt-tab-macos holdShortcut "\\U2318"
+defaults write com.lwouis.alt-tab-macos hideWindowlessApps true
+defaults write com.lwouis.alt-tab-macos menubarIcon 3
+defaults write com.lwouis.alt-tab-macos previewFocusedWindow true
+ 
+
 {{ end -}}
 

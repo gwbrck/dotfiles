@@ -28,10 +28,12 @@
 (use-package emacs
   :when (equal system-type 'darwin)
   :init
-  (setq mac-command-modifier      'super
-        ns-command-modifier       'super
-        mac-option-modifier       'meta
-        ns-option-modifier        'meta
+  (setq mac-command-modifier      'control
+        ns-command-modifier       'control
+        mac-control-modifier      'meta
+        ns-control-modifier       'meta
+        mac-option-modifier       'super
+        ns-option-modifier        'super
         mac-right-option-modifier 'none
         ns-right-option-modifier  'none)
   (set-terminal-coding-system 'utf-8)

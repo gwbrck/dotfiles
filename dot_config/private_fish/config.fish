@@ -68,6 +68,7 @@ set -Ux PYENV_ROOT $HOME/.config/pyenv
 fish_add_path $PYENV_ROOT/bin
 fish_add_path ~/bin
 set -Ux PIPENV_PYTHON $PYENV_ROOT/shims/python
+set -Ux WORKON_HOME $HOME/.local/share/virtualenvs
 
 status is-login; and pyenv init --path | source
 status is-interactive; and pyenv init - | source

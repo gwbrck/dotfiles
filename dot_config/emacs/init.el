@@ -258,6 +258,7 @@
    'org-babel-load-languages
    '((R . t)
      (python . t)
+     (shell . t)
      (emacs-lisp . t)
      (restclient . t)))
   (setq org-ellipsis " ▾")

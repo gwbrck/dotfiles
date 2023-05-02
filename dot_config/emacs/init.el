@@ -778,7 +778,8 @@ targets."
   :init
   (setq org-latex-listings 'minted)
   (setq org-latex-minted-options
-        '(("bgcolor" "WhiteSmoke")))
+        '(("bgcolor" "WhiteSmoke")
+          ("breaklines" "true")))
   (setq org-latex-tables-booktabs t)
   (setq org-latex-caption-above t)
   (setq org-latex-pdf-process '("latexmk -shell-escape -bibtex -pdf %f"))

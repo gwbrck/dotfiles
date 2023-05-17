@@ -64,14 +64,15 @@ set -Ux PASSWORD_STORE_DIR $HOME/Documents/Archiv/Pass
 set -Ux SSH_AUTH_SOCK $(gpgconf --list-dirs agent-ssh-socket)
 set -Ux GPG_TTY $(tty)
 
-set -Ux PYENV_ROOT $HOME/.config/pyenv
-fish_add_path $PYENV_ROOT/bin
 fish_add_path ~/bin
-set -Ux PIPENV_PYTHON $PYENV_ROOT/shims/python
+fish_add_path ~/.local/bin
+
+rtx activate fish | source
+set -Ux RTX_PYTHON_DEFAULT_PACKAGES_FILE ~/.config/default-py-packages
+
+
 set -Ux WORKON_HOME $HOME/.local/share/virtualenvs
 
-status is-login; and pyenv init --path | source
-status is-interactive; and pyenv init - | source
 
 if test "$INSIDE_EMACS" = "vterm"
     source {$EMACS_VTERM_PATH}etc/emacs-vterm.fish

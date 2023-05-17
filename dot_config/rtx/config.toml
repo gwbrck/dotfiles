@@ -1,0 +1,10 @@
+[tools]
+python = "latest"
+R = "latest"
+
+
+[plugins]
+R = 'https://github.com/asdf-community/asdf-R'
+
+[settings]
+plugin_autoupdate_last_check_duration = '1 week'

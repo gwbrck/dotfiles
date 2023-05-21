@@ -69,6 +69,7 @@ fish_add_path ~/.local/bin
 
 rtx activate fish | source
 set -Ux RTX_PYTHON_DEFAULT_PACKAGES_FILE ~/.config/default-py-packages
+fish_add_path ~/.local/share/rtx/shims
 
 
 set -Ux WORKON_HOME $HOME/.local/share/virtualenvs

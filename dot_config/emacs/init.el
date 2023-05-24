@@ -958,28 +958,13 @@ targets."
   (defun start-pylsp ()
     "Function to start python lsp"
     (pyvenv-mode 1)
-    (when (locate-dominating-file default-directory "Pipfile")
-      (unless (file-exists-p ".dir-locals.el")
-        (if-let ((bin (executable-find "pipenv")))
-            (let ((path (string-trim (shell-command-to-string (concat bin " --venv --quiet")))))
-              (unless (file-exists-p path)
-                (error (concat "Error: pipenv --venv returned:" path)))
-              (save-window-excursion
-                (modify-dir-local-variable nil 'eglot-workspace-configuration
-                                           `(:pylsp .
-                                                     ((:plugins
-                                                       (:jedi_completion (:fuzzy t)
-                                                       :jedi (:environment ,path)))))
-                                           'add-or-replace)
-                (save-buffer))
-              (save-window-excursion
-                (modify-dir-local-variable nil 'pyvenv-activate path 'add-or-replace)
-                (save-buffer))
-              (unless (let ((exec-path (concat path "/bin")))
-                        (executable-find "pylsp"))
-                (message "Install pylsp...")
-                (shell-command (concat bin " install --dev python-lsp-server[all]"))))
-          (error "Pipenv not found"))))
+    (pyvenv-tracking-mode 1)
+    (unless (locate-dominating-file default-directory ".dir-locals.el")
+      (python-init-venv-dir-locals))
+    (unless (let ((exec-path (concat pyvenv-virtual-env "/bin")))
+              (executable-find "pylsp"))
+      (message "Install pylsp...")
+      (shell-command "pip install python-lsp-server[all]"))
     (eglot-ensure))
   :custom
   (eglot-autoshutdown t)
@@ -1025,7 +1010,42 @@ targets."
 (use-package format-all
   :ensure t)
 
+(use-package python
+  :config
+  (defun python-init-venv-dir-locals (&optional venv)
+    "Function to add VENV to dir-locals"
+    (interactive)
+    (let ((path
+           (cond ((and (not venv) (locate-dominating-file default-directory "Pipfile"))
+                  (string-trim (shell-command-to-string (concat (executable-find "pipenv") " --venv --quiet"))))
+                 ((and (not venv) (locate-dominating-file default-directory "pyproject.toml"))
+                  (poetry-get-virtualenv))
+                 (venv venv)
+                 (t (format "%s/%s"
+                            (pyvenv-workon-home)
+                            (completing-read "Add venv in dir-locals.el with: " (pyvenv-virtualenv-list)
+                                             nil t nil 'pyvenv-workon-history nil nil))))))
+      (unless (file-exists-p path)
+        (error (concat "Error: path does not exist:" path)))
+      (save-window-excursion
+        (modify-dir-local-variable nil 'eglot-workspace-configuration
+                                   `(:pylsp .
+                                            ((:plugins
+                                              (:jedi_completion (:fuzzy t)
+                                                                :jedi (:environment ,path)))))
+                                   'add-or-replace)
+        (save-buffer))
+      (save-window-excursion
+        (modify-dir-local-variable nil 'pyvenv-activate path 'add-or-replace)
+        (save-buffer)))))
+
 (use-package pyvenv
+  :ensure t)
+
+(use-package pipenv
+  :ensure t)
+
+(use-package poetry
   :ensure t)
 
 (use-package yasnippet

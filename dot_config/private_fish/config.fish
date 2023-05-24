@@ -65,14 +65,17 @@ set -Ux SSH_AUTH_SOCK $(gpgconf --list-dirs agent-ssh-socket)
 set -Ux GPG_TTY $(tty)
 
 fish_add_path ~/bin
-fish_add_path ~/.local/bin
+fish_add_path ~/.local/bin #pipx
 
-rtx activate fish | source
-set -Ux RTX_PYTHON_DEFAULT_PACKAGES_FILE ~/.config/default-py-packages
-fish_add_path ~/.local/share/rtx/shims
+# rtx activate fish | source
+# set -Ux RTX_PYTHON_DEFAULT_PACKAGES_FILE ~/.config/default-py-packages
+# fish_add_path ~/.local/share/rtx/shims
 
 
 set -Ux WORKON_HOME $HOME/.local/share/virtualenvs
+set -Ux POETRY_VIRTUALENVS_PATH $WORKON_HOME
+set -Ux POETRY_CONFIG_DIR  $HOME/.config/pypoetry
+
 
 
 if test "$INSIDE_EMACS" = "vterm"

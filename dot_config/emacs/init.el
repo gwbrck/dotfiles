@@ -957,14 +957,10 @@ targets."
   (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
   (defun start-pylsp ()
     "Function to start python lsp"
-    (pyvenv-mode 1)
-    (pyvenv-tracking-mode 1)
-    (unless (locate-dominating-file default-directory ".dir-locals.el")
-      (python-init-venv-dir-locals))
-    (unless (let ((exec-path (concat pyvenv-virtual-env "/bin")))
-              (executable-find "pylsp"))
-      (message "Install pylsp...")
-      (shell-command "pip install python-lsp-server[all]"))
+    (when pyvenv-virtual-env
+      (unless (file-executable-p (concat pyvenv-virtual-env "bin/pylsp"))
+        (message "Install pylsp...")
+        (shell-command "pip install python-lsp-server[all]")))
     (eglot-ensure))
   :custom
   (eglot-autoshutdown t)
@@ -1010,10 +1006,18 @@ targets."
 (use-package format-all
   :ensure t)
 
-(use-package python
+(use-package pyvenv
+  :ensure t
   :config
   (defun python-init-venv-dir-locals (&optional venv)
-    "Function to add VENV to dir-locals"
+    "Add or configure a virtual environment for the current project.
+
+If `VENV` is provided and it is a valid path, the value is added to the `.dir-local.el` file. If `VENV` is `nil`, the function attempts to determine the virtual environment from either Pipenv or Poetry, if they are installed. Otherwise, it prompts the user to either create a new virtual environment or select one from `$WORKON_HOME`.
+
+The function provides the following options:
+- If `VENV` is a valid path, it will be added to `.dir-local.el`.
+- If `VENV` is `nil` and Pipenv or Poetry is detected, it will try to determine the virtual environment from them.
+- If `VENV` is `nil` and no virtual environment is detected, it will prompt the user to create a new virtual environment or select one from `$WORKON_HOME`."
     (interactive)
     (let ((path
            (cond ((and (not venv) (locate-dominating-file default-directory "Pipfile"))
@@ -1021,10 +1025,19 @@ targets."
                  ((and (not venv) (locate-dominating-file default-directory "pyproject.toml"))
                   (poetry-get-virtualenv))
                  (venv venv)
-                 (t (format "%s/%s"
-                            (pyvenv-workon-home)
-                            (completing-read "Add venv in dir-locals.el with: " (pyvenv-virtualenv-list)
-                                             nil t nil 'pyvenv-workon-history nil nil))))))
+                 (t
+                  (let ((answer
+                         (completing-read
+                          "No Venv found. Select option:"
+                          '("create" "select") nil t)))
+                    (cond ((string-equal answer "select")
+                           (format "%s/%s"
+                                   (pyvenv-workon-home)
+                                   (completing-read "Add venv in dir-locals.el with: " (pyvenv-virtualenv-list)
+                                                    nil t nil 'pyvenv-workon-history nil nil)))
+                          ((string-equal answer "create")
+                           (call-interactively 'pyvenv-create)
+                           pyvenv-virtual-env)))))))
       (unless (file-exists-p path)
         (error (concat "Error: path does not exist:" path)))
       (save-window-excursion
@@ -1037,10 +1050,9 @@ targets."
         (save-buffer))
       (save-window-excursion
         (modify-dir-local-variable nil 'pyvenv-activate path 'add-or-replace)
-        (save-buffer)))))
-
-(use-package pyvenv
-  :ensure t)
+        (save-buffer))))
+    (pyvenv-mode 1)
+    (pyvenv-tracking-mode 1))
 
 (use-package pipenv
   :ensure t)

@@ -770,7 +770,14 @@ targets."
                  (secondary-opening :utf-8 "'" :html "&lsquo;" :latex "\\enquote*{" :texinfo "`")
                  (secondary-closing :utf-8 "'" :html "&rsquo;" :latex "}"           :texinfo "'")
                  (apostrophe        :utf-8 "’" :html "&rsquo;")))
-  (setq org-export-with-smart-quotes t))
+  (setq org-export-with-smart-quotes t)
+  (setq org-html-style
+        "<style type=\"text/css\">
+       body { font-family: sans-serif; }
+       </style>"))
+
+(use-package htmlize
+  :ensure t)
 
 (use-package ox-latex
   :after org

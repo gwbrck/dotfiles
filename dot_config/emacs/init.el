@@ -10,7 +10,10 @@
 (package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))
-
+(when (version< emacs-version "30.0")
+  (unless (package-installed-p 'vc-use-package)
+    (package-vc-install "https://github.com/slotThe/vc-use-package"))
+  (require 'vc-use-package))
 
 (use-package custom
   :no-require t
@@ -682,9 +685,7 @@ targets."
   (org-mode . citar-capf-setup))
 
 (use-package pdf-drop-mode
-  :init
-  (unless (package-installed-p 'pdf-drop-mode)
-    (package-vc-install "https://github.com/rougier/pdf-drop-mode.git"))
+  :vc (:fetcher github :repo rougier/pdf-drop-mode)
   :custom
   (pdf-drop-search-methods '(doi/metadata
                              doi/content
@@ -723,9 +724,7 @@ targets."
   :config (citar-embark-mode))
 
 (use-package org-cite-csl-activate
-  :init
-  (unless (package-installed-p 'org-cite-csl-activate)
-    (package-vc-install "https://github.com/andras-simonyi/org-cite-csl-activate.git"))
+  :vc (:fetcher github :repo andras-simonyi/org-cite-csl-activate)
   :hook
   (org-mode . org-cite-csl-activate-render-all)
   (org-mode . cursor-sensor-mode))

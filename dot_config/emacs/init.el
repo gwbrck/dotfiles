@@ -1001,7 +1001,7 @@ The function provides the following options:
     (let ((path
            (cond ((and (not venv) (locate-dominating-file default-directory "Pipfile"))
                   (string-trim (shell-command-to-string (concat (executable-find "pipenv") " --venv --quiet"))))
-                 ((and (not venv) (locate-dominating-file default-directory "pyproject.toml"))
+                 ((and (not venv) (poetry-find-project-root))
                   (poetry-get-virtualenv))
                  (venv venv)
                  (t

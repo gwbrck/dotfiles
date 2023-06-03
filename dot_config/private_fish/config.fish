@@ -74,6 +74,7 @@ fish_add_path ~/.local/bin #pipx
 
 set -Ux WORKON_HOME $HOME/.local/share/virtualenvs
 set -Ux POETRY_VIRTUALENVS_PATH $WORKON_HOME
+set -Ux VIRTUALFISH_HOME $WORKON_HOME
 set -Ux POETRY_CONFIG_DIR  $HOME/.config/pypoetry
 
 

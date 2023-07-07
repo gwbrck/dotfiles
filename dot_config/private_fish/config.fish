@@ -64,6 +64,8 @@ set -Ux PASSWORD_STORE_DIR $HOME/Documents/Archiv/Pass
 set -Ux SSH_AUTH_SOCK $(gpgconf --list-dirs agent-ssh-socket)
 set -Ux GPG_TTY $(tty)
 
+eval "$(/opt/homebrew/bin/brew shellenv fish)"   
+
 fish_add_path ~/bin
 fish_add_path ~/.local/bin #pipx
 

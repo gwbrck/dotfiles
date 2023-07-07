@@ -1,3 +1,4 @@
+eval "$(/opt/homebrew/bin/brew shellenv fish)"
 if status is-interactive
     alias latex-update="sudo tlmgr update --self --all"
     alias biber-cash-reset="rm -rf `biber --cache`"
@@ -64,7 +65,7 @@ set -Ux PASSWORD_STORE_DIR $HOME/Documents/Archiv/Pass
 set -Ux SSH_AUTH_SOCK $(gpgconf --list-dirs agent-ssh-socket)
 set -Ux GPG_TTY $(tty)
 
-eval "$(/opt/homebrew/bin/brew shellenv fish)"   
+
 
 fish_add_path ~/bin
 fish_add_path ~/.local/bin #pipx

@@ -29,7 +29,7 @@ font:
   
 shell:
 {{ if (eq .chezmoi.os "darwin") }}
-  program: /usr/local/bin/tmux
+  program: /opt/homebrew/bin/tmux
 {{ else if (eq .chezmoi.os "linux" ) }}
   program: tmux
 {{- end }}

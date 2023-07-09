@@ -1100,7 +1100,7 @@ The function provides the following options:
   :config
   (if (eq system-type 'gnu/linux)
       (setq explicit-shell-file-name "/bin/fish")
-    (setq explicit-shell-file-name "/usr/local/bin/fish"))
+    (setq explicit-shell-file-name "/opt/homebrew/bin/fish"))
   (setq explicit-fish-args '("-l"))
   (setq term-prompt-regexp "^∃[0-9]*❯ \\|❯ "))
 
@@ -1116,7 +1116,7 @@ The function provides the following options:
   :config
   (if (eq system-type 'gnu/linux)
       (setq vterm-shell "/bin/fish")
-    (setq vterm-shell "/usr/local/bin/fish --login"))
+    (setq vterm-shell "/opt/homebrew/bin/fish --login"))
   (setq term-prompt-regexp "^∃[0-9]*❯ \\|❯ ")
   (setq vterm-max-scrollback 10000))
 

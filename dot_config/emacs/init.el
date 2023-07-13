@@ -1093,6 +1093,9 @@ The function provides the following options:
   (setq ess-use-eldoc nil)
   (setq ess-use-flymake nil))
 
+(use-package quarto-mode
+  :ensure t)
+
 (use-package fish-mode
   :ensure t)
 

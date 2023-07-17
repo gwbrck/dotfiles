@@ -640,6 +640,13 @@ targets."
   :config
   (setq main-bib-file (concat gwbrck/roam "../main.bib")))
 
+(use-package zotra
+  :vc (:fetcher github :repo mpedramfar/zotra)
+  :config
+  (setq zotra-default-entry-format "biblatex")
+  (setq zotra-download-attachment-default-directory "~/Desktop/")
+  (add-hook 'zotra-after-add-entry-hook 'bibtex-clean-entry))
+
 (use-package citar
   :ensure t
   :after init-bibtex

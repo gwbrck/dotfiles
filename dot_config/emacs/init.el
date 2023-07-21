@@ -645,10 +645,17 @@ targets."
   :config
   (setq zotra-default-entry-format "biblatex")
   (setq zotra-download-attachment-default-directory "~/Desktop/")
-  (add-hook 'zotra-after-add-entry-hook 'bibtex-clean-entry))
+  (defun zotra-process-new-entry ()
+    (bibtex-clean-entry)
+    (when (y-or-n-p "Add file to bibtex? ")
+      (let* ((key (with-current-buffer (current-buffer) (bibtex-key-in-head))))
+        (kill-new zotra-last-processed-pdf)
+        (citar-add-file-to-library key))))
+  (add-hook 'zotra-after-add-entry-hook 'zotra-process-new-entry))
 
 (use-package citar
   :ensure t
+  :demand t
   :after init-bibtex
   :config
   (add-to-list 'citar-bibliography main-bib-file)
@@ -691,29 +698,16 @@ targets."
   (LaTeX-mode . citar-capf-setup)
   (org-mode . citar-capf-setup))
 
-(use-package pdf-drop-mode
-  :vc (:fetcher github :repo rougier/pdf-drop-mode)
+(use-package zotra-pdf-drop-mode
+  :vc (:fetcher github :repo gwbrck/zotra-pdf-drop-mode)
+  :after citar
   :custom
-  (pdf-drop-search-methods '(doi/metadata
-                             doi/content
-                             arxiv/content))
-  (pdf-drop-search-hook #'pdf-drop-pdf-process)
+  (zotra-pdf-drop-on-new-entry-hook #'zotra-pdf-drop-process)
   :config
-  (defun pdf-drop-pdf-process (file file-id)
-    (when file-id
-      (cond ((eq 'doi (car file-id))
-             (doi-to-bibtex (cdr file-id)))
-            ((eq 'arxiv (car file-id))
-             (arxiv-id-to-bibtex (cdr file-id))))
-      (let* ((key (with-current-buffer (current-buffer) (bibtex-key-in-head)))
-             (directory (if (cdr citar-library-paths)
-                            (completing-read "Directory: " citar-library-paths)
-                          (car citar-library-paths)))
-             (file-path (expand-file-name key directory))
-             (extension (file-name-extension file)))
-        (copy-file file
-                   (concat file-path "." extension) 1))))
-      (pdf-drop-mode))
+  (defun zotra-pdf-drop-process (file file-id)
+    (setq zotra-last-processed-pdf file)
+    (zotra-add-entry-from-search file-id))
+  (zotra-pdf-drop-mode))
 
 (use-package citar-org-roam
   :after citar org-roam

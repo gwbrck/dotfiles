@@ -647,10 +647,13 @@ targets."
   (setq zotra-download-attachment-default-directory "~/Desktop/")
   (defun zotra-process-new-entry ()
     (bibtex-clean-entry)
-    (when (y-or-n-p "Add file to bibtex? ")
-      (let* ((key (with-current-buffer (current-buffer) (bibtex-key-in-head))))
+    (let* ((key (with-current-buffer (current-buffer) (bibtex-key-in-head))))
+      (when (y-or-n-p "Add file to bibtex? ")
         (kill-new zotra-last-processed-pdf)
-        (citar-add-file-to-library key))))
+        (citar-add-file-to-library key))
+      (when (y-or-n-p (concat "Add " key " to Leseliste?"))
+        (kill-new key)
+        (org-capture t "L"))))
   (add-hook 'zotra-after-add-entry-hook 'zotra-process-new-entry))
 
 (use-package citar

@@ -2,6 +2,8 @@
 
 [data]
 email = {{ $email | quote }}
+zotraPath = '--git-dir={{ .chezmoi.homeDir }}/.config/zotra-cli/.git'
+zotraPathSub = '--git-dir={{ .chezmoi.homeDir }}/.config/zotra-cli/module/translation-server/.git'
 
 
 [git]

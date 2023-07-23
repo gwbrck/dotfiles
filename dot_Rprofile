@@ -1,3 +1,12 @@
 dir.create(file.path("~/.local/lib/R"), showWarnings = FALSE, recursive = TRUE)
 .libPaths(new = "~/.local/lib/R")
 options(repos = structure(c(CRAN = "https://ftp.gwdg.de/pub/misc/cran/")))
+
+if (interactive()) {
+  if (!requireNamespace("tidyverse", quietly = TRUE)) {
+    utils::install.packages("tidyverse")
+  }
+  if (!requireNamespace("languageserver", quietly = TRUE)) {
+    utils::install.packages("languageserver")
+  }
+}

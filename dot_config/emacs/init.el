@@ -388,8 +388,8 @@
     "Load theme, taking current system APPEARANCE into consideration."
     (mapc #'disable-theme custom-enabled-themes)
     (pcase appearance
-      ('light (load-theme 'doom-solarized-light t))
-      ('dark (load-theme 'doom-vibrant t)))
+      ('light (load-theme 'doom-feather-light t))
+      ('dark (load-theme 'doom-snazzy t)))
     (gwbrck/set-font-faces)))
 
 (use-package calendar

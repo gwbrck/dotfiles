@@ -389,7 +389,7 @@
     (mapc #'disable-theme custom-enabled-themes)
     (pcase appearance
       ('light (load-theme 'doom-feather-light t))
-      ('dark (load-theme 'doom-snazzy t)))
+      ('dark (load-theme 'doom-ir-black t)))
     (gwbrck/set-font-faces)))
 
 (use-package calendar

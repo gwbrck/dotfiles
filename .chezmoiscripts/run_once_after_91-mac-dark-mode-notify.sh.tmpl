@@ -25,10 +25,6 @@ echo "
     <string>ke.bou.dark-mode-notify</string>
     <key>KeepAlive</key>
     <true/>
-    <key>StandardErrorPath</key>
-    <string>${HOME}/dark-mode-notify-stderr.log</string>
-    <key>StandardOutPath</key>
-    <string>${HOME}/dark-mode-notify-stdout.log</string>
     <key>ProgramArguments</key>
     <array>
        <string>${HOME}/bin/dark-mode-notify</string>
@@ -38,7 +34,5 @@ echo "
 </plist>
 " > ~/Library/LaunchAgents/ke.bou.dark-mode-notify.plist
 
-
 rm -rf WORK_DIR
 {{ end -}}
-

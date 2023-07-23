@@ -24,6 +24,7 @@ require('packer').startup(function()
         use "tpope/vim-surround"
         use({ "sewdohe/nvim-adapt" })
         use "jiangmiao/auto-pairs"
+        use "f-person/auto-dark-mode.nvim"
         use "neovim/nvim-lspconfig"
         use "nvim-lua/plenary.nvim"
         use "nvim-lua/telescope.nvim"
@@ -94,6 +95,7 @@ if vim.fn.has('linux') == 1 then
 end
 
 
+
 vim.o.relativenumber = true
 vim.o.mouse = 'a'
 vim.o.expandtab = true
@@ -114,6 +116,20 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 vim.keymap.set('i', '<M-BS>', '<C-w>')
 vim.keymap.set('n', '<M-BS>', 'hdaw')
+
+local auto_dark_mode = require('auto-dark-mode')
+
+auto_dark_mode.setup({
+      update_interval = 1000,
+      set_dark_mode = function()
+         vim.api.nvim_set_option('background', 'dark')
+      end,
+      set_light_mode = function()
+         vim.api.nvim_set_option('background', 'light')
+      end,
+})
+auto_dark_mode.init()
+
 
 
 -- Highlight on yank

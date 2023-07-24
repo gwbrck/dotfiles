@@ -704,11 +704,11 @@
           "simple_modifications": [
             {
               "from": {
-                "key_code": "left_option"
+                "key_code": "grave_accent_and_tilde"
               },
               "to": [
                 {
-                  "key_code": "left_command"
+                  "key_code": "non_us_backslash"
                 }
               ]
             },
@@ -724,21 +724,11 @@
             },
             {
               "from": {
-                "key_code": "right_option"
+                "key_code": "left_option"
               },
               "to": [
                 {
-                  "key_code": "right_command"
-                }
-              ]
-            },
-            {
-              "from": {
-                "key_code": "right_command"
-              },
-              "to": [
-                {
-                  "key_code": "right_option"
+                  "key_code": "left_command"
                 }
               ]
             },
@@ -754,11 +744,31 @@
             },
             {
               "from": {
-                "key_code": "grave_accent_and_tilde"
+                "key_code": "right_command"
               },
               "to": [
                 {
-                  "key_code": "non_us_backslash"
+                  "key_code": "right_option"
+                }
+              ]
+            },
+            {
+              "from": {
+                "key_code": "right_option"
+              },
+              "to": [
+                {
+                  "key_code": "right_command"
+                }
+              ]
+            },
+            {
+              "from": {
+                "key_code": "non_us_pound"
+              },
+              "to": [
+                {
+                  "key_code": "backslash"
                 }
               ]
             }

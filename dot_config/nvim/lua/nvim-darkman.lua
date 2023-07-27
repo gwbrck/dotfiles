@@ -40,8 +40,10 @@ M.init = function()
 
    local theme_value = subiter:get_basic()
    if theme_value == 2 then
+      vim.cmd([[colorscheme edge]])
       vim.o.background = "light"
    elseif theme_value == 1 then
+      vim.cmd([[colorscheme edge]])
       vim.o.background = "dark"
    end
    return

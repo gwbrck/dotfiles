@@ -890,8 +890,8 @@ targets."
   :init
   (setq languagetool-server-url "https://api.languagetoolplus.com"
         languagetool-server-port 443)
-  (setq languagetool-api-key (password-store-get-field "nebenkosten/languagetool" "api-key")
-        languagetool-username (password-store-get-field "nebenkosten/languagetool" "Username"))
+  (setq languagetool-api-key (password-store-get "dev/languagetool")
+        languagetool-username (password-store-get-field "dev/languagetool" "Username"))
   (setq languagetool-server-mode-map (make-sparse-keymap))
   (add-to-list 'minor-mode-map-alist `(languagetool-server-mode . ,languagetool-server-mode-map))
   :hook ((languagetool-server-mode . synosaurus-mode))

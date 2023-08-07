@@ -641,7 +641,10 @@ targets."
   (setq main-bib-file (concat gwbrck/roam "../main.bib")))
 
 (use-package zotra
-  :vc (:url "https://github.com/mpedramfar/zotra.git")
+  :vc (zotra
+       :url "https://github.com/mpedramfar/zotra.git"
+       :rev :newest
+       :branch "main")
   :config
   (setq zotra-default-entry-format "biblatex")
   (setq zotra-download-attachment-default-directory "~/Desktop/")
@@ -702,7 +705,10 @@ targets."
   (org-mode . citar-capf-setup))
 
 (use-package zotra-pdf-drop-mode
-  :vc (:url "https://github.com/gwbrck/zotra-pdf-drop-mode.git")
+  :vc (zotra-pdf-drop-mode
+       :url "https://github.com/gwbrck/zotra-pdf-drop-mode.git"
+       :rev :newest
+       :branch "main")
   :after citar
   :custom
   (zotra-pdf-drop-on-new-entry-hook #'zotra-pdf-drop-process)
@@ -728,7 +734,10 @@ targets."
   :config (citar-embark-mode))
 
 (use-package org-cite-csl-activate
-  :vc (:url "https://github.com/andras-simonyi/org-cite-csl-activate.git")
+  :vc (org-cite-csl-activate
+       :url "https://github.com/andras-simonyi/org-cite-csl-activate.git"
+       :rev :newest
+       :branch "main")
   :hook
   (org-mode . org-cite-csl-activate-render-all)
   (org-mode . cursor-sensor-mode))

@@ -44,11 +44,6 @@
   (set-keyboard-coding-system 'utf-8)
   (prefer-coding-system 'utf-8))
 
-(use-package with-editor
-  :when (equal system-type 'darwin)
-  :config
-  (setq with-editor-emacsclient-executable (executable-find "emacsclient")))
-
 (use-package epg
   :config
   (defun pinentry-loopback-after-init ()
@@ -1075,6 +1070,11 @@ The function provides the following options:
   (:keymaps 'magit-diff-mode-map "SPC" nil)
   (:keymaps 'magit-mode-map "SPC" nil)
   (:keymaps 'magit-mode-map "SPC" nil :states 'normal))
+
+(use-package with-editor
+  :when (equal system-type 'darwin)
+  :config
+  (setq with-editor-emacsclient-executable (executable-find "emacsclient")))
 
 (use-package info
   :general

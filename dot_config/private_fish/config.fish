@@ -57,6 +57,7 @@ if status is-interactive
 end
 
 set fish_greeting ""
+set -Ux EDITOR "nvim"
 
 # Ensure that GPG Agent is used as the SSH agent
 set -e SSH_AUTH_SOCK

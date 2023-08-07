@@ -10,10 +10,6 @@
 (package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))
-(when (version< emacs-version "30.0")
-  (unless (package-installed-p 'vc-use-package)
-    (package-vc-install "https://github.com/slotThe/vc-use-package"))
-  (require 'vc-use-package))
 
 (use-package custom
   :no-require t
@@ -21,6 +17,11 @@
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (when (file-exists-p custom-file)
     (load custom-file)))
+
+(when (version< emacs-version "30.0")
+  (unless (package-installed-p 'vc-use-package)
+    (package-vc-install "https://github.com/slotThe/vc-use-package"))
+  (require 'vc-use-package))
 
 (use-package emacs
   :init

@@ -22,7 +22,7 @@
 \\usepackage[normalem]{ulem}
 \\usepackage{csquotes}
 \\usepackage{ragged2e}
-\\usepackage[scale=0.7]{geometry} % Reduce document margins
+\\usepackage[scale=0.85]{geometry} % Reduce document margins
 \\recomputelengths
 \\usepackage[notquote]{hanging}
 \\usepackage[AUTO]{babel}"

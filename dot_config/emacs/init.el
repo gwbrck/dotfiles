@@ -637,10 +637,7 @@ targets."
   (setq main-bib-file (concat gwbrck/roam "../main.bib")))
 
 (use-package zotra
-  :vc (zotra
-       :url "https://github.com/mpedramfar/zotra.git"
-       :rev :newest
-       :branch "main")
+  :ensure t
   :config
   (setq zotra-default-entry-format "biblatex")
   (setq zotra-download-attachment-default-directory "~/Desktop/")

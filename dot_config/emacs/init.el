@@ -942,11 +942,22 @@ targets."
   (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
   (defun start-pylsp ()
     "Function to start python lsp"
+    (interactive)
     (when pyvenv-virtual-env
       (unless (file-executable-p (concat pyvenv-virtual-env "bin/pylsp"))
         (message "Install pylsp...")
-        (shell-command "pip install python-lsp-server[all]")))
-    (eglot-ensure))
+        (shell-command (concat "pip install "
+                               "python-lsp-black "
+                               "python-lsp-server"
+                               "[flake8, "
+                               "mccabe, "
+                               "pycodestyle, "
+                               "pydocstyle, "
+                               "pyflakes, "
+                               "pylint, "
+                               "rope, "
+                               "whatthepatch]")))
+      (eglot-ensure)))
   :custom
   (eglot-autoshutdown t)
   (eldoc-echo-area-prefer-doc-buffer t)

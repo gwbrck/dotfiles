@@ -959,10 +959,10 @@ targets."
       (unless (file-executable-p (concat pyvenv-virtual-env "bin/pylsp"))
         (message "Install pylsp...")
         (shell-command (concat "pip install "
-                               "python-lsp-black "
                                "python-lsp-server"
                                "[flake8, "
                                "mccabe, "
+                               "yapf, "
                                "pycodestyle, "
                                "pydocstyle, "
                                "pyflakes, "
@@ -1003,6 +1003,13 @@ targets."
 (use-package yaml-mode
   :mode "\\.yml\\'"
   :ensure t)
+
+(use-package python
+  :config
+  (setq python-indent-offset 4)
+  (defun python-custom-settings ()
+    (setq-local tab-width 4))
+  (add-hook 'python-ts-mode-hook 'python-custom-settings))
 
 (use-package json-mode
   :ensure t
@@ -1053,7 +1060,9 @@ The function provides the following options:
                                    `(:pylsp .
                                             ((:plugins
                                               (:jedi_completion (:fuzzy t)
-                                                                :jedi (:environment ,path)))))
+                                                                :jedi (:environment ,path)
+                                              :yapf (:enabled t)
+                                              :autopep8 (:enabled :json-false)))))
                                    'add-or-replace)
         (save-buffer))
       (save-window-excursion

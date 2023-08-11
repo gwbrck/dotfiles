@@ -1,39 +1,16 @@
 return {
   {
-    "williamboman/mason.nvim",
-    build = ":MasonUpdate",
-    dependencies = {
-      "williamboman/mason-lspconfig.nvim",
-      "neovim/nvim-lspconfig",
-    },
+    'neovim/nvim-lspconfig',
     config = function()
-      local mason = require("mason")
-      local mason_lspconfig = require("mason-lspconfig")
-      local lspconfig = require("lspconfig")
-
-      mason.setup()
-      mason_lspconfig.setup({
-        ensure_installed = {
-          "ansiblels",
-          "bashls",
-          "clangd",
-          "dockerls",
-          "docker_compose_language_service",
-          "jsonls",
-          "lua_ls",
-          "tsserver",
-          "emmet_ls",
-          "r_language_server",
-        },
-      });
-
-      -- Setup every needed language server in lspconfig
-      mason_lspconfig.setup_handlers {
-        function(server_name)
-          lspconfig[server_name].setup {}
-        end,
-      }
-    end
+      local lspconfig = require('lspconfig') -- Lazy.nvim will handle the loading
+      -- Enable the following language servers
+      local servers = { 'clangd', 'rust_analyzer', 'lua_ls', 'tsserver', 'pylsp', 'r_language_server', 'bashls',
+        'jsonls' }
+      for _, lsp in ipairs(servers) do
+        lspconfig[lsp].setup {}
+      end
+    end,
+    event = "BufReadPre",
   },
   {
     'hrsh7th/nvim-cmp',

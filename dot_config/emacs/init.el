@@ -939,7 +939,18 @@ targets."
 
 (use-package eglot
   :config
+  (defun eglot-register-format-on-save ()
+    "Register a buffer-local 'before-save' hook for formatting with EGLOT."
+    (add-hook 'before-save-hook 'eglot-format-buffer-on-save nil t))
+  (defun eglot-format-buffer-on-save ()
+    "Format buffer using EGLOT before saving, if EGLOT server is active."
+    (when (bound-and-true-p eglot--managed-mode)
+      (eglot-format-buffer)))
+  (add-hook 'eglot-managed-mode-hook #'eglot-register-format-on-save)
   (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
+  (add-to-list 'eglot-server-programs
+               '(json-mode . ("vscode-json-language-server"
+                              "--stdio" :initializationOptions (:provideFormatter t))))
   (defun start-pylsp ()
     "Function to start python lsp"
     (interactive)

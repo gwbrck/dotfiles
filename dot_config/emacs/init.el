@@ -90,6 +90,7 @@
                   eshell-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
   (setq-default indent-tabs-mode nil)
+  (setq-default tab-width 4)
   (setq tab-always-indent 'complete))
 
 (use-package pixel-scroll
@@ -1123,6 +1124,9 @@ The function provides the following options:
 (use-package ess
   :ensure t
   :config
+  (defun ess-r-mode-tab-width ()
+    (setq-local tab-width 2))
+  (add-hook 'ess-r-mode-hook 'ess-r-mode-tab-width)
   (setq ess-use-eldoc nil)
   (setq ess-use-flymake nil))
 

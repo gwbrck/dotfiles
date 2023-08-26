@@ -1,6 +1,7 @@
 eval "$(/opt/homebrew/bin/brew shellenv fish)"
 alias em='emacsclient -cn -a ""'
 if status is-interactive
+    abbr tn "tmux new -s (pwd | sed 's/.*\///g')"
     alias latex-update="sudo tlmgr update --self --all"
     alias biber-cash-reset="rm -rf `biber --cache`"
     alias cm='chezmoi'

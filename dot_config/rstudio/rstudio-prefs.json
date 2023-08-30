@@ -1,5 +1,7 @@
 {
     "initial_working_directory": "~",
     "editor_theme": "Dracula",
-    "editor_keybindings": "vim"
+    "editor_keybindings": "vim",
+    "posix_terminal_shell": "custom",
+    "custom_shell_command": "/opt/homebrew/bin/fish"
 }

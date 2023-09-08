@@ -239,6 +239,9 @@
   :ensure t
   :after org)
 
+(use-package mermaid-mode
+  :ensure t)
+
 (use-package org
   :ensure t
   :demand t
@@ -258,6 +261,8 @@
    'org-babel-load-languages
    '((R . t)
      (python . t)
+     (dot . t)
+     (mermaid . t)
      (shell . t)
      (emacs-lisp . t)
      (restclient . t)))

@@ -40,6 +40,9 @@
         ns-option-modifier        'super
         mac-right-option-modifier 'none
         ns-right-option-modifier  'none)
+  (global-set-key (kbd "M-<backspace>") #'delete-indentation)
+  (global-set-key (kbd "s-<backspace>") #'backward-kill-word)
+  (global-set-key (kbd "C-<backspace>") #'kill-line)
   (set-terminal-coding-system 'utf-8)
   (set-keyboard-coding-system 'utf-8)
   (prefer-coding-system 'utf-8))
@@ -154,7 +157,6 @@
   :after evil
   :ensure t
   :config
-  (global-set-key (kbd "s-<backspace>") #'delete-indentation)
   (evil-collection-init)
   (leader-key-def
     "f" '(:ignore t :wk "find")

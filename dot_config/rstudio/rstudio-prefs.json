@@ -3,5 +3,8 @@
     "editor_theme": "Dracula",
     "editor_keybindings": "vim",
     "posix_terminal_shell": "custom",
-    "custom_shell_command": "/opt/homebrew/bin/fish"
+    "custom_shell_command": "/opt/homebrew/bin/fish",
+    "jobs_tab_visibility": "shown",
+    "rmd_viewer_type": "pane",
+    "spelling_dictionary_language": "de_DE_neu"
 }

@@ -834,6 +834,9 @@ targets."
 (use-package ox-moderncv
   :load-path "lisp/")
 
+(use-package ox-pandoc
+  :ensure t)
+
 ;;(use-package consult-org-roam
 ;;   :ensure t
 ;;   :after org-roam

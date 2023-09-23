@@ -837,6 +837,9 @@ targets."
 (use-package ox-pandoc
   :ensure t)
 
+(use-package consult-notes
+  :ensure t)
+
 ;;(use-package consult-org-roam
 ;;   :ensure t
 ;;   :after org-roam

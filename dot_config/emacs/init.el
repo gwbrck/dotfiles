@@ -1155,7 +1155,34 @@ The function provides the following options:
   (setq ess-use-flymake nil))
 
 (use-package quarto-mode
-  :ensure t)
+  :ensure t
+  :config
+  (defun quarto-preview ()
+    "Overwritten quarto function"
+    (interactive)
+    (when quarto-mode--preview-process
+    (delete-process quarto-mode--preview-process))
+    (when (get-buffer "*quarto-preview*")
+      (kill-buffer "*quarto-preview*"))
+    
+    (let* ((project-directory (quarto-mode--buffer-in-quarto-project-p))
+	       (browser-path (cond
+			              (project-directory
+			               (file-relative-name buffer-file-name project-directory))
+			              (t "")))
+	       (process
+	        (let ((process-environment (cons (concat "QUARTO_RENDER_TOKEN="
+						                             quarto-mode--quarto-preview-uuid)
+					                         process-environment)))
+	          (make-process :name (format "quarto-preview-%s" buffer-file-name)
+			                :buffer "*quarto-preview*"
+			                :command (list quarto-command
+					                       "preview"
+					                       buffer-file-name)))))
+      (setq quarto-mode--preview-process process)
+      (with-current-buffer (process-buffer process)
+        (shell-mode)
+        (set-process-filter process 'quarto-mode--process-filter)))))
 
 (use-package fish-mode
   :ensure t)

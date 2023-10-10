@@ -25,8 +25,8 @@
 
 (use-package emacs
   :init
-  (setq gwbrck/roam "~/Documents/Bib/roam/")
-  (setq org-directory gwbrck/roam)
+  (setq gwbrck/bib "~/Documents/Bib")
+  (setq org-directory (concat gwbrck/bib "/org/"))
   (setq default-directory "~/"))
 
 (use-package emacs
@@ -252,9 +252,9 @@
          (org-mode . visual-fill-column-mode)
          (org-mode . variable-pitch-mode))
   :custom
-  (org-default-notes-file (concat gwbrck/roam "journal.org"))
+  (org-default-notes-file (concat org-directory "main.org"))
   (org-clock-clocktable-default-properties '(:maxlevel 4 :scope agenda))
-  (org-archive-location (concat gwbrck/roam "archiv.org::* From %s"))
+  (org-archive-location (concat org-directory "archiv.org::* From %s"))
   (org-archive-subtree-save-file-p t)
   (org-startup-folded t)
   (org-startup-indented t)
@@ -274,17 +274,17 @@
         '(("l"
            "neue Literatur"
            entry
-           (file+olp "journal.org" "Literaturarbeit")
+           (file+olp "main.org" "Literaturarbeit")
            "** TODO [cite/t:@%(citar-org-select-key)] %(org-set-tags-command) \n %?")
           ("L"
            "neue Literatur (key in killring)"
            entry
-           (file+olp "journal.org" "Literaturarbeit")
+           (file+olp "main.org" "Literaturarbeit")
            "** TODO [cite/t:@%c] %(org-set-tags-command) \n %?")
           ("t"
            "task"
            entry
-           (file+olp "journal.org" "Aufgaben")
+           (file+olp "main.org" "Aufgaben")
            "** TODO %? %(org-set-tags-command)")))
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
   (advice-add 'org-archive-subtree :after 'org-save-all-org-buffers)
@@ -304,7 +304,7 @@
   :after org
   :custom
   ;; agenda files are defined by vulpea functions (orgroam)
-  (org-agenda-files `(,(concat gwbrck/roam "journal.org")))
+  (org-agenda-files `(,(concat org-directory "main.org")))
   (org-agenda-columns-add-appointments-to-effort-sum t)
   (org-agenda-start-with-log-mode t)
   (org-log-done 'note)
@@ -642,7 +642,7 @@ targets."
   :load-path "lisp/"
   :demand t
   :config
-  (setq main-bib-file (concat gwbrck/roam "../main.bib")))
+  (setq main-bib-file (concat gwbrck/bib "/main.bib")))
 
 (use-package zotra
   :ensure t
@@ -666,8 +666,8 @@ targets."
   :after init-bibtex
   :config
   (add-to-list 'citar-bibliography main-bib-file)
-  (add-to-list 'citar-library-paths (concat gwbrck/roam "pdfs"))
-  (add-to-list 'citar-notes-paths (concat gwbrck/roam "annotations"))
+  (add-to-list 'citar-library-paths (concat gwbrck/bib "/pdfs"))
+  (add-to-list 'citar-notes-paths (concat gwbrck/bib "/annotations"))
   (setq citar-indicator-files-icons
     (citar-indicator-create
      :symbol (all-the-icons-faicon
@@ -766,7 +766,7 @@ targets."
 ;;   :init
 ;;   (setq org-roam-v2-ack t)
 ;;   :custom
-;;   (org-roam-directory gwbrck/roam)
+;;   (org-roam-directory gwbrck/bib)
 ;;   (org-roam-completion-everywhere t)
 ;;   :config
 ;;   (org-roam-setup)
@@ -1134,7 +1134,8 @@ The function provides the following options:
     "bkp" '(project-kill-buffers :wk "kill project"))
   :config
   (unless (cl-member-if (lambda (s) (string-match "/Code/" s)) (project-known-project-roots))
-    (project-remember-projects-under "~/Code/" t)))
+    (project-remember-projects-under "~/Code/" t))
+  (add-to-list 'project-find-functions 'ess-r-project t))
 
 (use-package evil-nerd-commenter
   :ensure t

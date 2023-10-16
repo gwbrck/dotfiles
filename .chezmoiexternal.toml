@@ -1,3 +1,11 @@
+["Library/texmf/tex/latex"]
+    type = "archive"
+    url = "https://github.com/tud-cd/tud-cd/archive/master.tar.gz"
+    refreshPeriod = "168h"
+    stripComponents = 3
+    exact = true
+    include = ["*/tex/latex/tud-beamerstyle/**", "*/tex/latex/tudmathposter/**"]
+
 ["bin/paper_store_sparse.sh"]
     type = "file"
     executable = true

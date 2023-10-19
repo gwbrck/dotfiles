@@ -831,34 +831,12 @@ targets."
   (add-to-list 'org-latex-packages-alist '("" "makecell"))
   (add-to-list 'org-latex-packages-alist '("svgnames" "xcolor"))
   (add-to-list 'org-latex-packages-alist '("notquote" "hanging"))
-  (add-to-list 'org-latex-packages-alist '("inline" "enumitem"))
-  (add-to-list 'org-latex-classes
-	           '("tudbeamer" "\\documentclass[presentation,t,aspectratio=169]{beamer}
-[NO-DEFAULT-PACKAGES]
-[NO-PACKAGES]
-\\usepackage[utf8]{inputenc}
-\\usepackage[normalem]{ulem}
-\\usepackage[TS1,T1]{fontenc}
-\\usepackage{graphicx}
-\\usepackage{grffile}
-\\usepackage{longtable}
-\\usepackage{wrapfig}
-\\usepackage{rotating}
-\\usepackage{amsmath}
-\\usepackage{textcomp}
-\\usepackage{amssymb}
-\\usepackage{capt-of}
-\\usepackage{hyperref}
-\\usepackage{amsmath}
-\\usepackage[AUTO]{babel}
-\\usepackage{tudscrfonts}
-\\usetheme{tud}
-"
-	             ("\\section{%s}" . "\\section*{%s}")
-	             ("\\subsection{%s}" . "\\subsection*{%s}")
-	             ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+  (add-to-list 'org-latex-packages-alist '("inline" "enumitem")))
 
 (use-package ox-moderncv
+  :load-path "lisp/")
+
+(use-package ox-tudbeamer
   :load-path "lisp/")
 
 (use-package ox-pandoc

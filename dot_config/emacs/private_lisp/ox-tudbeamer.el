@@ -15,6 +15,12 @@
 
 
 (add-to-list 'org-latex-classes
+	     '("tudscrartcl" "\\documentclass[]{tudscrartcl}"
+	       ("\\section{%s}" . "\\section*{%s}")
+	       ("\\subsection{%s}" . "\\subsection*{%s}")
+	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+
+(add-to-list 'org-latex-classes
 	           '("tudbeamer" "\\documentclass[presentation,t,aspectratio=169]{beamer}
 [NO-DEFAULT-PACKAGES]
 [NO-PACKAGES]
@@ -44,11 +50,33 @@
 
 ;;; User-Configurable Variables
 
+(defgroup org-export-tudscrartcl nil
+  "Options specific for using the tudscrartcl class in LaTeX export."
+  :tag "Org tudscrartcl"
+  :group 'org-export
+  :version "25.3")
+
 (defgroup org-export-tudbeamer nil
   "Options specific for using the tudbeamer class in LaTeX export."
   :tag "Org tudbeamer"
   :group 'org-export
   :version "25.3")
+
+(org-export-define-derived-backend 'tudscrartcl 'latex
+  :options-alist
+  '((:latex-class "LATEX_CLASS" nil "tudscrartcl" t)
+    (:institute "INSTITUTE" nil nil pase)
+    (:faculty "FACULTY" nil nil parse))
+  :menu-entry '(?l "Export to LaTeX"
+                   ((?T "As PDF file and open (tudscrartcl)"
+                        (lambda (a s v b)
+                          (let ((outfile (org-export-output-file-name ".tex" s)))
+                            (if a
+                                (org-export-to-file 'tudscrartcl outfile
+                                  t s v b nil #'org-latex-compile)
+                              (org-open-file (org-export-to-file 'tudscrartcl outfile
+                                               a s v b nil #'org-latex-compile))))))))
+  :translate-alist '((template . org-tudscrartcl-template)))
 
 ;;; Define Back-End
 (org-export-define-derived-backend 'tudbeamer 'beamer
@@ -170,6 +198,94 @@ holding export options."
      (if (plist-get info :with-creator)
 	 (concat (plist-get info :creator) "\n")
        "")
+     ;; Document end.
+     "\\end{document}")))
+
+(defun org-tudscrartcl-template (contents info)
+  "Return complete document string after LaTeX conversion.
+CONTENTS is the transcoded contents string.  INFO is a plist
+holding export options."
+  (let ((title (org-export-data (plist-get info :title) info))
+	(spec (org-latex--format-spec info)))
+    (concat
+     ;; Time-stamp.
+     (and (plist-get info :time-stamp-file)
+	  (format-time-string "%% Created %Y-%m-%d %a %H:%M\n"))
+     ;; LaTeX compiler.
+     (org-latex--insert-compiler info)
+     ;; Document class and packages.
+     (org-latex-make-preamble info)
+     ;; Possibly limit depth for headline numbering.
+     (let ((sec-num (plist-get info :section-numbers)))
+       (when (integerp sec-num)
+	 (format "\\setcounter{secnumdepth}{%d}\n" sec-num)))
+     ;; Author.
+     (let ((author (and (plist-get info :with-author)
+			(let ((auth (plist-get info :author)))
+			  (and auth (org-export-data auth info)))))
+	   (email (and (plist-get info :with-email)
+		       (org-export-data (plist-get info :email) info))))
+       (cond ((and author email (not (string= "" email)))
+	      (format "\\author{%s\\thanks{%s}}\n" author email))
+	     ((or author email) (format "\\author{%s}\n" (or author email)))))
+     ;; Date.
+     ;; LaTeX displays today's date by default. One can override this by
+     ;; inserting \date{} for no date, or \date{string} with any other
+     ;; string to be displayed as the date.
+     (let ((date (and (plist-get info :with-date) (org-export-get-date info))))
+       (format "\\date{%s}\n" (org-export-data date info)))
+     ;; Title and subtitle.
+     (let* ((subtitle (plist-get info :subtitle))
+	    (formatted-subtitle
+	     (when subtitle
+	       (format (plist-get info :latex-subtitle-format)
+		       (org-export-data subtitle info))))
+	    (separate (plist-get info :latex-subtitle-separate)))
+       (concat
+	(format "\\title{%s%s}\n" title
+		(if separate "" (or formatted-subtitle "")))
+	(when (and separate subtitle)
+	  (concat formatted-subtitle "\n"))))
+     ;; Hyperref options.
+     (let ((template (plist-get info :latex-hyperref-template)))
+       (and (stringp template)
+            (format-spec template spec)))
+     ;; engrave-faces-latex preamble
+     (when (and (eq org-latex-src-block-backend 'engraved)
+                (org-element-map (plist-get info :parse-tree)
+                    '(src-block inline-src-block) #'identity
+                    info t))
+       (org-latex-generate-engraved-preamble info))
+     ;; Document start.
+     "\\begin{document}\n\n"
+     ;; Title command.
+     (let* ((title-command (plist-get info :latex-title-command))
+            (command (and (stringp title-command)
+                          (format-spec title-command spec))))
+       (org-element-normalize-string
+	(cond ((not (plist-get info :with-title)) nil)
+	      ((string= "" title) nil)
+	      ((not (stringp command)) nil)
+	      ((string-match "\\(?:[^%]\\|^\\)%s" command)
+	       (format command title))
+	      (t command))))
+     ;; Institute.
+     (let ((institute (plist-get info :institute)))
+       (format "\\institute{%s}\n" (org-export-data institute info)))
+     ;; Faculty.
+     (let ((faculty (plist-get info :faculty)))
+       (format "\\faculty{%s}\n" (org-export-data faculty info)))
+     ;; Table of contents.
+     (let ((depth (plist-get info :with-toc)))
+       (when depth
+	 (concat (when (integerp depth)
+		   (format "\\setcounter{tocdepth}{%d}\n" depth))
+		 (plist-get info :latex-toc-command))))
+     ;; Document's body.
+     contents
+     ;; Creator.
+     (and (plist-get info :with-creator)
+	  (concat (plist-get info :creator) "\n"))
      ;; Document end.
      "\\end{document}")))
 

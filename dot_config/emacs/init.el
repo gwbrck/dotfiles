@@ -1230,9 +1230,8 @@ The function provides the following options:
 (use-package dired
   :commands (dired dired-jump)
   :custom ((dired-listing-switches "-agho --group-directories-first"))
-  :general
-  (:states 'normal :keymaps 'dired-mode-map
-    "SPC" nil))
+  :config
+  (evil-define-key 'normal dired-mode-map (kbd "SPC") nil))
 
 (use-package dired-single
   :ensure t)

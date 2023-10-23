@@ -652,15 +652,22 @@ targets."
   (zotra-default-entry-format "biblatex")
   (zotra-download-attachment-default-directory "~/Desktop/")
   :config
-  (defun zotra-process-new-entry ()
-    (let* ((key (with-current-buffer (current-buffer) (bibtex-key-in-head))))
-      (when (y-or-n-p "Add file to bibtex? ")
-        (kill-new zotra-last-processed-pdf)
-        (citar-add-file-to-library key))
-      (when (y-or-n-p (concat "Add " key " to Leseliste?"))
-        (kill-new key)
-        (org-capture t "L")))))
-  ;;(add-hook 'zotra-after-get-bibtex-entry-hook 'zotra-process-new-entry))
+  (defun zotra-download-attachment-for-current-entry ()
+    (interactive)
+    (save-excursion
+      (bibtex-beginning-of-entry)
+      (let* ((entry (bibtex-parse-entry t))
+             (key (cdr (assoc "=key=" entry)))
+             (url (or (cdr (assoc "url" entry))
+                      (cdr (assoc "doi" entry))))
+             (filename (concat key ".pdf")))
+        (when (and entry
+                   (y-or-n-p (concat "Try download for " key)))
+          (let* ((newfile (zotra-download-attachment
+                            url (concat gwbrck/bib "/pdfs/") filename)))
+            (when newfile
+              (bibtex-make-field (list "File" nil newfile) t)))))))
+  (add-hook 'zotra-after-get-bibtex-entry-hook 'zotra-download-attachment-for-current-entry 99))
 
 (use-package citar
   :ensure t

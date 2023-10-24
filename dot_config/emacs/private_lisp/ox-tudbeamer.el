@@ -38,6 +38,7 @@
 \\usepackage{capt-of}
 \\usepackage{hyperref}
 \\usepackage{amsmath}
+\\usepackage{pdfcomment}
 \\usepackage[AUTO]{babel}
 \\usepackage{tudscrfonts}
 \\usetheme{tud}

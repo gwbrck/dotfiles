@@ -83,6 +83,7 @@
 (org-export-define-derived-backend 'tudbeamer 'beamer
   :options-alist
   '((:latex-class "LATEX_CLASS" nil "tudbeamer" t)
+    (:pdfcomment-export "PDFCOMMENT_EXPORT" nil "nil" t)
     (:institute "INSTITUTE" nil nil parse))
   :menu-entry '(?l "Export to LaTeX"
                   ((?t "TUD Beamer (open)"
@@ -93,8 +94,18 @@
                                   t s v b nil #'org-latex-compile)
                               (org-open-file (org-export-to-file 'tudbeamer outfile
                                                a s v b nil #'org-latex-compile))))))))
-  :translate-alist '((template . org-tudbeamer-template)))
+  :translate-alist '((template . org-tudbeamer-template)
+                     (keyword . org-tudbeamer-keyword)))
 
+
+(defun org-tudbeamer-keyword (keyword _contents info)
+ "Übersetze das spezielle PDFCOMMENT-Keyword in Org zu \pdfcomment in LaTeX, 
+behandle andere Keywords standardmäßig, basierend auf der Option PDFCOMMENT_EXPORT."
+  (if (and (string= "PDFCOMMENT" (org-element-property :key keyword))
+           (string= "t" (plist-get info :pdfcomment-export)))
+      (format "\\pdfcomment{%s}" (org-element-property :value keyword))
+    ;; Verwende die Standardbehandlung des beamer Backends für alle anderen Keywords
+    (org-export-with-backend 'beamer keyword _contents info)))
 ;;;; Template
 ;;
 ;; Template used is similar to the one used in `latex' back-end,

@@ -102,6 +102,9 @@
   :init
   (pixel-scroll-precision-mode))
 
+(use-package olivetti-mode
+  :ensure t)
+
 (use-package files
   :no-require t
   :config
@@ -249,13 +252,9 @@
   :demand t
   :hook ((org-mode . gwbrck/set-font-faces)
          (org-mode . visual-line-mode)
-         (org-mode . visual-fill-column-mode)
          (org-mode . variable-pitch-mode))
   :custom
   (org-default-notes-file (concat org-directory "main.org"))
-  (org-clock-clocktable-default-properties '(:maxlevel 4 :scope agenda))
-  (org-archive-location (concat org-directory "archiv.org::* From %s"))
-  (org-archive-subtree-save-file-p t)
   (org-startup-folded t)
   (org-startup-indented t)
   :init
@@ -268,37 +267,18 @@
      (shell . t)
      (emacs-lisp . t)
      (restclient . t)))
-  (setq org-ellipsis " ▾")
+  (setq org-ellipsis " ▾"))
+
+(use-package oc-csl-activate
+  :vc (oc-csl-activate
+       :url "https://github.com/andras-simonyi/org-cite-csl-activate.git"
+       :rev :newest
+       :branch "main")
+  :ensure t
+  :custom (org-cite-csl-activate-use-citar-cache t)
   :config
-  (setq org-capture-templates
-        '(("l"
-           "neue Literatur"
-           entry
-           (file+olp "main.org" "Literaturarbeit")
-           "** TODO [cite/t:@%(citar-org-select-key)] %(org-set-tags-command) \n %?")
-          ("L"
-           "neue Literatur (key in killring)"
-           entry
-           (file+olp "main.org" "Literaturarbeit")
-           "** TODO [cite/t:@%c] %(org-set-tags-command) \n %?")
-          ("t"
-           "task"
-           entry
-           (file+olp "main.org" "Aufgaben")
-           "** TODO %? %(org-set-tags-command)")))
-  (advice-add 'org-refile :after 'org-save-all-org-buffers)
-  (advice-add 'org-archive-subtree :after 'org-save-all-org-buffers)
-  (setq org-tag-alist
-        '((:endgroup)
-          ("discovery" . ?d)
-          ("litReview" . ?l)
-          ("mustRead" . ?r)
-          ("theory" . ?t)
-          ("code" . ?c)
-          ("method" . ?m)))
-  :general
-  (leader-key-def
-    "o" '(org-capture :wk "capture")))
+  (add-hook 'org-mode-hook (lambda () (cursor-sensor-mode 1)) 98)
+  (add-hook 'org-mode-hook (lambda () (org-cite-csl-activate-render-all)) 99))
 
 (use-package org-agenda
   :after org
@@ -331,13 +311,6 @@
   (add-to-list 'org-structure-template-alist '("get" . "src restclient"))
   (add-to-list 'org-structure-template-alist '("py" . "src python"))
   (add-to-list 'org-structure-template-alist '("R" . "src R")))
-
-(use-package visual-fill-column
-  :ensure t
-  :after org
-  :custom
-  (visual-fill-column-width 110)
-  (visual-fill-column-center-text t))
 
 (use-package org-bullets
   :ensure t
@@ -392,7 +365,9 @@
     "Load theme, taking current system APPEARANCE into consideration."
     (mapc #'disable-theme custom-enabled-themes)
     (pcase appearance
-      ('light (load-theme 'doom-feather-light t))
+      ('light (load-theme 'doom-acario-light t)
+              (custom-set-faces
+               `(internal-border ((t (:background ,(doom-color 'dark-violet)))))))
       ('dark (load-theme 'doom-ir-black t)))
     (gwbrck/set-font-faces)))
 
@@ -407,6 +382,7 @@
   :ensure t
   :custom
   (doom-themes-padded-modeline 5))
+
 
 (use-package solaire-mode
   :ensure t
@@ -743,15 +719,6 @@ targets."
   :after citar embark
   :no-require
   :config (citar-embark-mode))
-
-(use-package org-cite-csl-activate
-  :vc (org-cite-csl-activate
-       :url "https://github.com/andras-simonyi/org-cite-csl-activate.git"
-       :rev :newest
-       :branch "main")
-  :hook
-  (org-mode . org-cite-csl-activate-render-all)
-  (org-mode . cursor-sensor-mode))
 
 (use-package oc
   :no-require
@@ -1283,6 +1250,9 @@ The function provides the following options:
   :general
   ("SPC" nil :keymaps 'pdf-view-mode-map)
   ("SPC" nil :keymaps 'pdf-view-mode-map :states 'normal))
+
+(use-package nov;;.el
+  :ensure t)
 
 (use-package server
   :unless (daemonp)

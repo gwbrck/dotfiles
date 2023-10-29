@@ -102,7 +102,7 @@
   :init
   (pixel-scroll-precision-mode))
 
-(use-package olivetti-mode
+(use-package olivetti
   :ensure t)
 
 (use-package files

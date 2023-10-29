@@ -2,3 +2,4 @@
 *-autoloads.el
 .dir-locals.el
 dir
+.DS_Store

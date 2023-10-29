@@ -74,6 +74,9 @@
   (setq frame-resize-pixelwise t)
   (add-to-list 'default-frame-alist '(height . 60))
   (add-to-list 'default-frame-alist '(width . 120))
+  (modify-all-frames-parameters
+   '((right-divider-width . 10)
+     (internal-border-width . 10)))
   (scroll-bar-mode -1)
   (tool-bar-mode -1)
   (tooltip-mode -1)
@@ -345,7 +348,8 @@
                     (org-level-6 . 1.0)
                     (org-level-7 . 1.0)
                     (org-level-8 . 1.0)))
-      (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+      (set-face-attribute (car face) nil :height (cdr face)))
+    (set-face-attribute 'org-document-title nil :height 1.6 :inherit 'default)
     (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
     (set-face-attribute 'org-code nil   :inherit 'fixed-pitch)
     (set-face-attribute 'org-table nil   :inherit '(shadow fixed-pitch))
@@ -354,13 +358,18 @@
     (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
     (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
     (set-face-attribute 'org-hide nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-block-begin-line nil :height 0.8))
+    (set-face-attribute 'org-block-begin-line nil :height 0.8)
+    (dolist (face '(window-divider
+                    window-divider-first-pixel
+                    window-divider-last-pixel))
+      (face-spec-reset-face face)
+      (set-face-foreground face (face-attribute 'default :background)))
+    (set-face-background 'fringe (face-attribute 'default :background)))
   (add-hook 'after-make-frame-functions
             (lambda (frame)
               (with-selected-frame frame
                 (gwbrck/set-font-faces))))
   (gwbrck/set-font-faces)
-
   (defun gwbrck/apply-theme (appearance)
     "Load theme, taking current system APPEARANCE into consideration."
     (mapc #'disable-theme custom-enabled-themes)
@@ -382,7 +391,6 @@
   :ensure t
   :custom
   (doom-themes-padded-modeline 5))
-
 
 (use-package solaire-mode
   :ensure t

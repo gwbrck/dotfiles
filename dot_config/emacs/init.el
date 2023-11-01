@@ -247,7 +247,10 @@
   :ensure t
   :after org)
 
-(use-package mermaid-mode
+(use-package mermaid-ts-mode
+  :ensure t)
+
+(use-package ob-mermaid
   :ensure t)
 
 (use-package org

@@ -663,7 +663,7 @@ targets."
   :config
   (add-to-list 'citar-bibliography main-bib-file)
   (add-to-list 'citar-library-paths (concat gwbrck/bib "/pdfs"))
-  (add-to-list 'citar-notes-paths (concat gwbrck/bib "/annotations"))
+  (add-to-list 'citar-notes-paths (file-truename (concat org-directory "/roam/annotations")))
   (setq citar-indicator-files-icons
     (citar-indicator-create
      :symbol (all-the-icons-faicon
@@ -716,14 +716,14 @@ targets."
     (zotra-add-entry-from-search file-id))
   (zotra-pdf-drop-mode))
 
-;;(use-package citar-org-roam
-;;  :after citar org-roam
-;;  :ensure t
-;;  :custom
-;;  (citar-org-roam-subdir "annotaions")
-;;  (citar-org-roam-note-title-template "${author editor} (${year}): ${title}")
-;;  :config
-;;  (citar-org-roam-mode))
+(use-package citar-org-roam
+  :after citar org-roam
+  :ensure t
+  :custom
+  (citar-org-roam-subdir "annotations")
+  (citar-org-roam-note-title-template "${author editor} (${year}): ${title}")
+  :config
+  (citar-org-roam-mode))
 
 (use-package citar-embark
   :ensure t
@@ -746,20 +746,17 @@ targets."
   (:keymaps 'org-mode-map
             "C-c b" 'org-cite-insert))
 
-;; (use-package org-roam
-;;   :ensure t
-;;   :after org
-;;   :demand t
-;;   :init
-;;   (setq org-roam-v2-ack t)
-;;   :custom
-;;   (org-roam-directory gwbrck/bib)
-;;   (org-roam-completion-everywhere t)
-;;   :config
-;;   (org-roam-setup)
-;;   :general
-;;   (leader-key-def
-;;     "fn" 'org-roam-node-find))
+(use-package org-roam
+  :ensure t
+  :after org
+  :custom
+  (org-roam-completion-everywhere t)
+  (org-roam-directory (file-truename (concat org-directory "/roam")))
+  :config
+  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (org-roam-db-autosync-mode)
+  (org-roam-db-autosync-mode)
+  (require 'org-roam-protocol))
 
 (use-package ox
   :after org
@@ -830,32 +827,32 @@ targets."
 (use-package consult-notes
   :ensure t)
 
-;;(use-package consult-org-roam
-;;   :ensure t
-;;   :after org-roam
-;;   :init
-;;   (require 'consult-org-roam)
-;;   ;; Activate the minor mode
-;;   (consult-org-roam-mode 1)
-;;   :custom
-;;   ;; Use `ripgrep' for searching with `consult-org-roam-search'
-;;   (consult-org-roam-grep-func #'consult-ripgrep)
-;;   ;; Configure a custom narrow key for `consult-buffer'
-;;   (consult-org-roam-buffer-narrow-key ?r)
-;;   ;; Display org-roam buffers right after non-org-roam buffers
-;;   ;; in consult-buffer (and not down at the bottom)
-;;   (consult-org-roam-buffer-after-buffers t)
-;;   :config
-;;   ;; Eventually suppress previewing for certain functions
-;;   (consult-customize
-;;    consult-org-roam-forward-links
-;;    :preview-key (kbd "M-."))
-;;   :bind
-;;   ;; Define some convenient keybindings as an addition
-;;   ("C-c n e" . consult-org-roam-file-find)
-;;   ("C-c n b" . consult-org-roam-backlinks)
-;;   ("C-c n l" . consult-org-roam-forward-links)
-;;   ("C-c n r" . consult-org-roam-search))
+(use-package consult-org-roam
+   :ensure t
+   :after org-roam
+   :init
+   (require 'consult-org-roam)
+   ;; Activate the minor mode
+   (consult-org-roam-mode 1)
+   :custom
+   ;; Use `ripgrep' for searching with `consult-org-roam-search'
+   (consult-org-roam-grep-func #'consult-ripgrep)
+   ;; Configure a custom narrow key for `consult-buffer'
+   (consult-org-roam-buffer-narrow-key ?r)
+   ;; Display org-roam buffers right after non-org-roam buffers
+   ;; in consult-buffer (and not down at the bottom)
+   (consult-org-roam-buffer-after-buffers t)
+   :config
+   ;; Eventually suppress previewing for certain functions
+   (consult-customize
+    consult-org-roam-forward-links
+    :preview-key (kbd "M-."))
+   :bind
+   ;; Define some convenient keybindings as an addition
+   ("C-c n e" . consult-org-roam-file-find)
+   ("C-c n b" . consult-org-roam-backlinks)
+   ("C-c n l" . consult-org-roam-forward-links)
+   ("C-c n r" . consult-org-roam-search))
 
 ;; (use-package flyspell
 ;;   :hook ((flyspell-mode . flyspell-buffer)

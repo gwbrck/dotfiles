@@ -758,6 +758,9 @@ targets."
   (org-roam-db-autosync-mode)
   (require 'org-roam-protocol))
 
+(use-package org-roam-ui
+  :ensure t)
+
 (use-package ox
   :after org
   :init
@@ -1214,6 +1217,19 @@ The function provides the following options:
   :custom ((dired-listing-switches "-agho --group-directories-first"))
   :config
   (evil-define-key 'normal dired-mode-map (kbd "SPC") nil))
+
+(use-package elfeed-protocol
+  :ensure t
+  :custom
+  (elfeed-protocol-enabled-protocols '(fever))
+  (elfeed-protocol-fever-update-unread-only nil)
+  :config
+  (setq elfeed-protocol-feeds `((,(password-store-get-field "dev/freshrss" "elfeed")
+                           :api-url ,(password-store-get-field "dev/freshrss" "api_url")
+                           :password ,(password-store-get-field "dev/freshrss" "api_password"))))
+  (evil-define-key 'normal elfeed-show-mode-map (kbd "SPC") nil)
+  (evil-define-key 'normal elfeed-search-mode-map (kbd "SPC") nil)
+  (elfeed-protocol-enable))
 
 (use-package dired-single
   :ensure t)

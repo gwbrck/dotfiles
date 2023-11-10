@@ -1,4 +1,4 @@
-;;; init.el --- Initialization file for Emacs  -*- lexical-binding: t; -*-
+;; init.el --- Initialization file for Emacs  -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Emacs Startup File --- initialization for Emacs
 ;;; Package --- Summary
@@ -32,20 +32,112 @@
 (use-package emacs
   :when (equal system-type 'darwin)
   :init
-  (setq mac-command-modifier      'control
-        ns-command-modifier       'control
-        mac-control-modifier      'meta
-        ns-control-modifier       'meta
+  (setq mac-command-modifier      'meta
+        ns-command-modifier       'meta
+        mac-control-modifier      'control
+        ns-control-modifier       'control
         mac-option-modifier       'super
         ns-option-modifier        'super
         mac-right-option-modifier 'none
         ns-right-option-modifier  'none)
-  (global-set-key (kbd "M-<backspace>") #'delete-indentation)
+  (global-set-key (kbd "C-<backspace>") #'delete-indentation)
   (global-set-key (kbd "s-<backspace>") #'backward-kill-word)
-  (global-set-key (kbd "C-<backspace>") #'kill-line)
+  (global-set-key (kbd "M-<backspace>") #'kill-line)
   (set-terminal-coding-system 'utf-8)
   (set-keyboard-coding-system 'utf-8)
   (prefer-coding-system 'utf-8))
+
+(use-package meow
+  :ensure t
+  :config
+  (defun meow-setup ()
+    (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
+    (meow-motion-overwrite-define-key
+     '("j" . meow-next)
+     '("k" . meow-prev)
+     '("<escape>" . ignore))
+    (meow-leader-define-key
+     ;; SPC j/k will run the original command in MOTION state.
+     '("j" . "H-j")
+     '("k" . "H-k")
+     ;; Use SPC (0-9) for digit arguments.
+     '("1" . meow-digit-argument)
+     '("2" . meow-digit-argument)
+     '("3" . meow-digit-argument)
+     '("4" . meow-digit-argument)
+     '("5" . meow-digit-argument)
+     '("6" . meow-digit-argument)
+     '("7" . meow-digit-argument)
+     '("8" . meow-digit-argument)
+     '("9" . meow-digit-argument)
+     '("0" . meow-digit-argument)
+     '("/" . meow-keypad-describe-key)
+     '("?" . meow-cheatsheet))
+    (meow-normal-define-key
+     '("0" . meow-expand-0)
+     '("9" . meow-expand-9)
+     '("8" . meow-expand-8)
+     '("7" . meow-expand-7)
+     '("6" . meow-expand-6)
+     '("5" . meow-expand-5)
+     '("4" . meow-expand-4)
+     '("3" . meow-expand-3)
+     '("2" . meow-expand-2)
+     '("1" . meow-expand-1)
+     '("-" . negative-argument)
+     '(";" . meow-reverse)
+     '("," . meow-inner-of-thing)
+     '("." . meow-bounds-of-thing)
+     '("[" . meow-beginning-of-thing)
+     '("]" . meow-end-of-thing)
+     '("a" . meow-append)
+     '("A" . meow-open-below)
+     '("b" . meow-back-word)
+     '("B" . meow-back-symbol)
+     '("c" . meow-change)
+     '("d" . meow-delete)
+     '("D" . meow-backward-delete)
+     '("e" . meow-next-word)
+     '("E" . meow-next-symbol)
+     '("f" . meow-find)
+     '("g" . meow-cancel-selection)
+     '("G" . meow-grab)
+     '("h" . meow-left)
+     '("H" . meow-left-expand)
+     '("i" . meow-insert)
+     '("I" . meow-open-above)
+     '("j" . meow-next)
+     '("J" . meow-next-expand)
+     '("k" . meow-prev)
+     '("K" . meow-prev-expand)
+     '("l" . meow-right)
+     '("L" . meow-right-expand)
+     '("m" . meow-join)
+     '("n" . meow-search)
+     '("o" . meow-block)
+     '("O" . meow-to-block)
+     '("p" . meow-yank)
+     '("q" . meow-quit)
+     '("Q" . meow-goto-line)
+     '("r" . meow-replace)
+     '("R" . meow-swap-grab)
+     '("s" . meow-kill)
+     '("t" . meow-till)
+     '("u" . meow-undo)
+     '("U" . meow-undo-in-selection)
+     '("v" . meow-visit)
+     '("w" . meow-mark-word)
+     '("W" . meow-mark-symbol)
+     '("x" . meow-line)
+     '("X" . meow-goto-line)
+     '("y" . meow-save)
+     '("Y" . meow-sync-grab)
+     '("z" . meow-pop-selection)
+     '("'" . repeat)
+     '("<escape>" . ignore)))
+  (require 'meow)
+  (meow-setup)
+  (meow-global-mode 1))
 
 (use-package epg
   :config
@@ -126,20 +218,6 @@
   :when (equal system-type 'darwin)
   :init (ns-auto-titlebar-mode +1))
 
-(use-package evil
-  :ensure t
-  :demand t
-  :init
-  (setq evil-cross-lines t)
-  (setq evil-respect-visual-line-mode t)
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil)
-  ;;(setq evil-want-minibuffer t)
-  :config
-  (evil-mode 1))
-
 (use-package general
   :ensure t
   :after evil
@@ -158,66 +236,6 @@
     :prefix "SPC c"
     :prefix-map 'leader-c-map
     :global-prefix "C-SPC c"))
-
-(use-package evil-collection
-  :after evil
-  :ensure t
-  :config
-  (evil-collection-init)
-  (leader-key-def
-    "f" '(:ignore t :wk "find")
-    "ff" '(find-file :wk "file")
-    "d" '(:ignore t :wk "dired")
-    "dd" #'dired
-    "c" '(:ignore t :wk "mode-map")
-    "SPC" '(execute-extended-command :wk "M-x")
-    "x" '(:keymap ctl-x-map :wk "ctl-x-map")
-    "h" '(:keymap help-map :wk "help")
-    "b" '(:ignore t :wk "buffers")
-    "bn" '(next-buffer :wk "next Buffer")
-    "bv" '(previous-buffer :wk "preVious Buffer")
-    "bk" '(:ignore t :which-key "kill buffer")
-    "bks" '(kill-some-buffers :wk "kill some buffers")
-    "bkk" '(kill-this-buffer :wk "kill this buffer")
-    "w" '(evil-window-map :which-key "windows")
-    "s" '(languagetool-server-mode :which-key "windows")))
-
-(use-package evil-org
-  :ensure t
-  :after org
-  :hook (org-mode . (lambda () evil-org-mode))
-  :config
-  (require 'evil-org)
-  (require 'evil-org-agenda)
-  (evil-org-set-key-theme '(navigation todo insert textobjects additional))
-  (evil-org-agenda-set-keys))
-
-(use-package evil-snipe
-  :ensure t
-  :after evil-collection
-  :config
-  (evil-snipe-mode +1)
-  (evil-snipe-override-mode +1)
-  (setq evil-snipe-scope 'buffer))
-
-(use-package evil-surround
-  :ensure t
-  :after evil-collection
-  :config
-  (global-evil-surround-mode 1))
-
-(use-package view
-  :general
-  ("SPC" nil :keymaps 'view-mode-map)
-  ("SPC" nil :keymaps 'view-mode-map :states 'normal))
-
-(use-package pulse
-  :custom (pulse-flag t)
-  :config
-  (defun gwbrck/evil-yank-advice (orig-fn beg end &rest args)
-    (pulse-momentary-highlight-region beg end 'highlight)
-    (apply orig-fn beg end args))
-  (advice-add 'evil-yank :around #'gwbrck/evil-yank-advice))
 
 (use-package elec-pair
   :demand t
@@ -296,12 +314,7 @@
   (org-log-done 'note)
   (org-log-into-drawer t)
   (org-agenda-current-time-string
-   "⭠ now ─────────────────────────────────────────────────")
-  :general
-  ("SPC" nil :keymaps 'org-agenda-mode-map)
-  ("SPC" nil :keymaps 'org-agenda-mode-map :states 'motion)
-  (leader-key-def
-    "a" '(org-agenda :wk "agenda")))
+   "⭠ now ─────────────────────────────────────────────────"))
 
 (use-package ox-icalendar
   :after org
@@ -385,10 +398,7 @@
 
 (use-package calendar
   :custom
-  (calendar-set-date-style 'iso)
-  :general
-  ("SPC" nil :keymaps 'calendar-mode-map)
-  ("SPC" nil :states 'normal :keymaps 'calendar-mode-map))
+  (calendar-set-date-style 'iso))
 
 (use-package doom-themes
   :ensure t
@@ -487,14 +497,58 @@
 
 (use-package consult
   :ensure t
-  :general
-  ("C-s" 'consult-line)
-  (leader-key-def
-    "bs" 'consult-buffer
-    "fF" 'consult-ripgrep)
-  (:keymaps 'org-mode-map
-            :states 'normal
-            "/" 'consult-outline)
+  :bind (;; C-c bindings in `mode-specific-map'
+         ("C-c M-x" . consult-mode-command)
+         ("C-c h" . consult-history)
+         ("C-c k" . consult-kmacro)
+         ("C-c m" . consult-man)
+         ("C-c i" . consult-info)
+         ([remap Info-search] . consult-info)
+         ;; C-x bindings in `ctl-x-map'
+         ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
+         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+         ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+         ("C-x t b" . consult-buffer-other-tab)    ;; orig. switch-to-buffer-other-tab
+         ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
+         ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
+         ;; Custom M-# bindings for fast register access
+         ("M-#" . consult-register-load)
+         ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+         ("C-M-#" . consult-register)
+         ;; Other custom bindings
+         ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+         ;; M-g bindings in `goto-map'
+         ("M-g e" . consult-compile-error)
+         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+         ("M-g g" . consult-goto-line)             ;; orig. goto-line
+         ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+         ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
+         ("M-g m" . consult-mark)
+         ("M-g k" . consult-global-mark)
+         ("M-g i" . consult-imenu)
+         ("M-g I" . consult-imenu-multi)
+         ;; M-s bindings in `search-map'
+         ("M-s d" . consult-find)                  ;; Alternative: consult-fd
+         ("M-s c" . consult-locate)
+         ("M-s g" . consult-grep)
+         ("M-s G" . consult-git-grep)
+         ("M-s r" . consult-ripgrep)
+         ("M-s l" . consult-line)
+         ("M-s L" . consult-line-multi)
+         ("M-s k" . consult-keep-lines)
+         ("M-s u" . consult-focus-lines)
+         ;; Isearch integration
+         ("M-s e" . consult-isearch-history)
+         :map isearch-mode-map
+         ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
+         ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
+         ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
+         ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
+         ;; Minibuffer history
+         :map minibuffer-local-map
+         ("M-s" . consult-history)                 ;; orig. next-matching-history-element
+         ("M-r" . consult-history))                ;; orig. previous-matching-history-element
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :init
   (setq register-preview-delay 0
@@ -576,13 +630,13 @@ targets."
   (corfu-scroll-margin 5)        ;; Use scroll margin
   (corfu-preview-current t)
   (corfu-preselect-first nil)
-  :general
-  (:keymaps 'corfu-map
-        "TAB"  'corfu-next
-        [tab] 'corfu-next
-        "S-TAB" 'corfu-previous
-        [backtab] 'corfu-previous
-        "SPC" 'corfu-insert-separator)
+  :bind
+  (:map corfu-map
+        ("TAB" . corfu-next)
+        ([tab] . corfu-next)
+        ("S-TAB" . corfu-previous)
+        ([backtab] . corfu-previous)
+        ("SPC" . corfu-insert-separator))
   :init
   (global-corfu-mode)
   (corfu-popupinfo-mode))
@@ -600,19 +654,13 @@ targets."
   :init
   (add-to-list 'completion-at-point-functions #'cape-file))
 
-(use-package help
-  :general
-  ("SPC" nil :keymaps 'help-mode-map)
-  ("SPC" nil :keymaps 'help-mode-map :states 'normal))
-
 (use-package helpful
   :ensure t
-  :general
-  ([remap describe-function] 'helpful-function
-   [remap describe-symbol] 'helpful-symbol
-   [remap describe-variable] 'helpful-variable
-   [remap describe-command] 'helpful-command
-   [remap describe-key] 'helpful-key))
+  :bind (([remap describe-function] . helpful-function)
+         ([remap describe-symbol] . helpful-symbol)
+         ([remap describe-variable] . helpful-variable)
+         ([remap describe-command] . helpful-command)
+         ([remap describe-key] . helpful-key)))
 
 (use-package elisp-demos
   :ensure t
@@ -695,9 +743,9 @@ targets."
         (list citar-indicator-files-icons
               citar-indicator-links-icons
               citar-indicator-notes-icons))
-  :general
-  (leader-key-def
-    "fb" 'citar-open)
+  :bind
+  ((:map org-mode-map :package org ("C-c b" . #'org-cite-insert))
+   ("C-c b" . citar-open))
   :hook
   (LaTeX-mode . citar-capf-setup)
   (org-mode . citar-capf-setup))
@@ -741,10 +789,7 @@ targets."
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'csl-activate)
-  (org-cite-export-processors '((t csl "apa.csl")))
-  :general
-  (:keymaps 'org-mode-map
-            "C-c b" 'org-cite-insert))
+  (org-cite-export-processors '((t csl "apa.csl"))))
 
 (use-package org-roam
   :ensure t
@@ -752,6 +797,11 @@ targets."
   :custom
   (org-roam-completion-everywhere t)
   (org-roam-directory (file-truename (concat org-directory "/roam")))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture))
   :config
   (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (org-roam-db-autosync-mode)
@@ -872,7 +922,7 @@ targets."
 ;;         ((executable-find "hunspell")   (progn
 ;;                                           (setq-default ispell-program-name "hunspell")
 ;;                                           (setq ispell-really-hunspell t)
-;;                                           (setq ispell-dictionary   "de_DE")))
+;;                                          (setq ispell-dictionary   "de_DE")))
 ;;         ((executable-find "aspell")     (progn
 ;;                                           (setq-default ispell-program-name "aspell")
 ;;                                           (setq ispell-dictionary   "de_DE"))))
@@ -904,28 +954,15 @@ targets."
   (add-to-list 'minor-mode-map-alist `(languagetool-server-mode . ,languagetool-server-mode-map))
   :hook ((languagetool-server-mode . synosaurus-mode))
   :general
-  (leader-key-def-minor
-    :keymaps 'languagetool-server-mode-map
-    "s" '(:ignore t :wk "spell")
-    "ss" '(languagetool-server-mode :wk "server mode")
-    "sb" '(languagetool-correct-buffer :wk "correct buffer")
-    "sp" '(languagetool-correct-at-point :wk "correct at point")
-    "sp" '(languagetool-set-language :wk "correct at point")))
+  :bind
+  (("C-c s" . languagetool-server-mode)
+   ("C-c C-s" . languagetool-correct-at-point)))
 
 (use-package synosaurus
   :ensure t
   :init
   (setq synosaurus-backend 'synosaurus-backend-openthesaurus)
-  (setq synosaurus-choose-method 'default)
-  :config
-  (assoc-delete-all 'synosaurus-mode minor-mode-map-alist)
-  (setq synosaurus-mode-map (make-sparse-keymap))
-  (add-to-list 'minor-mode-map-alist `(synosaurus-mode . ,synosaurus-mode-map))
-  :general
-  (leader-key-def-minor
-    :keymaps 'languagetool-server-mode-map
-    "si" '(synosaurus-choose-and-insert :wk "synonym insert")
-    "sc" '(synosaurus-choose-and-replace :wk "caw with synonym")))
+  (setq synosaurus-choose-method 'default))
 
 (use-package eldoc
   :custom
@@ -997,13 +1034,7 @@ targets."
   (typescript-indent-level 2))
 
 (use-package npm-mode
-  :ensure t
-  :config
-  (add-to-list 'which-key-replacement-alist '((nil . "npm-mode-") . (nil . "")))
-  (add-to-list 'which-key-replacement-alist '((nil . "npm-mode-npm-") . (nil . "")))
-  :general
-  (leader-key-def-c-map
-    "n" '(:keymap npm-mode-command-keymap :package npm-mode :wk "npm")))
+  :ensure t)
 
 (use-package yaml-mode
   :mode "\\.yml\\'"
@@ -1098,39 +1129,18 @@ The function provides the following options:
   (magit-add-section-hook 'magit-status-sections-hook
                           'magit-insert-modules
                           'magit-insert-stashes
-                          'append)
-  :general
-  (:keymaps 'magit-diff-mode-map "SPC" nil :states 'normal)
-  (:keymaps 'magit-diff-mode-map "SPC" nil)
-  (:keymaps 'magit-mode-map "SPC" nil)
-  (:keymaps 'magit-mode-map "SPC" nil :states 'normal))
+                          'append))
 
 (use-package with-editor
   :when (equal system-type 'darwin)
   :config
   (setq with-editor-emacsclient-executable (executable-find "emacsclient")))
 
-(use-package info
-  :general
-  (:keymaps 'Info-mode-map "SPC" nil :states 'normal)
-  (:keymaps 'Info-mode-map "SPC" nil))
-
 (use-package project
-  :general
-  (leader-key-def
-    "p" '(:keymap project-prefix-map :wk "projects")
-    "fp" '(project-find-file :wk "project find")
-    "dp" '(project-dired :wk "project dired")
-    "bkp" '(project-kill-buffers :wk "kill project"))
   :config
   (unless (cl-member-if (lambda (s) (string-match "/Code/" s)) (project-known-project-roots))
     (project-remember-projects-under "~/Code/" t))
   (add-to-list 'project-find-functions 'ess-r-project t))
-
-(use-package evil-nerd-commenter
-  :ensure t
-  :general
-  ("M-/" 'evilnc-comment-or-uncomment-lines))
 
 (use-package rainbow-delimiters
   :ensure t
@@ -1193,8 +1203,6 @@ The function provides the following options:
 (use-package vterm
   :ensure t
   :commands vterm
-  :general
-  ("M-'" 'vterm)
   :config
   (if (eq system-type 'gnu/linux)
       (setq vterm-shell "/bin/fish")
@@ -1214,9 +1222,7 @@ The function provides the following options:
 
 (use-package dired
   :commands (dired dired-jump)
-  :custom ((dired-listing-switches "-agho --group-directories-first"))
-  :config
-  (evil-define-key 'normal dired-mode-map (kbd "SPC") nil))
+  :custom ((dired-listing-switches "-agho --group-directories-first")))
 
 (use-package elfeed-protocol
   :ensure t
@@ -1227,8 +1233,6 @@ The function provides the following options:
   (setq elfeed-protocol-feeds `((,(password-store-get-field "dev/freshrss" "elfeed")
                            :api-url ,(password-store-get-field "dev/freshrss" "api_url")
                            :password ,(password-store-get-field "dev/freshrss" "api_password"))))
-  (evil-define-key 'normal elfeed-show-mode-map (kbd "SPC") nil)
-  (evil-define-key 'normal elfeed-search-mode-map (kbd "SPC") nil)
   (elfeed-protocol-enable))
 
 (use-package dired-single
@@ -1240,19 +1244,13 @@ The function provides the following options:
 
 (use-package dired-hide-dotfiles
   :ensure t
-  :hook (dired-mode . dired-hide-dotfiles-mode)
-  :config
-  (evil-collection-define-key 'normal 'dired-mode-map
-    "H" 'dired-hide-dotfiles-mode))
+  :hook (dired-mode . dired-hide-dotfiles-mode))
 
 (use-package chezmoi
   :ensure t
-  :general
-  (leader-key-def
-    "fd" '(chezmoi-find :wk "dotfiles")
-    "xcm" '(chezmoi-magit-status :wk "chezmoi magit")
-    "xcd" 'chezmoi-diff
-    "xcw" 'chezmoi-write))
+  :bind
+  (("C-c C f". chezmoi-find)
+   ("C-c C s". chezmoi-write)))
 
 (use-package ansible
   :ensure t
@@ -1270,10 +1268,7 @@ The function provides the following options:
   :config
   (add-to-list 'pdf-tools-enabled-modes 'pdf-view-auto-slice-minor-mode)
   (add-to-list 'pdf-tools-enabled-modes 'pdf-view-themed-minor-mode)
-  (pdf-tools-install :no-query)
-  :general
-  ("SPC" nil :keymaps 'pdf-view-mode-map)
-  ("SPC" nil :keymaps 'pdf-view-mode-map :states 'normal))
+  (pdf-tools-install :no-query))
 
 (use-package nov;;.el
   :ensure t)

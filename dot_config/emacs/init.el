@@ -49,6 +49,8 @@
 
 (use-package meow
   :ensure t
+  :custom
+  (meow-use-clipboard t)
   :config
   (defun meow-setup ()
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
@@ -744,8 +746,9 @@ targets."
               citar-indicator-links-icons
               citar-indicator-notes-icons))
   :bind
-  ((:map org-mode-map :package org ("C-c b" . #'org-cite-insert))
-   ("C-c b" . citar-open))
+  (("C-c f b" . citar-open)
+   :map org-mode-map :package org
+   ("C-c b" . org-cite-insert))
   :hook
   (LaTeX-mode . citar-capf-setup)
   (org-mode . citar-capf-setup))
@@ -798,7 +801,8 @@ targets."
   (org-roam-completion-everywhere t)
   (org-roam-directory (file-truename (concat org-directory "/roam")))
   :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
+         ("C-c f n" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)
          ("C-c n i" . org-roam-node-insert)
          ("C-c n c" . org-roam-capture))

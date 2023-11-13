@@ -37,6 +37,7 @@
 \\usepackage{amssymb}
 \\usepackage{capt-of}
 \\usepackage{hyperref}
+\\usepackage{booktabs}
 \\usepackage{amsmath}
 \\usepackage{pdfcomment}
 \\usepackage[AUTO]{babel}

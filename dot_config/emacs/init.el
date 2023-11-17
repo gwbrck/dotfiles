@@ -1278,6 +1278,9 @@ The function provides the following options:
 (use-package nov;;.el
   :ensure t)
 
+(use-package reveal-in-osx-finder
+  :ensure t)
+
 (use-package server
   :unless (daemonp)
   :config

@@ -6,5 +6,5 @@
     "custom_shell_command": "/opt/homebrew/bin/fish",
     "jobs_tab_visibility": "shown",
     "rmd_viewer_type": "pane",
-    "spelling_dictionary_language": "de_DE_neu"
+    "spelling_dictionary_language": "de_DE"
 }

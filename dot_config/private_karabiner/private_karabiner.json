@@ -446,6 +446,30 @@
                     "value": 1
                   }
                 ],
+                "description": "Languagetool",
+                "from": {
+                  "key_code": "return_or_enter",
+                  "modifiers": {
+                    "mandatory": [],
+                    "optional": ["any"]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "l",
+                      "modifiers": ["left_control", "left_option", "left_command"]
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "conditions": [
+                  {
+                    "name": "modifier_hyper",
+                    "type": "variable_if",
+                    "value": 1
+                  }
+                ],
                 "description": "hyper+tab = ctrl+tab",
                 "from": {
                   "key_code": "tab",

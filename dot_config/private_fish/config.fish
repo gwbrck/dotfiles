@@ -67,6 +67,9 @@ set -Ux PASSWORD_STORE_DIR $HOME/Documents/Archiv/Pass
 set -Ux SSH_AUTH_SOCK $(gpgconf --list-dirs agent-ssh-socket)
 set -Ux GPG_TTY $(tty)
 
+# this is for mise 
+# set -Ux R_EXTRA_CONFIGURE_OPTIONS 'CFLAGS=-I/opt/homebrew/lib CPPFLAGS=-I/opt/homebrew/include LDFLAGS=-L/opt/homebrew/include --enable-R-shlib --with-cairo --with-x=no'
+
 fish_add_path ~/bin
 fish_add_path ~/.local/bin #pipx
 

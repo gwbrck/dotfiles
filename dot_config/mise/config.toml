@@ -1,0 +1,7 @@
+[tools]
+python = "latest"
+# R = {version="latest"}
+
+
+# [plugins]
+# R = 'https://github.com/asdf-community/asdf-R'

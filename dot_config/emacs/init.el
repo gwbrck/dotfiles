@@ -912,12 +912,12 @@ targets."
     "sp" '(languagetool-correct-at-point :wk "correct at point")
     "sp" '(languagetool-set-language :wk "correct at point")))
 
-(use-package chatgpt-shell
+(use-package gptel
   :ensure t
   :custom
-  ((chatgpt-shell-openai-key
+  (gptel-api-key
     (lambda ()
-      (password-store-get "dev/open-ai")))))
+      (password-store-get "dev/open-ai"))))
 
 (use-package synosaurus
   :ensure t

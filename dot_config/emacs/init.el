@@ -142,13 +142,11 @@
   :after evil
   :config
   (general-unbind 'motion "SPC")
-  (general-create-definer leader-key-def-minor
-    :states '(normal insert visual emacs motion)
-    :prefix "SPC"
-    :global-prefix "C-SPC")
   (general-create-definer leader-key-def
     :keymaps '(normal insert visual emacs motion)
     :prefix "SPC"
+    :prefix-command 'leader-command
+    :prefix-map 'leader-map
     :global-prefix "C-SPC")
   (general-create-definer leader-key-def-c-map
     :states '(normal insert visual emacs motion)
@@ -925,7 +923,7 @@ targets."
              languagetool-set-language
              languagetool-server-mode)
   :general
-  (leader-key-def-minor
+  (leader-key-def
     "ss" '(languagetool-server-mode :wk "server mode")
     "sb" '(languagetool-correct-buffer :wk "correct buffer")
     "sp" '(languagetool-correct-at-point :wk "correct at point")
@@ -948,7 +946,7 @@ targets."
   (setq synosaurus-mode-map (make-sparse-keymap))
   (add-to-list 'minor-mode-map-alist `(synosaurus-mode . ,synosaurus-mode-map))
   :general
-  (leader-key-def-minor
+  (leader-key-def
     :keymaps 'languagetool-server-mode-map
     "si" '(synosaurus-choose-and-insert :wk "synonym insert")
     "sc" '(synosaurus-choose-and-replace :wk "caw with synonym")))
@@ -1200,16 +1198,16 @@ targets."
 
 (use-package ediff
   :custom
-  (ediff-keep-variants nil)
+  (ediff-keep-variants t)
   (ediff-split-window-function #'split-window-horizontally)
   (ediff-window-setup-function #'ediff-setup-windows-plain)
   :config
-  (defun my-kill-ediff-registry-buffer ()
-    (let ((buf (get-buffer "*Ediff Registry*")))
-      (when buf
-        (kill-buffer buf))))
-  (add-hook 'ediff-quit-hook 'my-kill-ediff-registry-buffer))
-
+  (defun edt-unbind-space ()
+    (define-key ediff-mode-map (kbd "<SPC>") nil))
+  (defun edt-meta-unbind-space ()
+    (define-key ediff-meta-buffer-map (kbd "<SPC>") 'leader-command))
+  (add-hook 'ediff-keymap-setup-hook 'edt-unbind-space t)
+  (add-hook 'ediff-meta-buffer-keymap-setup-hook 'edt-meta-unbind-space t))
 
 (use-package elfeed-protocol
   :ensure t

@@ -1209,6 +1209,10 @@ targets."
   (add-hook 'ediff-keymap-setup-hook 'edt-unbind-space t)
   (add-hook 'ediff-meta-buffer-keymap-setup-hook 'edt-meta-unbind-space t))
 
+(use-package diff-mode
+  :config
+  (evil-define-key 'normal diff-mode-map (kbd "SPC") nil))
+
 (use-package elfeed-protocol
   :ensure t
   :custom

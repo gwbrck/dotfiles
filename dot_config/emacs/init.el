@@ -74,9 +74,6 @@
   (setq frame-resize-pixelwise t)
   (add-to-list 'default-frame-alist '(height . 60))
   (add-to-list 'default-frame-alist '(width . 120))
-  (modify-all-frames-parameters
-   '((right-divider-width . 10)
-     (internal-border-width . 10)))
   (scroll-bar-mode -1)
   (tool-bar-mode -1)
   (tooltip-mode -1)
@@ -165,6 +162,7 @@
   :config
   (evil-collection-init)
   (leader-key-def
+    "s" '(:ignore t :wk "spell")
     "f" '(:ignore t :wk "find")
     "ff" '(find-file :wk "file")
     "d" '(:ignore t :wk "dired")
@@ -179,8 +177,7 @@
     "bk" '(:ignore t :which-key "kill buffer")
     "bks" '(kill-some-buffers :wk "kill some buffers")
     "bkk" '(kill-this-buffer :wk "kill this buffer")
-    "w" '(evil-window-map :which-key "windows")
-    "s" '(languagetool-server-mode :which-key "windows")))
+    "w" '(evil-window-map :which-key "windows")))
 
 (use-package evil-org
   :ensure t
@@ -337,50 +334,71 @@
   :ensure t
   :hook (org-mode . org-make-toc-mode))
 
+(use-package modus-themes
+  :ensure t
+  :config
+  (setq modus-themes-italic-constructs t
+        modus-themes-bold-constructs t
+        modus-themes-mixed-fonts t
+        modus-themes-org-blocks 'gray-background)
+  (setq modus-themes-common-palette-overrides
+      '((fg-completion-match-0 blue)
+        (fg-completion-match-1 magenta-warmer)
+        (fg-completion-match-2 cyan)
+        (fg-completion-match-3 red)
+        (bg-completion-match-0 bg-blue-nuanced)
+        (bg-completion-match-1 bg-magenta-nuanced)
+        (bg-completion-match-2 bg-cyan-nuanced)
+        (bg-completion-match-3 bg-red-nuanced))))
+
 (use-package faces
   :config
-  (defun gwbrck/set-font-faces ()
-    (set-face-attribute 'default nil :font "Fira Code" :height 120)
-    (set-face-attribute 'fixed-pitch nil :font "Fira Code" :height 1.0)
-    (set-face-attribute 'variable-pitch nil :font "Cantarell" :weight 'regular :height 1.0)
-    (dolist (face '((org-level-1 . 1.3)
-                    (org-level-2 . 1.2)
-                    (org-level-3 . 1.1)
-                    (org-level-4 . 1.0)
-                    (org-level-5 . 1.0)
-                    (org-level-6 . 1.0)
-                    (org-level-7 . 1.0)
-                    (org-level-8 . 1.0)))
-      (set-face-attribute (car face) nil :height (cdr face)))
-    (set-face-attribute 'org-document-title nil :height 1.6 :inherit 'default)
-    (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-code nil   :inherit 'fixed-pitch)
-    (set-face-attribute 'org-table nil   :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-    (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-    (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-hide nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-block-begin-line nil :height 0.8)
-    (dolist (face '(window-divider
-                    window-divider-first-pixel
-                    window-divider-last-pixel))
-      (face-spec-reset-face face)
-      (set-face-foreground face (face-attribute 'default :background)))
-    (set-face-background 'fringe (face-attribute 'default :background)))
-  (add-hook 'after-make-frame-functions
-            (lambda (frame)
-              (with-selected-frame frame
-                (gwbrck/set-font-faces))))
-  (gwbrck/set-font-faces)
+  (defun gwbrck/set-font-faces (&optional frame)
+    (interactive)
+    (select-frame (or frame (selected-frame)))
+    (when (display-graphic-p)
+      (set-face-attribute 'default nil :font "Fira Code" :height 120)
+      (set-face-attribute 'fixed-pitch nil :font "Fira Code" :height 1.0)
+      (set-face-attribute 'variable-pitch nil :font "Cantarell" :weight 'regular :height 1.0)
+      (dolist (face '((org-level-1 . 1.3)
+                      (org-level-2 . 1.2)
+                      (org-level-3 . 1.1)
+                      (org-level-4 . 1.0)
+                      (org-level-5 . 1.0)
+                      (org-level-6 . 1.0)
+                      (org-level-7 . 1.0)
+                      (org-level-8 . 1.0)))
+        (set-face-attribute (car face) nil :height (cdr face)))
+      (set-face-attribute 'org-document-title nil :height 1.6 :inherit 'default)
+      (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
+      (set-face-attribute 'org-code nil   :inherit 'fixed-pitch)
+      (set-face-attribute 'org-table nil   :inherit '(shadow fixed-pitch))
+      (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+      (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+      (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+      (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+      (set-face-attribute 'org-hide nil :inherit 'fixed-pitch)
+      (set-face-attribute 'org-block-begin-line nil :height 0.8)
+      (dolist (face '(window-divider
+                      window-divider-first-pixel
+                      window-divider-last-pixel))
+        (face-spec-reset-face face)
+        (set-face-foreground face (face-attribute 'default :background)))
+      (set-face-background 'fringe (face-attribute 'default :background))
+      (set-face-background 'line-number (face-attribute 'default :background))
+      (set-face-attribute 'mode-line nil
+                          :box `(:line-width 5 :color ,(face-attribute 'mode-line :background nil)))
+      (set-face-attribute 'mode-line-inactive nil
+                          :box `(:line-width 5 :color ,(face-attribute 'mode-line-inactive :background nil)))
+      (set-face-background 'fringe (face-attribute 'default :background))))
+  (add-hook 'after-make-frame-functions 'gwbrck/set-font-faces)
+  (unless (daemonp) (gwbrck/set-font-faces))
   (defun gwbrck/apply-theme (appearance)
     "Load theme, taking current system APPEARANCE into consideration."
     (mapc #'disable-theme custom-enabled-themes)
     (pcase appearance
-      ('light (load-theme 'doom-acario-light t)
-              (custom-set-faces
-               `(internal-border ((t (:background ,(doom-color 'dark-violet)))))))
-      ('dark (load-theme 'doom-ir-black t)))
+      ('light (load-theme 'modus-operandi-tinted t))
+      ('dark (load-theme 'modus-vivendi-tinted t)))
     (gwbrck/set-font-faces)))
 
 (use-package calendar
@@ -895,18 +913,19 @@ targets."
 
 (use-package languagetool
   :ensure t
+  :defer t
   :init
   (setq languagetool-server-url "https://api.languagetoolplus.com"
         languagetool-server-port 443)
   (setq languagetool-api-key (password-store-get "dev/languagetool")
         languagetool-username (password-store-get-field "dev/languagetool" "Username"))
   (setq languagetool-server-mode-map (make-sparse-keymap))
-  (add-to-list 'minor-mode-map-alist `(languagetool-server-mode . ,languagetool-server-mode-map))
-  :hook ((languagetool-server-mode . synosaurus-mode))
+  :commands (languagetool-correct-at-point
+             languagetool-correct-buffer
+             languagetool-set-language
+             languagetool-server-mode)
   :general
   (leader-key-def-minor
-    :keymaps 'languagetool-server-mode-map
-    "s" '(:ignore t :wk "spell")
     "ss" '(languagetool-server-mode :wk "server mode")
     "sb" '(languagetool-correct-buffer :wk "correct buffer")
     "sp" '(languagetool-correct-at-point :wk "correct at point")
@@ -1178,6 +1197,19 @@ targets."
   :custom ((dired-listing-switches "-agho --group-directories-first"))
   :config
   (evil-define-key 'normal dired-mode-map (kbd "SPC") nil))
+
+(use-package ediff
+  :custom
+  (ediff-keep-variants nil)
+  (ediff-split-window-function #'split-window-horizontally)
+  (ediff-window-setup-function #'ediff-setup-windows-plain)
+  :config
+  (defun my-kill-ediff-registry-buffer ()
+    (let ((buf (get-buffer "*Ediff Registry*")))
+      (when buf
+        (kill-buffer buf))))
+  (add-hook 'ediff-quit-hook 'my-kill-ediff-registry-buffer))
+
 
 (use-package elfeed-protocol
   :ensure t

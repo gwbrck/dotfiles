@@ -932,6 +932,7 @@ targets."
 (use-package gptel
   :ensure t
   :custom
+  (gptel-model "gpt-4")
   (gptel-api-key
     (lambda ()
       (password-store-get "dev/open-ai"))))

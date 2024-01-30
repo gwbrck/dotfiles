@@ -21,7 +21,7 @@
 	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
 
 (add-to-list 'org-latex-classes
-	           '("tudbeamer" "\\documentclass[presentation,t,aspectratio=169]{beamer}
+	           '("tudbeamer" "\\documentclass[presentation,t,aspectratio=169,10pt]{beamer}
 [NO-DEFAULT-PACKAGES]
 [NO-PACKAGES]
 \\usepackage[utf8]{inputenc}

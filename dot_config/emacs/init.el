@@ -223,10 +223,10 @@
   :ensure t
   :config
   (let* ((icon '(:eval (all-the-icons-icon-for-mode major-mode)))
-         (n 5)
+         (n 4)
          (before (cl-subseq mode-line-format 0 n))
          (after (cl-subseq mode-line-format n)))
-    (setq-default mode-line-format (append before (list icon) after))))
+    (setq-default mode-line-format (append before (list icon " ") after))))
 
 (use-package minions
   :ensure t

@@ -1,0 +1,3 @@
+#!/usr/bin/env fish
+
+emacsclient -cn -e "(progn (chatgpt-shell-check-and-correct-clipboard))"

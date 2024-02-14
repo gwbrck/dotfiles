@@ -935,13 +935,53 @@ targets."
     "sp" '(languagetool-correct-at-point :wk "correct at point")
     "sp" '(languagetool-set-language :wk "correct at point")))
 
-(use-package gptel
+(use-package chatgpt-shell
   :ensure t
   :custom
-  (gptel-model "gpt-4")
-  (gptel-api-key
+  (chatgpt-shell-openai-key
     (lambda ()
-      (password-store-get "dev/open-ai"))))
+      (password-store-get "dev/open-ai")))
+  :config
+
+  (defun chatgpt-shell-check-diff (checked-text start end)
+    (let ((main-buffer (current-buffer))
+          (buffer-new (generate-new-buffer "*chatgpt-grammar-checked*")))
+      
+      (with-current-buffer buffer-new
+        (erase-buffer)
+        (insert checked-text)
+        (setq reg-B-end (point-max)))
+      
+      (ediff-regions-internal main-buffer start end
+                              buffer-new 1 reg-B-end
+                              nil 'ediff-regions-wordwise 'word-mode nil)))
+  
+  (defun chatgpt-shell-check-and-correct-region ()
+    "Check and correct the marked region using ChatGPT."
+    (interactive)
+    (if (use-region-p)
+        (let* ((start (region-beginning))
+               (end (region-end))
+               (original-text (buffer-substring-no-properties start end))
+               (checked-text (chatgpt-shell-check-paragraph original-text)))
+          (goto-char start)
+          (chatgpt-shell-check-diff checked-text start end))
+      (message "No region marked!")))
+  
+  (defun chatgpt-shell-check-paragraph (text)
+    "Send TEXT to ChatGPT for spell and grammar checking."
+    ;; trim both sides to make diff easier
+    (if (string= text "")
+        (error "nothing to send to chatGPT"))
+    (message "sending [%s]" text)
+    (let ((response (chatgpt-shell-post-prompt
+                     (concat
+                      "Bitte korrigiere die Rechtschreibung und Grammatik des folgenden Absatzes. "
+                      "Behalte die bestehenden Syntaxausdrücke im Org-Mode wie =das= und *das* bei. "
+                      "Gib nur den korrigierten Text zurück."
+                      "Hier ist der Text:\n\n" text)
+                     nil "gpt-4" nil nil nil nil)))
+      response)))
 
 (use-package synosaurus
   :ensure t

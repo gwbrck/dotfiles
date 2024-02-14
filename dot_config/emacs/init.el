@@ -945,17 +945,58 @@ targets."
 
   (defun chatgpt-shell-check-diff (checked-text start end)
     (let ((main-buffer (current-buffer))
+          (reg-B-end)
+          (cleanup-sym (make-symbol "chatgpt-shell-region-ediff-cleanup"))
           (buffer-new (generate-new-buffer "*chatgpt-grammar-checked*")))
       
       (with-current-buffer buffer-new
         (erase-buffer)
         (insert checked-text)
         (setq reg-B-end (point-max)))
+
+      
+      (fset cleanup-sym
+            `(lambda ()
+               (kill-buffer ediff-buffer-B)
+               (remove-hook 'ediff-quit-hook ',cleanup-sym))) 
+      
+      (add-hook 'ediff-quit-hook cleanup-sym)
       
       (ediff-regions-internal main-buffer start end
                               buffer-new 1 reg-B-end
                               nil 'ediff-regions-wordwise 'word-mode nil)))
   
+  (defun chatgpt-shell-check-and-correct-clipboard ()
+    "Check and correct the clipboard-content using ChatGPT."
+    (if-let ((original-text (gui-get-selection 'CLIPBOARD)))
+        (let* ((checked-text (chatgpt-shell-check-paragraph original-text))
+               (buffer-a (generate-new-buffer "*Original*"))
+               (buffer-b (generate-new-buffer "*ChatGPT-checked*"))
+               (cleanup-sym (make-symbol "chatgpt-shell-ediff-cleanup"))
+               (reg-A-end)
+               (reg-B-end))
+          (with-current-buffer buffer-a
+            (insert original-text)
+            (setq reg-A-end (point-max)))
+          (with-current-buffer buffer-b
+            (insert checked-text)
+            (setq reg-B-end (point-max)))
+          ;; Define a cleanup function specific for this ediff session
+          (fset cleanup-sym
+                `(lambda ()
+                   (let ((merged-content (with-current-buffer ediff-buffer-A (buffer-string))))
+                     (kill-new merged-content))  ;; Save the merged content
+                   (kill-buffer ediff-buffer-A)                   ;; Cleanup the temporary buffers
+                   (kill-buffer ediff-buffer-B)
+                   (remove-hook 'ediff-quit-hook ',cleanup-sym)
+                   (delete-frame)))
+          (add-hook 'ediff-quit-hook cleanup-sym)
+          ;; Start the ediff session.
+          (ediff-regions-internal buffer-a 1 reg-A-end
+                                  buffer-b 1 reg-B-end
+                                  nil 'ediff-regions-wordwise 'word-mode nil))
+      (message "Nothing in Clipboard")))
+
   (defun chatgpt-shell-check-and-correct-region ()
     "Check and correct the marked region using ChatGPT."
     (interactive)

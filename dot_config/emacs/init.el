@@ -938,6 +938,8 @@ targets."
 (use-package chatgpt-shell
   :ensure t
   :custom
+  (chatgpt-shell-model-version "gpt-4")
+  (chatgpt-shell-welcome-function nil)
   (chatgpt-shell-openai-key
     (lambda ()
       (password-store-get "dev/open-ai")))
@@ -1258,9 +1260,22 @@ targets."
 
 (use-package vterm
   :ensure t
+  :bind (:map project-prefix-map
+              ("t" . project-vterm))
   :commands vterm
-  :general
-  ("M-'" 'vterm)
+  :preface
+  (defun project-vterm ()
+    (interactive)
+    (defvar vterm-buffer-name)
+    (let* ((default-directory (project-root     (project-current t)))
+           (vterm-buffer-name (project-prefixed-buffer-name "vterm"))
+           (vterm-buffer (get-buffer vterm-buffer-name)))
+      (if (and vterm-buffer (not current-prefix-arg))
+          (pop-to-buffer vterm-buffer  (bound-and-true-p display-comint-buffer-action))
+        (vterm))))
+  :init
+  (add-to-list 'project-switch-commands     '(project-vterm "Vterm") t)
+  (add-to-list 'project-kill-buffer-conditions  '(major-mode . vterm-mode))
   :config
   (if (eq system-type 'gnu/linux)
       (setq vterm-shell "/bin/fish")

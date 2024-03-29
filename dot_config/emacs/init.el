@@ -651,7 +651,7 @@ targets."
   :load-path "lisp/"
   :demand t
   :config
-  (setq main-bib-file (concat gwbrck/bib "/main.bib")))
+  (setq main-bib-file (concat gwbrck/bib "/main.json")))
 
 (use-package zotra
   :ensure t
@@ -684,8 +684,8 @@ targets."
   :after init-bibtex
   :config
   (add-to-list 'citar-bibliography main-bib-file)
-  (add-to-list 'citar-library-paths (concat gwbrck/bib "/pdfs"))
   (add-to-list 'citar-notes-paths (file-truename (concat org-directory "/roam/annotations")))
+  (setq citar-open-entry-function #'citar-open-entry-in-zotero)
   (setq citar-indicator-files-icons
     (citar-indicator-create
      :symbol (all-the-icons-faicon

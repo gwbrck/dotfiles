@@ -32,17 +32,14 @@
 (use-package emacs
   :when (equal system-type 'darwin)
   :init
-  (setq mac-command-modifier      'control
-        ns-command-modifier       'control
-        mac-control-modifier      'meta
-        ns-control-modifier       'meta
-        mac-option-modifier       'super
-        ns-option-modifier        'super
+  (setq mac-command-modifier      'super
+        ns-command-modifier       'super
+        mac-control-modifier      'control
+        ns-control-modifier       'control
+        mac-option-modifier       'meta
+        ns-option-modifier        'meta
         mac-right-option-modifier 'none
         ns-right-option-modifier  'none)
-  (global-set-key (kbd "M-<backspace>") #'delete-indentation)
-  (global-set-key (kbd "s-<backspace>") #'backward-kill-word)
-  (global-set-key (kbd "C-<backspace>") #'kill-line)
   (set-terminal-coding-system 'utf-8)
   (set-keyboard-coding-system 'utf-8)
   (prefer-coding-system 'utf-8))

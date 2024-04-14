@@ -782,6 +782,8 @@ targets."
 
 (use-package ox
   :after org
+  :custom
+  (org-html-validation-link nil)
   :init
   (setq org-export-default-language "de-de")
   (add-to-list 'org-export-smart-quotes-alist
@@ -792,10 +794,11 @@ targets."
                  (secondary-closing :utf-8 "'" :html "&rsquo;" :latex "}"           :texinfo "'")
                  (apostrophe        :utf-8 "’" :html "&rsquo;")))
   (setq org-export-with-smart-quotes t)
-  (setq org-html-style
-        "<style type=\"text/css\">
-       body { font-family: sans-serif; }
-       </style>"))
+  (setq org-html-head-extra "<style type='text/css'>
+body {
+  font-family: sans-serif;
+}
+</style>"))
 
 (use-package htmlize
   :ensure t)

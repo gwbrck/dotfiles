@@ -251,6 +251,9 @@
 (use-package ob-mermaid
   :ensure t)
 
+(use-package ox-reveal
+  :ensure t)
+
 (use-package org
   :ensure t
   :demand t

@@ -758,8 +758,8 @@ targets."
   :config
   (add-to-list 'org-cite-global-bibliography main-bib-file)
   :custom
-  (org-cite-csl-styles-dir "~/.config/csl/styles")
-  (org-cite-csl-locales-dir "~/.config/csl/locales")
+  (org-cite-csl-styles-dir "~/.local/share/pandoc/csl/apa.csl")
+  (org-cite-csl-locales-dir "~/.local/share/pandoc/locales")
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'csl-activate)

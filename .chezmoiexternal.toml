@@ -17,14 +17,9 @@
     url = "https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl"
     refreshPeriod = "168h"
 
-[".config/csl/locales/locales-de-DE.xml"]
+[".local/share/pandoc/locales/locales-de-DE.xml"]
     type = "file"
     url = "https://raw.githubusercontent.com/citation-style-language/locales/master/locales-de-DE.xml"
-    refreshPeriod = "168h"
-
-[".config/csl/locales/locales-en-US.xml"]
-    type = "file"
-    url = "https://raw.githubusercontent.com/citation-style-language/locales/master/locales-en-US.xml"
     refreshPeriod = "168h"
 
 [".config/zotra-server"]

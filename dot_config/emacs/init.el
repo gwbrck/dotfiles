@@ -758,7 +758,7 @@ targets."
   :config
   (add-to-list 'org-cite-global-bibliography main-bib-file)
   :custom
-  (org-cite-csl-styles-dir "~/.local/share/pandoc/csl/apa.csl")
+  (org-cite-csl-styles-dir "~/.local/share/pandoc/csl/")
   (org-cite-csl-locales-dir "~/.local/share/pandoc/locales")
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)

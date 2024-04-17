@@ -12,7 +12,7 @@
     url = "https://raw.githubusercontent.com/nurupo/paper-store/master/paper_store_sparse.sh"
     refreshPeriod = "168h"
 
-[".config/csl/styles/apa.csl"]
+[".local/share/pandoc/csl/apa.csl"]
     type = "file"
     url = "https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl"
     refreshPeriod = "168h"

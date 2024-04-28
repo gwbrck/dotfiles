@@ -25,8 +25,6 @@
 
 (use-package emacs
   :init
-  (setq gwbrck/bib "~/Documents/Bib")
-  (setq org-directory (concat gwbrck/bib "/org/"))
   (setq default-directory "~/"))
 
 (use-package emacs
@@ -651,40 +649,14 @@ targets."
   :load-path "lisp/"
   :demand t
   :config
-  (setq main-bib-file (concat gwbrck/bib "/main.json")))
-
-(use-package zotra
-  :ensure t
-  :custom
-  (zotra-backend 'zotra-server)
-  (zotra-local-server-directory "~/.config/zotra-server/")
-  (zotra-default-entry-format "biblatex")
-  (zotra-download-attachment-default-directory "~/Desktop/")
-  :config
-  (defun zotra-download-attachment-for-current-entry ()
-    (interactive)
-    (save-excursion
-      (bibtex-beginning-of-entry)
-      (let* ((entry (bibtex-parse-entry t))
-             (key (cdr (assoc "=key=" entry)))
-             (url (or (cdr (assoc "url" entry))
-                      (cdr (assoc "doi" entry))))
-             (filename (concat key ".pdf")))
-        (when (and entry
-                   (y-or-n-p (concat "Try download for " key)))
-          (let* ((newfile (zotra-download-attachment
-                            url (concat gwbrck/bib "/pdfs/") filename)))
-            (when newfile
-              (bibtex-make-field (list "File" nil newfile) t)))))))
-  (add-hook 'zotra-after-get-bibtex-entry-hook 'zotra-download-attachment-for-current-entry 99))
+  (setq main-bib-file "~/bib.json"))
 
 (use-package citar
   :ensure t
   :demand t
   :after init-bibtex
   :config
-  (add-to-list 'citar-bibliography main-bib-file)
-  (add-to-list 'citar-notes-paths (file-truename (concat org-directory "/roam/annotations")))
+  (add-to-list 'citar-bibliography "~/bib.json")
   (setq citar-open-entry-function #'citar-open-entry-in-zotero)
   (setq citar-indicator-files-icons
     (citar-indicator-create
@@ -724,29 +696,6 @@ targets."
   (LaTeX-mode . citar-capf-setup)
   (org-mode . citar-capf-setup))
 
-(use-package zotra-pdf-drop-mode
-  :vc (zotra-pdf-drop-mode
-       :url "https://github.com/gwbrck/zotra-pdf-drop-mode.git"
-       :rev :newest
-       :branch "main")
-  :after citar
-  :custom
-  (zotra-pdf-drop-on-new-entry-hook #'zotra-pdf-drop-process)
-  :config
-  (defun zotra-pdf-drop-process (file file-id)
-    (setq zotra-last-processed-pdf file)
-    (zotra-add-entry-from-search file-id))
-  (zotra-pdf-drop-mode))
-
-(use-package citar-org-roam
-  :after citar org-roam
-  :ensure t
-  :custom
-  (citar-org-roam-subdir "annotations")
-  (citar-org-roam-note-title-template "${author editor} (${year}): ${title}")
-  :config
-  (citar-org-roam-mode))
-
 (use-package citar-embark
   :ensure t
   :after citar embark
@@ -756,10 +705,10 @@ targets."
 (use-package oc
   :no-require
   :config
-  (add-to-list 'org-cite-global-bibliography main-bib-file)
+  (add-to-list 'org-cite-global-bibliography "~/bib.json")
   :custom
-  (org-cite-csl-styles-dir "~/.local/share/pandoc/csl/")
-  (org-cite-csl-locales-dir "~/.local/share/pandoc/locales")
+  (org-cite-csl-styles-dir "~/Zotero/styles/")
+  (org-cite-csl-locales-dir "~/.config/emacs/locales")
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'csl-activate)
@@ -767,21 +716,6 @@ targets."
   :general
   (:keymaps 'org-mode-map
             "C-c b" 'org-cite-insert))
-
-(use-package org-roam
-  :ensure t
-  :after org
-  :custom
-  (org-roam-completion-everywhere t)
-  (org-roam-directory (file-truename (concat org-directory "/roam")))
-  :config
-  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-  (org-roam-db-autosync-mode)
-  (org-roam-db-autosync-mode)
-  (require 'org-roam-protocol))
-
-(use-package org-roam-ui
-  :ensure t)
 
 (use-package ox
   :after org

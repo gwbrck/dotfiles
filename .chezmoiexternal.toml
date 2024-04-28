@@ -12,21 +12,7 @@
     url = "https://raw.githubusercontent.com/nurupo/paper-store/master/paper_store_sparse.sh"
     refreshPeriod = "168h"
 
-[".local/share/pandoc/csl/apa.csl"]
-    type = "file"
-    url = "https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl"
-    refreshPeriod = "168h"
-
-[".local/share/pandoc/locales/locales-de-DE.xml"]
+[".config/emacs/locales/locales-de-DE.xml"]
     type = "file"
     url = "https://raw.githubusercontent.com/citation-style-language/locales/master/locales-de-DE.xml"
     refreshPeriod = "168h"
-
-[".config/zotra-server"]
-    type = "git-repo"
-    url = "https://github.com/mpedramfar/zotra-server"
-    refreshPeriod = "168h"
-    [".config/zotra-server".pull]
-        args = ["--recurse-submodules"]
-    [".config/zotra-server".clone]
-        args = ["--recurse-submodules"]

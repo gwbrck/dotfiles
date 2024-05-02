@@ -706,6 +706,8 @@ targets."
   :no-require
   :config
   (add-to-list 'org-cite-global-bibliography "~/bib.json")
+  (unless (file-directory-p "~/.config/emacs/locales") (make-directory "~/.config/emacs/locales" t))
+  (url-copy-file "https://raw.githubusercontent.com/citation-style-language/locales/master/locales-de-DE.xml" "~/.config/emacs/locales/locales-de-DE.xml" t)
   :custom
   (org-cite-csl-styles-dir "~/Zotero/styles/")
   (org-cite-csl-locales-dir "~/.config/emacs/locales")

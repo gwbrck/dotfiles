@@ -11,8 +11,3 @@
     executable = true
     url = "https://raw.githubusercontent.com/nurupo/paper-store/master/paper_store_sparse.sh"
     refreshPeriod = "168h"
-
-[".config/emacs/locales/locales-de-DE.xml"]
-    type = "file"
-    url = "https://raw.githubusercontent.com/citation-style-language/locales/master/locales-de-DE.xml"
-    refreshPeriod = "168h"

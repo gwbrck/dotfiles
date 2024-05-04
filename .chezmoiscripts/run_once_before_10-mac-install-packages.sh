@@ -90,3 +90,5 @@ vscode "sumneko.lua"
 vscode "tamasfe.even-better-toml"
 vscode "tomoki1207.pdf"
 EOF
+
+pipx install kptncook ansible-creator visidata

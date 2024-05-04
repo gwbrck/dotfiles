@@ -1,4 +1,3 @@
-{{ if eq .chezmoi.os "darwin" -}}
 #!/bin/bash
 defaults write org.gpgtools.common UseKeychain NO
 
@@ -10,5 +9,3 @@ defaults write com.apple.dock orientation right
 defaults write com.apple.dock show-recents -bool false
 
 killall Dock
-{{ end -}}
-

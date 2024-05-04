@@ -1,4 +1,3 @@
-{{- if (eq .chezmoi.os "linux") -}}
 #!/bin/fish
 
 sudo mkdir -p /etc/interception/dual-function-keys/
@@ -39,4 +38,3 @@ sudo cp -f {{ joinPath .chezmoi.sourceDir "bin/interception-pipe1" }} /opt/inter
 
 sudo systemctl enable udevmon.service
 sudo systemctl restart udevmon.service
-{{ end -}}

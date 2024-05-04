@@ -1,4 +1,3 @@
-{{- if (eq .chezmoi.os "darwin") -}}
 #!/bin/bash
 
 xcode-select -p >/dev/null 2>&1 || xcode-select --install
@@ -85,4 +84,3 @@ vscode "sainnhe.edge"
 vscode "sumneko.lua"
 vscode "tomoki1207.pdf"
 EOF
-{{ end -}}

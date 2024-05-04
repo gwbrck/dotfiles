@@ -1,5 +1,9 @@
 bin/interception-pipe1
 {{ if ne .chezmoi.os "darwin" }}
+.chezmoiscripts/90-mac-configure.sh
+.chezmoiscripts/91-mac-dark-mode-notify.sh
+.chezmoiscripts/10-mac-install-packages.sh
+.chezmoiscripts/11-mac-defaults.sh
 .config/yabai
 .config/skhd
 .config/karabiner
@@ -8,6 +12,10 @@ bin/interception-pipe1
  ahk
 {{ end }}
 {{ if ne .chezmoi.os "linux" }}
+.chezmoiscripts.sh
+.chezmoiscripts/80-linux-keymaps.sh
+.chezmoiscripts/90-linux-pam.sh
+.chezmoiscripts/10-linux-install-packages.sh
 .config/mako
 .config/kwalletrc
 .config/sway

@@ -1,10 +1,10 @@
-{{ if eq .chezmoi.os "darwin" -}}
+# {{ if eq .chezmoi.os "darwin" }}
 pinentry-program /opt/homebrew/bin/pinentry-mac
-{{ end -}}
+# {{ end }}
 
-{{ if eq .chezmoi.os "linux" -}}
+# {{ if eq .chezmoi.os "linux" }}
 pinentry-program /usr/bin/pinentry-gnome3
-{{ end -}}
+# {{ end }}
 
 enable-ssh-support
 allow-emacs-pinentry

@@ -1,4 +1,3 @@
-{{ if eq .chezmoi.os "darwin" -}}
 #!/bin/bash
 set -eufo pipefail
 
@@ -12,6 +11,3 @@ defaults write com.lwouis.alt-tab-macos nextWindowShortcut2 ""
 defaults write com.lwouis.alt-tab-macos hideWindowlessApps true
 defaults write com.lwouis.alt-tab-macos menubarIcon 3
 defaults write com.lwouis.alt-tab-macos previewFocusedWindow true
-
-{{ end -}}
-

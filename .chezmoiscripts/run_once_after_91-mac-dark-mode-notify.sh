@@ -1,10 +1,9 @@
-{{ if eq .chezmoi.os "darwin" -}}
 #!/bin/bash
 set -eufo pipefail
 
 EXEC_THEME=$(which alacritty-theme)
 
-WORK_DIR=`mktemp -d`
+WORK_DIR=$(mktemp -d)
 
 cd $WORK_DIR
 
@@ -12,8 +11,7 @@ git clone https://github.com/bouk/dark-mode-notify.git
 
 cd dark-mode-notify
 
-swiftc main.swift -o $HOME/bin/dark-mode-notify    
-  
+swiftc main.swift -o $HOME/bin/dark-mode-notify
 
 echo "
 <?xml version=\"1.0\" encoding=\"UTF-8\"?>
@@ -32,7 +30,6 @@ echo "
     </array>
 </dict>
 </plist>
-" > ~/Library/LaunchAgents/ke.bou.dark-mode-notify.plist
+" >~/Library/LaunchAgents/ke.bou.dark-mode-notify.plist
 
 rm -rf WORK_DIR
-{{ end -}}

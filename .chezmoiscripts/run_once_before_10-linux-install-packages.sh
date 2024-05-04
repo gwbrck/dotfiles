@@ -1,4 +1,3 @@
-{{- if (eq .chezmoi.os "linux") -}}
 #!/bin/fish
 
 sudo pacman -S --needed alacritty
@@ -96,5 +95,3 @@ end
 if ! type -q wev
         paru -S wev
 end
-
-{{ end -}}

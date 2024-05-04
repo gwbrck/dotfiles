@@ -1,10 +1,7 @@
-{{ $email := promptString "email" -}}
+# {{ $email := promptString "email" }}
 
 [data]
 email = {{ $email | quote }}
-zotraPath = '--git-dir={{ .chezmoi.homeDir }}/.config/zotra-server/.git'
-zotraPathSub = '--git-dir={{ .chezmoi.homeDir }}/.config/zotra-server/module/translation-server/.git'
-
 
 [git]
     autoAdd = false

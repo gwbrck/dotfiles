@@ -1,3 +1,0 @@
-#!/usr/bin/env fish
-
-emacsclient -cn -e "(progn (call-interactively 'chatgpt-shell))"

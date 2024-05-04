@@ -1,6 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Reboot
-Icon=reboot
-Exec=reboot
-Terminal=false

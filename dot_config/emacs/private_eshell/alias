@@ -1,7 +1,0 @@
-alias l ls -la $*
-alias cl clear-scrollback
-alias .. cd ..
-alias ... cd ../..
-alias .... cd ../../..
-alias rest-biber rm -rf ${biber --cache}
-alias latex-update sudo tlmgr update --self --all

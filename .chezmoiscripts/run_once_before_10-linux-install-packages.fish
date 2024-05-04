@@ -65,33 +65,33 @@ sudo pacman -S --needed python-i3ipc
 
 
 if ! type -q paru
-        set CWD $pwd
-        mkdir ~/paruinstall/
-        cd ~/paruinstall
-	sudo pacman -S --needed base-devel
-	git clone https://aur.archlinux.org/paru.git
-	cd paru
-	makepkg -si
-        cd $CWD
-        set -e CWD
+    set CWD $pwd
+    mkdir ~/paruinstall/
+    cd ~/paruinstall
+    sudo pacman -S --needed base-devel
+    git clone https://aur.archlinux.org/paru.git
+    cd paru
+    makepkg -si
+    cd $CWD
+    set -e CWD
 end
 
-if ! type -q cupsctl 
-         paru -S brother-hll2350dw 
-         sudo pacman -S cups cups-pdf ghostscript
-         systemctl enable --now cups.service
-         systemctl enable --now avahi-daemon.service
+if ! type -q cupsctl
+    paru -S brother-hll2350dw
+    sudo pacman -S cups cups-pdf ghostscript
+    systemctl enable --now cups.service
+    systemctl enable --now avahi-daemon.service
 end
 
 if ! type -q darkman
-        paru -S darkman
-        systemctl --user enable --now darkman.service
+    paru -S darkman
+    systemctl --user enable --now darkman.service
 end
 
-if ! fc-list | grep -qi "ubuntu"    
-        paru -S nerd-fonts-ubuntu-mono
+if ! fc-list | grep -qi ubuntu
+    paru -S nerd-fonts-ubuntu-mono
 end
 
 if ! type -q wev
-        paru -S wev
+    paru -S wev
 end

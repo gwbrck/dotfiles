@@ -2,4 +2,7 @@
 *-autoloads.el
 .dir-locals.el
 dir
-.DS_Store
+*.DS_Store
+*.LSOverride
+Thumbs.db
+.bundle

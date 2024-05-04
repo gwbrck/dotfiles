@@ -9,12 +9,12 @@ bin/interception-pipe1
 .config/karabiner
 {{ end }}
 {{ if ne .chezmoi.os "windows" }}
- ahk
+ahk
 {{ end }}
 {{ if ne .chezmoi.os "linux" }}
 .chezmoiscripts.sh
 .chezmoiscripts/80-linux-keymaps.sh
-.chezmoiscripts/90-linux-pam.sh
+.chezmoiscripts/90-linux-pam.fish
 .chezmoiscripts/10-linux-install-packages.sh
 .config/mako
 .config/kwalletrc

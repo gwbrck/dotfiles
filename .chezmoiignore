@@ -13,9 +13,9 @@ ahk
 {{ end }}
 {{ if ne .chezmoi.os "linux" }}
 .chezmoiscripts.sh
-.chezmoiscripts/80-linux-keymaps.sh
+.chezmoiscripts/80-linux-keymaps.fish
 .chezmoiscripts/90-linux-pam.fish
-.chezmoiscripts/10-linux-install-packages.sh
+.chezmoiscripts/10-linux-install-packages.fish
 .config/mako
 .config/kwalletrc
 .config/sway

@@ -1,3 +1,4 @@
+README.md
 {{ if ne .chezmoi.os "darwin" }}
 .chezmoiscripts/90-mac-configure.sh
 .chezmoiscripts/91-mac-dark-mode-notify.sh

@@ -12,10 +12,10 @@ return {
     end,
     keys = {
       { '<leader>dtt', ":lua require'neotest'.run.run({strategy = 'dap'})<cr>", desc = '[t]est' },
-      { '<leader>dts', ":lua require'neotest'.run.stop()<cr>", desc = '[s]top test' },
-      { '<leader>dta', ":lua require'neotest'.run.attach()<cr>", desc = '[a]ttach test' },
+      { '<leader>dts', ":lua require'neotest'.run.stop()<cr>",                  desc = '[s]top test' },
+      { '<leader>dta', ":lua require'neotest'.run.attach()<cr>",                desc = '[a]ttach test' },
       { '<leader>dtf', ":lua require'neotest'.run.run(vim.fn.expand('%'))<cr>", desc = 'test [f]ile' },
-      { '<leader>dts', ":lua require'neotest'.summary.toggle()<cr>", desc = 'test [s]ummary' },
+      { '<leader>dts', ":lua require'neotest'.summary.toggle()<cr>",            desc = 'test [s]ummary' },
     },
   },
 
@@ -72,12 +72,12 @@ return {
     end,
     keys = {
       { '<leader>db', ":lua require'dap'.toggle_breakpoint()<cr>", desc = 'debug [b]reakpoint' },
-      { '<leader>dc', ":lua require'dap'.continue()<cr>", desc = 'debug [c]ontinue' },
-      { '<leader>do', ":lua require'dap'.step_over()<cr>", desc = 'debug [o]ver' },
-      { '<leader>dO', ":lua require'dap'.step_out()<cr>", desc = 'debug [O]ut' },
-      { '<leader>di', ":lua require'dap'.step_into()<cr>", desc = 'debug [i]nto' },
-      { '<leader>dr', ":lua require'dap'.repl_open()<cr>", desc = 'debug [r]epl' },
-      { '<leader>du', ":lua require'dapui'.toggle()<cr>", desc = 'debug [u]i' },
+      { '<leader>dc', ":lua require'dap'.continue()<cr>",          desc = 'debug [c]ontinue' },
+      { '<leader>do', ":lua require'dap'.step_over()<cr>",         desc = 'debug [o]ver' },
+      { '<leader>dO', ":lua require'dap'.step_out()<cr>",          desc = 'debug [O]ut' },
+      { '<leader>di', ":lua require'dap'.step_into()<cr>",         desc = 'debug [i]nto' },
+      { '<leader>dr', ":lua require'dap'.repl_open()<cr>",         desc = 'debug [r]epl' },
+      { '<leader>du', ":lua require'dapui'.toggle()<cr>",          desc = 'debug [u]i' },
     },
   },
 }

@@ -95,10 +95,10 @@ return {
             require('telescope.themes').get_dropdown(),
           },
           fzf = {
-            fuzzy = true, -- false will only do exact matching
+            fuzzy = true,                   -- false will only do exact matching
             override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true, -- override the file sorter
-            case_mode = 'smart_case', -- or "ignore_case" or "respect_case"
+            override_file_sorter = true,    -- override the file sorter
+            case_mode = 'smart_case',       -- or "ignore_case" or "respect_case"
           },
         },
       }
@@ -129,7 +129,7 @@ return {
     },
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     keys = {
-      { '-', ':Oil<cr>', desc = 'oil' },
+      { '-',          ':Oil<cr>', desc = 'oil' },
       { '<leader>ef', ':Oil<cr>', desc = 'edit [f]iles' },
     },
     cmd = 'Oil',

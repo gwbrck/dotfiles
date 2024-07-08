@@ -75,7 +75,7 @@ let g:currentmode={
 
 math.randomseed(os.time())
 
-vim.opt.statusline = '%{%g:currentmode[mode()]%} %{%reg_recording()%} %* %t | %y | %* %= c:%c l:%l/%L %p%% %#NonText# %*'
+vim.opt.statusline = '%{%g:currentmode[mode()]%} %{%reg_recording()%} %* %t | %y | %* %= c:%c l:%l/%L %p%% %*'
 
 -- hide cmdline when not used
 vim.opt.cmdheight = 1

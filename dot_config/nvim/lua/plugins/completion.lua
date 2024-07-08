@@ -106,6 +106,7 @@ return {
             menu = {
               otter = '[🦦]',
               nvim_lsp = '[LSP]',
+              nvim_lsp_signature_help = '[sig]',
               luasnip = '[snip]',
               buffer = '[buf]',
               path = '[path]',
@@ -122,13 +123,13 @@ return {
         sources = {
           { name = 'otter' }, -- for code chunks in quarto
           { name = 'path' },
-          { name = 'nvim_lsp' },
           { name = 'nvim_lsp_signature_help' },
-          { name = 'luasnip', keyword_length = 3, max_item_count = 3 },
+          { name = 'nvim_lsp' },
+          { name = 'luasnip',                keyword_length = 3, max_item_count = 3 },
           { name = 'pandoc_references' },
-          { name = 'buffer', keyword_length = 5, max_item_count = 3 },
+          { name = 'buffer',                 keyword_length = 5, max_item_count = 3 },
           { name = 'spell' },
-          { name = 'treesitter', keyword_length = 5, max_item_count = 3 },
+          { name = 'treesitter',             keyword_length = 5, max_item_count = 3 },
           { name = 'calc' },
           { name = 'latex_symbols' },
           { name = 'emoji' },
@@ -155,7 +156,7 @@ return {
 
   { -- gh copilot
     'zbirenbaum/copilot.lua',
-    enabled = false,
+    enabled = true,
     config = function()
       require('copilot').setup {
         suggestion = {

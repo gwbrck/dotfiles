@@ -1,21 +1,23 @@
 -- global options
 
-local animals = require('misc.style').animals
 
 -- proper colors
 vim.opt.termguicolors = true
+
+-- show insert mode in terminal buffers
+vim.api.nvim_set_hl(0, 'TermCursor', { fg = '#A6E3A1', bg = '#A6E3A1' })
 
 -- disable fill chars (the ~ after the buffer)
 vim.o.fillchars = 'eob: '
 
 -- more opinionated
-vim.opt.number = true -- show linenumbers
-vim.opt.mouse = 'a' -- enable mouse
+vim.opt.number = true                  -- show linenumbers
+vim.opt.mouse = 'a'                    -- enable mouse
 vim.opt.mousefocus = true
 vim.opt.clipboard:append 'unnamedplus' -- use system clipboard
 
-vim.opt.timeoutlen = 400 -- until which-key pops up
-vim.opt.updatetime = 250 -- for autocommands and hovers
+vim.opt.timeoutlen = 400               -- until which-key pops up
+vim.opt.updatetime = 250               -- for autocommands and hovers
 
 -- don't ask about existing swap files
 vim.opt.shortmess:append 'A'
@@ -72,8 +74,8 @@ let g:currentmode={
 ]]
 
 math.randomseed(os.time())
-local i = math.random(#animals)
-vim.opt.statusline = '%{%g:currentmode[mode()]%} %{%reg_recording()%} %* %t | %y | %* %= c:%c l:%l/%L %p%% %#NonText# ' .. animals[i] .. ' %*'
+
+vim.opt.statusline = '%{%g:currentmode[mode()]%} %{%reg_recording()%} %* %t | %y | %* %= c:%c l:%l/%L %p%% %#NonText# %*'
 
 -- hide cmdline when not used
 vim.opt.cmdheight = 1

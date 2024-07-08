@@ -130,7 +130,7 @@ return {
       vim.g.molten_auto_open_output = false
     end,
     keys = {
-      { '<leader>mi', ':MoltenInit<cr>', desc = '[m]olten [i]nit' },
+      { '<leader>mi', ':MoltenInit<cr>',           desc = '[m]olten [i]nit' },
       {
         '<leader>mv',
         ':<C-u>MoltenEvaluateVisual<cr>',

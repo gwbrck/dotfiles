@@ -42,7 +42,7 @@ return {
           },
         },
         { 'Bilal2453/luvit-meta', lazy = true }, -- optional `vim.uv` typings
-        { -- optional completion source for require statements and module annotations
+        {                                        -- optional completion source for require statements and module annotations
           'hrsh7th/nvim-cmp',
           opts = function(_, opts)
             opts.sources = opts.sources or {}
@@ -113,13 +113,20 @@ return {
         debounce_text_changes = 150,
       }
 
-      vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = require('misc.style').border })
-      vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = require('misc.style').border })
-      vim.lsp.handlers[ms.textDocument_definition] = handlers.telescope_handler_factory(ms.textDocument_definition, "Definition")
-      vim.lsp.handlers[ms.textDocument_typeDefinition] = handlers.telescope_handler_factory(ms.textDocument_typeDefinition, "Type Definition")
-      vim.lsp.handlers[ms.textDocument_references] = handlers.telescope_handler_factory(ms.textDocument_references, "References")
-      vim.lsp.handlers[ms.textDocument_implementation] = handlers.telescope_handler_factory(ms.textDocument_implementation, "Implementations")
-      vim.lsp.handlers[ms.textDocument_documentSymbol] = handlers.telescope_handler_factory(ms.textDocument_documentSymbol, "Document Symbols")
+      vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover,
+        { border = require('misc.style').border })
+      vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help,
+        { border = require('misc.style').border })
+      vim.lsp.handlers[ms.textDocument_definition] = handlers.telescope_handler_factory(ms.textDocument_definition,
+        "Definition")
+      vim.lsp.handlers[ms.textDocument_typeDefinition] = handlers.telescope_handler_factory(
+      ms.textDocument_typeDefinition, "Type Definition")
+      vim.lsp.handlers[ms.textDocument_references] = handlers.telescope_handler_factory(ms.textDocument_references,
+        "References")
+      vim.lsp.handlers[ms.textDocument_implementation] = handlers.telescope_handler_factory(
+      ms.textDocument_implementation, "Implementations")
+      vim.lsp.handlers[ms.textDocument_documentSymbol] = handlers.telescope_handler_factory(
+      ms.textDocument_documentSymbol, "Document Symbols")
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
@@ -308,7 +315,8 @@ return {
           },
         },
         root_dir = function(fname)
-          return util.root_pattern('.git', 'setup.py', 'setup.cfg', 'pyproject.toml', 'requirements.txt')(fname) or util.path.dirname(fname)
+          return util.root_pattern('.git', 'setup.py', 'setup.cfg', 'pyproject.toml', 'requirements.txt')(fname) or
+          util.path.dirname(fname)
         end,
       }
     end,

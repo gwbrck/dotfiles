@@ -41,8 +41,8 @@ return {
       { '<leader>gct', ':GitConflictChooseTheirs<cr>' },
       { '<leader>gcb', ':GitConflictChooseBoth<cr>' },
       { '<leader>gc0', ':GitConflictChooseNone<cr>' },
-      { ']x', ':GitConflictNextConflict<cr>' },
-      { '[x', ':GitConflictPrevConflict<cr>' },
+      { ']x',          ':GitConflictNextConflict<cr>' },
+      { '[x',          ':GitConflictPrevConflict<cr>' },
     },
   },
   {

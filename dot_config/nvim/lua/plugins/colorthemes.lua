@@ -9,7 +9,7 @@ return {
     lazy = false,
     priority = 100,
     cond = vim.fn.has("Mac") == 1,
-    config = {
+    opts = {
       update_interval = 1000,
       set_dark_mode = function()
         vim.api.nvim_set_option("background", "dark")

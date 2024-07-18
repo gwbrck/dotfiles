@@ -8,7 +8,6 @@ if ! type brew >/dev/null; then
 fi
 
 brew bundle --no-lock --file=/dev/stdin <<EOF
-tap "homebrew/cask-fonts"
 brew "python"
 brew "ansible"
 brew "ansible-lint"

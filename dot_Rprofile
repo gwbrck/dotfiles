@@ -1,5 +1,5 @@
 dir.create(file.path("~/.local/lib/R"), showWarnings = FALSE, recursive = TRUE)
-.libPaths(new = "~/.local/lib/R")
+.libPaths(new = "~/.local/lib/R", include.site = FALSE)
 options(repos = structure(c(CRAN = "https://ftp.gwdg.de/pub/misc/cran/")))
 
 

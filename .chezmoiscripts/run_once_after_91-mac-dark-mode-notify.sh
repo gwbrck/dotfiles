@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eufo pipefail
 
-EXEC_THEME=$(which alacritty-theme)
+EXEC_THEME=$(which terminal-theme-toggle)
 
 WORK_DIR=$(mktemp -d)
 

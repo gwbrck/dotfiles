@@ -2,7 +2,7 @@
 set -eufo pipefail
 
 if [ $DARKMODE -eq 1 ]; then
-        /Applications/kitty.app/Contents/MacOS/kitty +kitten themes --reload-in=all edge-dark
+        /Applications/kitty.app/Contents/MacOS/kitty +kitten themes --config-file-name=themes.conf --reload-in=all edge-dark
         echo '
 [colors.bright]
 black = "0x3e4249"
@@ -30,7 +30,7 @@ foreground = "0xc5cdd9"
 ' >~/.config/alacritty/colors.toml
 
 elif [ $DARKMODE -eq 0 ]; then
-        /Applications/kitty.app/Contents/MacOS/kitty +kitten themes --reload-in=all edge-light 
+        /Applications/kitty.app/Contents/MacOS/kitty +kitten themes --config-file-name=themes.conf --reload-in=all edge-light 
         #light
         echo '
 [colors.primary]

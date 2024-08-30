@@ -81,6 +81,8 @@ set -Ux GPG_TTY $(tty)
 fish_add_path ~/bin
 fish_add_path ~/.local/bin #pipx
 
+eval conda "shell.fish" "hook" $argv | source
+
 set -Ux POETRY_CONFIG_DIR $HOME/.config/pypoetry
 
 if test "$INSIDE_EMACS" = vterm

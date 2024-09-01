@@ -6,8 +6,8 @@ if ! grep -q "/opt/homebrew/bin/fish" /etc/shells; then
    chsh -s /opt/homebrew/bin/fish
 fi
 
-defaults write com.lwouis.alt-tab-macos holdShortcut "\\U2318"
-defaults write com.lwouis.alt-tab-macos nextWindowShortcut2 ""
-defaults write com.lwouis.alt-tab-macos hideWindowlessApps true
-defaults write com.lwouis.alt-tab-macos menubarIcon 3
-defaults write com.lwouis.alt-tab-macos previewFocusedWindow true
+# defaults write com.lwouis.alt-tab-macos holdShortcut "\\U2318"
+# defaults write com.lwouis.alt-tab-macos nextWindowShortcut2 ""
+# defaults write com.lwouis.alt-tab-macos hideWindowlessApps true
+# defaults write com.lwouis.alt-tab-macos menubarIcon 3
+# defaults write com.lwouis.alt-tab-macos previewFocusedWindow true

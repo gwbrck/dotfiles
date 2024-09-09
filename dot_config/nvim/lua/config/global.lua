@@ -74,7 +74,6 @@ let g:currentmode={
        \}
 ]]
 
-math.randomseed(os.time())
 
 vim.opt.statusline = '%{%g:currentmode[mode()]%} %{%reg_recording()%} %* %t | %y | %* %= c:%c l:%l/%L %p%% %*'
 

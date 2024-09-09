@@ -253,7 +253,7 @@ return {
     },
     opts = {
       providers = {
-        priority = { 'markdown', 'lsp',  'norg' },
+        priority = { 'markdown', 'lsp', 'norg' },
         -- Configuration for each provider (3rd party providers are supported)
         lsp = {
           -- Lsp client names to ignore

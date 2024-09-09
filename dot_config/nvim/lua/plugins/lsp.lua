@@ -1,4 +1,3 @@
-
 return {
 
   {
@@ -44,7 +43,7 @@ return {
           },
         },
         { 'Bilal2453/luvit-meta', lazy = true }, -- optional `vim.uv` typings
-        { -- optional completion source for require statements and module annotations
+        {                                        -- optional completion source for require statements and module annotations
           'hrsh7th/nvim-cmp',
           opts = function(_, opts)
             opts.sources = opts.sources or {}
@@ -100,8 +99,8 @@ return {
           map('gh', vim.lsp.buf.signature_help, '[g]o to signature [h]elp')
           map('gI', vim.lsp.buf.implementation, '[g]o to [I]mplementation')
           map('gr', vim.lsp.buf.references, '[g]o to [r]eferences')
-          map('[d', function () vim.diagnostic.jump({count = 1}) end,'previous [d]iagnostic ')
-          map(']d', function () vim.diagnostic.jump({count = -1}) end, 'next [d]iagnostic ')
+          map('[d', function() vim.diagnostic.jump({ count = 1 }) end, 'previous [d]iagnostic ')
+          map(']d', function() vim.diagnostic.jump({ count = -1 }) end, 'next [d]iagnostic ')
           map('<leader>ll', vim.lsp.codelens.run, '[l]ens run')
           map('<leader>lR', vim.lsp.buf.rename, '[l]sp [R]ename')
           map('<leader>lf', vim.lsp.buf.format, '[l]sp [f]ormat')
@@ -115,8 +114,10 @@ return {
         debounce_text_changes = 150,
       }
 
-      vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = require('misc.style').border })
-      vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = require('misc.style').border })
+      vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover,
+        { border = require('misc.style').border })
+      vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help,
+        { border = require('misc.style').border })
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
@@ -182,7 +183,7 @@ return {
         flags = lsp_flags,
       }
 
-      lspconfig.tsserver.setup {
+      lspconfig.ts_ls.setup {
         capabilities = capabilities,
         flags = lsp_flags,
         filetypes = { 'js', 'javascript', 'typescript', 'ojs' },
@@ -272,16 +273,16 @@ return {
       --   flags = lsp_flags,
       -- }
 
-      lspconfig.rust_analyzer.setup{
+      lspconfig.rust_analyzer.setup {
         capabilities = capabilities,
         settings = {
           ['rust-analyzer'] = {
             diagnostics = {
-              enable = false;
+              enable = false,
             }
           }
         }
-     }
+      }
 
       -- lspconfig.ruff_lsp.setup {
       --   capabilities = capabilities,
@@ -311,7 +312,8 @@ return {
           },
         },
         root_dir = function(fname)
-          return util.root_pattern('.git', 'setup.py', 'setup.cfg', 'pyproject.toml', 'requirements.txt')(fname) or util.path.dirname(fname)
+          return util.root_pattern('.git', 'setup.py', 'setup.cfg', 'pyproject.toml', 'requirements.txt')(fname) or
+          util.path.dirname(fname)
         end,
       }
     end,

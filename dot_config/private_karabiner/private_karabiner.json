@@ -123,6 +123,37 @@
                         ]
                     },
                     {
+                        "description": "Space key as Alt when modifier_hyper 1",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "modifier_hyper",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "spacebar",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_option",
+                                        "modifiers": [
+                                            "left_shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
                         "description": "Hyper HJKL -> Arrows",
                         "manipulators": [
                             {
@@ -609,9 +640,9 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "hyper+tab = ctrl+tab",
+                                "description": "Window Left & Right to hyper+t",
                                 "from": {
-                                    "key_code": "tab",
+                                    "key_code": "t",
                                     "modifiers": {
                                         "mandatory": [],
                                         "optional": [
@@ -621,9 +652,42 @@
                                 },
                                 "to": [
                                     {
-                                        "key_code": "tab",
+                                        "key_code": "left_arrow",
                                         "modifiers": [
-                                            "left_control"
+                                            "left_control",
+                                            "left_command",
+                                            "left_shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "modifier_hyper",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "description": "Window Left & Right to hyper+r",
+                                "from": {
+                                    "key_code": "r",
+                                    "modifiers": {
+                                        "mandatory": [],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_arrow",
+                                        "modifiers": [
+                                            "left_control",
+                                            "left_command",
+                                            "left_option",
+                                            "left_shift"
                                         ]
                                     }
                                 ],

@@ -1,27 +1,50 @@
 return {
   {
     "sainnhe/edge",
-    lazy = false,    -- make sure we load this during startup if it is your main colorscheme
-    priority = 1000, -- make sure to load this before all the other start plugins
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000,
+    enabled = true,
+    config = function()
+      vim.cmd.colorscheme 'edge'
+    end
   },
   {
     "f-person/auto-dark-mode.nvim",
     lazy = false,
-    priority = 100,
+    priority = 1001,
     cond = vim.fn.has("Mac") == 1,
     opts = {
       update_interval = 1000,
       set_dark_mode = function()
-        vim.api.nvim_set_option("background", "dark")
-        vim.cmd("colorscheme edge")
+        vim.o.background = "dark"
+        -- vim.cmd("colorscheme edge")
       end,
       set_light_mode = function()
-        vim.api.nvim_set_option("background", "light")
-        vim.cmd("colorscheme edge")
+        vim.o.background = "light"
+        -- vim.cmd("colorscheme edge")
       end,
     },
     init = function()
       require("auto-dark-mode").init()
+
+      vim.api.nvim_create_autocmd("OptionSet", {
+        pattern = "background",
+        callback = function()
+          -- Get the current filetype
+          local ft = vim.bo.filetype
+          -- Reset the filetype to trigger syntax highlighting
+          vim.cmd("set filetype=" .. ft)
+        end,
+      })
+
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        callback = function()
+          -- Get the current filetype
+          local ft = vim.bo.filetype
+          -- Reset the filetype to trigger syntax highlighting
+          vim.cmd("set filetype=" .. ft)
+        end,
+      })
     end,
   },
   {

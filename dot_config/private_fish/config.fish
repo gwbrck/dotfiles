@@ -80,6 +80,7 @@ set -Ux GPG_TTY $(tty)
 
 fish_add_path ~/bin
 fish_add_path ~/.local/bin #pipx
+fish_add_path /opt/homebrew/opt/curl/bin
 
 eval conda "shell.fish" "hook" $argv | source
 

@@ -83,21 +83,9 @@ mods = "Alt"
 save_to_clipboard = true
 semantic_escape_chars = ",│`|:\"' ()[]{}<>"
 
-[shell]
-args = ["-u", "new-session", "-A", "-s", "main"]
-{{ if (eq .chezmoi.os "darwin") }}
-program = "/opt/homebrew/bin/tmux"
-{{ else if (eq .chezmoi.os "linux" ) }}
-program = "tmux"
-{{- end }}
-
 [window]
 dynamic_padding = true
-{{ if (eq .chezmoi.os "darwin") }}
 decorations = "buttonless"
-{{ else if (eq .chezmoi.os "linux" ) }}
-decorations = "None"
-{{- end }}
 
 [window.padding]
 x = 8

@@ -747,9 +747,7 @@
             "devices": [
                 {
                     "identifiers": {
-                        "is_keyboard": true,
-                        "product_id": 545,
-                        "vendor_id": 1452
+                        "is_keyboard": true
                     },
                     "simple_modifications": [
                         {
@@ -786,7 +784,10 @@
                 }
             ],
             "name": "Default profile",
-            "selected": true
+            "selected": true,
+            "virtual_hid_keyboard": {
+                "keyboard_type_v2": "iso"
+            }
         }
     ]
 }

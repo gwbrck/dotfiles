@@ -1,3 +1,4 @@
+[general]
 import = [
     "/Users/gwbrck/.config/alacritty/main.toml",
     "/Users/gwbrck/.config/alacritty/colors.toml",

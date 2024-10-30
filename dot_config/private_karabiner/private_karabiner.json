@@ -820,6 +820,45 @@
                             ]
                         }
                     ]
+                },
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 801,
+                        "vendor_id": 76
+                    },
+                    "simple_modifications": [
+                        {
+                            "from": {
+                                "key_code": "backslash"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "non_us_pound"
+                                }
+                            ]
+                        },
+                        {
+                            "from": {
+                                "key_code": "grave_accent_and_tilde"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "non_us_backslash"
+                                }
+                            ]
+                        },
+                        {
+                            "from": {
+                                "key_code": "non_us_backslash"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "grave_accent_and_tilde"
+                                }
+                            ]
+                        }
+                    ]
                 }
             ],
             "name": "Default profile",

@@ -27,15 +27,15 @@ foreground = "0xc5cdd9"
 size = 12
 
 [font.bold]
-family = "UbuntuMono Nerd Font"
+family = "Maple Mono NF"
 style = "Bold"
 
 [font.italic]
-family = "UbuntuMono Nerd Font"
+family = "Maple Mono NF"
 style = "Italic"
 
 [font.normal]
-family = "UbuntuMono Nerd Font"
+family = "Maple Mono NF"
 style = "Regular"
 
 [[keyboard.bindings]]

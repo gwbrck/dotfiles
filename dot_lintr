@@ -1,5 +1,0 @@
-linters: all_linters(
-    object_length_linter = NULL,
-    object_name_linter = NULL,
-    implicit_integer_linter = NULL
-  )

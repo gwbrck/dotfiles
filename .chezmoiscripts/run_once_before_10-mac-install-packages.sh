@@ -33,7 +33,6 @@ brew "pass-git-helper"
 brew "pass-otp"
 brew "pinentry-mac"
 brew "pipenv"
-brew "pipx"
 brew "poetry"
 brew "poppler"
 brew "pygments"
@@ -113,4 +112,6 @@ vscode "tootone.org-mode"
 vscode "zeshuaro.vscode-python-poetry"
 EOF
 
-pipx install kptncook ansible-creator visidata
+uv tool install kptncook
+uv tool install ansible-creator
+uv tool install pytr

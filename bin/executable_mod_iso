@@ -1,0 +1,103 @@
+#!/bin/bash
+#
+#  create-custom-ubuntu.sh
+#  ----------------------------------------------
+#  Baut aus einer vorhandenen Ubuntu-ISO
+#  ein vorkonfiguriertes Image mit Cloud-Init,
+#  aktiviert SSH (Passwort-Login) für den im
+#  pass-Store hinterlegten Benutzer.
+#
+#  Aufruf:
+#      ./create-custom-ubuntu.sh /pfad/zur/ubuntu.iso
+#
+#  NEW_ISO kann per Umgebungs­variable überschrieben werden:
+#      NEW_ISO=mein.iso ./create-custom-ubuntu.sh …
+# ----------------------------------------------
+
+set -euo pipefail
+
+# === FESTE VARIABLEN ===
+WORKDIR="iso-workdir"
+MOUNTDIR="iso-mount"
+NEW_ISO="${NEW_ISO:-ubuntu-custom.iso}"
+PASSWORD_ENTRY="infra/initial_creds"   # pass-Eintrag
+
+# === HILFSFUNKTIONEN ===
+err()  { echo "❌ $*" >&2; exit 1; }
+info() { echo "👉 $*"; }
+
+# === ARGUMENT PRÜFEN ===
+[[ $# -eq 1 ]] || err "Bitte genau eine ISO-Datei angeben."
+ISO_PATH="$1"
+[[ -f "$ISO_PATH" ]] || err "Datei '$ISO_PATH' existiert nicht."
+
+# === VORBEREITUNG ===
+mkdir -p "$WORKDIR" "$MOUNTDIR"
+
+# === ISO EINHÄNGEN & KOPIEREN ===
+info "ISO mounten …"
+hdiutil attach "$ISO_PATH" -mountpoint "$MOUNTDIR"
+info "Inhalt kopieren …"
+cp -R "$MOUNTDIR"/* "$WORKDIR/"
+hdiutil detach "$MOUNTDIR"
+
+# === BENUTZER + PASSWORT HOLEN ===
+info "Benutzerdaten aus pass lesen …"
+command -v pass >/dev/null || err "'pass' fehlt – brew install pass"
+
+USERNAME=$(pass "$PASSWORD_ENTRY" | awk -F': ' '/^user:/ {print $2}')
+RAW_PASS=$(pass "$PASSWORD_ENTRY" | awk -F': ' '/^pass:/ {print $2}')
+[[ -n "$USERNAME" && -n "$RAW_PASS" ]] || \
+  err "user/pass im pass-Eintrag '$PASSWORD_ENTRY' fehlen."
+
+HASHED_PASS=$(python3 - <<PY
+import crypt
+print(crypt.crypt("${RAW_PASS}", crypt.mksalt(crypt.METHOD_SHA512)))
+PY
+)
+
+# === CLOUD-INIT HINZUFÜGEN ===
+info "Cloud-Init-Dateien erzeugen …"
+mkdir -p "$WORKDIR/nocloud"
+
+cat >"$WORKDIR/nocloud/user-data" <<EOF
+#cloud-config
+users:
+  - name: $USERNAME
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    lock_passwd: false
+    passwd: $HASHED_PASS
+
+ssh_pwauth: true          # Passwort-Login erlauben
+apt_update: true
+packages:
+  - openssh-server        # sicherstellen, dass SSH vorhanden ist
+
+runcmd:                   # Dienst aktivieren & starten
+  - systemctl enable ssh
+  - systemctl start ssh
+EOF
+
+cat >"$WORKDIR/nocloud/meta-data" <<EOF
+instance-id: iid-local01
+local-hostname: $USERNAME-host
+EOF
+
+# === GRUB-CMDLINE ANPASSEN ===
+info "grub.cfg anpassen …"
+GRUB_CFG="$WORKDIR/boot/grub/grub.cfg"
+if [[ -f "$GRUB_CFG" ]]; then
+  sed -i '' 's/linux .*/& ds=nocloud\\;s=\/cdrom\/nocloud\//' "$GRUB_CFG"
+else
+  echo "⚠️  Keine grub.cfg gefunden – Bootloader-Pfad prüfen."
+fi
+
+# === NEUES ISO BAUEN ===
+info "Neues ISO erzeugen …"
+mkisofs -D -r -V "CUSTOM_UBUNTU" -cache-inodes -J -l \
+  -b boot/grub/i386-pc/eltorito.img \
+  -no-emul-boot -boot-load-size 4 -boot-info-table \
+  -o "$NEW_ISO" "$WORKDIR"
+
+echo "✅ Fertig! Neues ISO: $NEW_ISO"

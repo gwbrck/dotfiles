@@ -1,0 +1,19 @@
+#!/bin/bash
+#
+
+set -euo pipefail
+
+# === FESTE VARIABLEN ===
+PASSWORD_ENTRY="infra/initial_creds"  # pass-Eintrag
+
+command -v pass >/dev/null || err "'pass' fehlt – brew install pass"
+
+USERNAME=$(pass "$PASSWORD_ENTRY" | awk -F': ' '/^user:/ {print $2}')
+RAW_PASS=$(pass "$PASSWORD_ENTRY" | awk -F': ' '/^pass:/ {print $2}')
+[[ -n "$USERNAME" && -n "$RAW_PASS" ]] || \
+  err "user/pass im pass-Eintrag '$PASSWORD_ENTRY' fehlen."
+
+defaults write org.raspberrypi.Imager imagecustomization.hostname "vpnpi"
+defaults write org.raspberrypi.Imager imagecustomization.sshEnabled 1
+defaults write org.raspberrypi.Imager imagecustomization.sshUserName "$USERNAME"
+defaults write org.raspberrypi.Imager imagecustomization.sshUserPassword "$RAW_PASS"

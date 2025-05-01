@@ -1,103 +1,95 @@
 #!/bin/bash
-#
-#  create-custom-ubuntu.sh
-#  ----------------------------------------------
-#  Baut aus einer vorhandenen Ubuntu-ISO
-#  ein vorkonfiguriertes Image mit Cloud-Init,
-#  aktiviert SSH (Passwort-Login) für den im
-#  pass-Store hinterlegten Benutzer.
-#
-#  Aufruf:
-#      ./create-custom-ubuntu.sh /pfad/zur/ubuntu.iso
-#
-#  NEW_ISO kann per Umgebungs­variable überschrieben werden:
-#      NEW_ISO=mein.iso ./create-custom-ubuntu.sh …
-# ----------------------------------------------
-
 set -euo pipefail
 
-# === FESTE VARIABLEN ===
 WORKDIR="iso-workdir"
 MOUNTDIR="iso-mount"
-NEW_ISO="${NEW_ISO:-ubuntu-custom.iso}"
-PASSWORD_ENTRY="infra/initial_creds"   # pass-Eintrag
+NEW_ISO="${NEW_ISO:-ubuntu-autoinstall.iso}"
+PASSWORD_ENTRY="infra/initial_creds"
 
-# === HILFSFUNKTIONEN ===
+# === Hilfsfunktionen ===
 err()  { echo "❌ $*" >&2; exit 1; }
 info() { echo "👉 $*"; }
 
-# === ARGUMENT PRÜFEN ===
+# === Argument prüfen ===
 [[ $# -eq 1 ]] || err "Bitte genau eine ISO-Datei angeben."
 ISO_PATH="$1"
 [[ -f "$ISO_PATH" ]] || err "Datei '$ISO_PATH' existiert nicht."
 
-# === VORBEREITUNG ===
+# === Vorbereitungen ===
+rm -rf "$WORKDIR" "$MOUNTDIR"
 mkdir -p "$WORKDIR" "$MOUNTDIR"
 
-# === ISO EINHÄNGEN & KOPIEREN ===
+# === ISO mounten und kopieren ===
 info "ISO mounten …"
-hdiutil attach "$ISO_PATH" -mountpoint "$MOUNTDIR"
-info "Inhalt kopieren …"
-cp -R "$MOUNTDIR"/* "$WORKDIR/"
-hdiutil detach "$MOUNTDIR"
+7z x "$ISO_PATH" -o"$MOUNTDIR" >/dev/null
+cp -rT "$MOUNTDIR" "$WORKDIR"
 
-# === BENUTZER + PASSWORT HOLEN ===
-info "Benutzerdaten aus pass lesen …"
-command -v pass >/dev/null || err "'pass' fehlt – brew install pass"
+# === Benutzerdaten lesen ===
+info "Benutzerdaten aus 'pass' lesen …"
+command -v pass >/dev/null || err "'pass' nicht gefunden – bitte installieren."
 
 USERNAME=$(pass "$PASSWORD_ENTRY" | awk -F': ' '/^user:/ {print $2}')
 RAW_PASS=$(pass "$PASSWORD_ENTRY" | awk -F': ' '/^pass:/ {print $2}')
-[[ -n "$USERNAME" && -n "$RAW_PASS" ]] || \
-  err "user/pass im pass-Eintrag '$PASSWORD_ENTRY' fehlen."
+[[ -n "$USERNAME" && -n "$RAW_PASS" ]] || err "user/pass fehlen im pass-Eintrag '$PASSWORD_ENTRY'."
 
-HASHED_PASS=$(python3 - <<PY
-import crypt
-print(crypt.crypt("${RAW_PASS}", crypt.mksalt(crypt.METHOD_SHA512)))
-PY
-)
+HASHED_PASS=$(python3 -c "import crypt; print(crypt.crypt('$RAW_PASS', crypt.mksalt(crypt.METHOD_SHA512)))")
 
-# === CLOUD-INIT HINZUFÜGEN ===
-info "Cloud-Init-Dateien erzeugen …"
-mkdir -p "$WORKDIR/nocloud"
+# === Autoinstall-Dateien schreiben ===
+info "Autoinstall-Dateien schreiben …"
+mkdir -p "$WORKDIR/autoinstall"
 
-cat >"$WORKDIR/nocloud/user-data" <<EOF
+cat >"$WORKDIR/autoinstall/user-data" <<EOF
 #cloud-config
-users:
-  - name: $USERNAME
-    shell: /bin/bash
-    sudo: ALL=(ALL) NOPASSWD:ALL
-    lock_passwd: false
-    passwd: $HASHED_PASS
+autoinstall:
+  version: 1
+  identity:
+    hostname: Server
+    username: $USERNAME
+    password: $HASHED_PASS
+  ssh:
+    install-server: true
+    allow-pw: true
+  locale: de_DE.UTF-8
+  keyboard:
+    layout: de
+  storage:
+    layout:
+      name: lvm
+  packages:
+    - openssh-server
+    - htop
+    - curl
+  late-commands:
+    - echo 'Installation abgeschlossen' > /target/root/INSTALL_DONE.txt
 
-ssh_pwauth: true          # Passwort-Login erlauben
-apt_update: true
-packages:
-  - openssh-server        # sicherstellen, dass SSH vorhanden ist
-
-runcmd:                   # Dienst aktivieren & starten
-  - systemctl enable ssh
-  - systemctl start ssh
+ssh_pwauth: true
 EOF
 
-cat >"$WORKDIR/nocloud/meta-data" <<EOF
+cat >"$WORKDIR/autoinstall/meta-data" <<EOF
 instance-id: iid-local01
-local-hostname: $USERNAME-host
+local-hostname: ${USERNAME}-host
 EOF
 
-# === GRUB-CMDLINE ANPASSEN ===
-info "grub.cfg anpassen …"
-GRUB_CFG="$WORKDIR/boot/grub/grub.cfg"
-if [[ -f "$GRUB_CFG" ]]; then
-  sed -i '' 's/linux .*/& ds=nocloud\\;s=\/cdrom\/nocloud\//' "$GRUB_CFG"
-else
-  echo "⚠️  Keine grub.cfg gefunden – Bootloader-Pfad prüfen."
-fi
+# === GRUB-Konfiguration anpassen ===
+info "GRUB-Bootparameter setzen …"
+GRUB_CFG=$(find "$WORKDIR" -name grub.cfg | head -n1)
+[[ -f "$GRUB_CFG" ]] || err "grub.cfg nicht gefunden."
+sed -i '' 's/---/autoinstall ds=nocloud\\;s=\/cdrom\/autoinstall\//g' "$GRUB_CFG"
 
-# === NEUES ISO BAUEN ===
-info "Neues ISO erzeugen …"
-mkisofs -D -r -V "CUSTOM_UBUNTU" -cache-inodes -J -l \
-  -b boot/grub/i386-pc/eltorito.img \
+# === ISO erzeugen ===
+info "ISO erzeugen …"
+xorriso -as mkisofs \
+  -r -V "UBUNTU_AUTOINSTALL" \
+  -o "$NEW_ISO" \
+  -J -l -cache-inodes \
+  -isohybrid-mbr "$WORKDIR/isolinux/isohdpfx.bin" \
+  -partition_offset 16 \
+  -c isolinux/boot.cat \
+  -b isolinux/isolinux.bin \
   -no-emul-boot -boot-load-size 4 -boot-info-table \
-  -o "$NEW_ISO" "$WORKDIR"
+  -eltorito-alt-boot \
+  -e boot/grub/efi.img \
+  -no-emul-boot \
+  "$WORKDIR"
 
-echo "✅ Fertig! Neues ISO: $NEW_ISO"
+echo "✅ Fertig! Neues Autoinstall-ISO: $NEW_ISO"

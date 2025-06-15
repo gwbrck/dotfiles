@@ -34,4 +34,6 @@ set -Ux EDITOR nvim
 set -Ux XDG_CONFIG_HOME $HOME/.config
 set -Ux HOMEBREW_BUNDLE_FILE_GLOBAL "$XDG_CONFIG_HOME/homebrew/Brewfile"
 
-set -Ux PASSWORD_STORE_DIR $HOME/Documents/Archiv/Pass
+if test (uname) = Darwin
+    set -Ux SSH_AUTH_SOCK "$HOME/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock"
+end

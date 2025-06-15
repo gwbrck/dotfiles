@@ -36,8 +36,6 @@ if status is-interactive
 
 end
 
-set -gx GPG_TTY (tty)
-
 fish_add_path $HOME/bin
 fish_add_path $HOME/.local/bin #pipx & uv
 fish_add_path /opt/homebrew/opt/curl/bin

@@ -30,4 +30,4 @@ Sign in to the Zotero account and install the following extensions:
 
 1. [Better BibTeX](https://github.com/retorquere/zotero-better-bibtex)
 
-2. [ZotLit](https://github.com/PKM-er/obsidian-zotlit)
+2. [MarkDB-Connect](https://github.com/daeh/zotero-markdb-connect)

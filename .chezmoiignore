@@ -1,6 +1,6 @@
 README.md
 {{ if ne .chezmoi.os "darwin" }}
-
+dot_config/homebrew
 .chezmoiscripts/run_after-mac-configure.sh
 .chezmoiscripts/run_once_before_10-mac-bootstrap.sh
 .config/karabiner

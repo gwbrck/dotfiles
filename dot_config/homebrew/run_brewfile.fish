@@ -1,4 +1,3 @@
-#!/usr/bin/fish
+#!/usr/bin/env fish
 
-# brew bundle cleanup --global --force
-echo "works aber noch nicht"
+brew bundle --global && brew bundle cleanup --global --force

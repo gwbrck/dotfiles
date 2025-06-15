@@ -1,5 +1,4 @@
-#!/usr/bin/fish
+#!/usr/bin/env fish
 
-# uv tool install pytr
-# uv tool install kptncook
-echo "works aber noch nicht"
+uv tool install pytr
+uv tool install kptncook

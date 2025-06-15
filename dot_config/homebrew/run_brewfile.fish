@@ -1,3 +1,3 @@
 #!/opt/homebrew/bin/fish
 
-brew bundle --global && brew bundle cleanup --global --force
+/opt/homebrew/bin/brew bundle --global && /opt/homebrew/bin/brew bundle cleanup --global --force

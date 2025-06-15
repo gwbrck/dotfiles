@@ -11,6 +11,7 @@ brew "rust"
 brew "coreutils"
 brew "curl"
 brew "git"
+brew "neovim"
 brew "jq"
 brew "node"
 brew "deno"
@@ -53,25 +54,16 @@ cask "zotero"
 cask "font-juliamono"
 cask "font-open-sans"
 cask "font-maple-mono-nf"
-mas "Affinity Photo", id: 824183456
 mas "Aiko", id: 1672085276
 mas "Bitwarden", id: 1352778147
 mas "eduVPN", id: 1317704208
-mas "Keynote", id: 409183694
 mas "Mela", id: 1568924476
-mas "Microsoft Excel", id: 462058435
-mas "Microsoft PowerPoint", id: 462062816
-mas "Microsoft Word", id: 462054704
-mas "Noir", id: 1592917505
-mas "Numbers", id: 409203825
-mas "Pages", id: 409201541
 mas "Postico", id: 6446933691
 mas "Reeder", id: 6475002485
 mas "Slack", id: 803453959
 mas "Tailscale", id: 1475387142
 mas "TextCompare", id: 6502242357
 mas "Things", id: 904280696
-mas "Todoist", id: 585829637
 vscode "alefragnani.project-manager"
 vscode "alexcvzz.vscode-sqlite"
 vscode "bierner.markdown-mermaid"

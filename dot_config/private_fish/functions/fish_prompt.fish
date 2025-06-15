@@ -20,13 +20,13 @@ function fish_prompt --description 'Write out the prompt'
         set -g __fish_git_prompt_char_upstream_behind "↓"
     end
     if not set -q __fish_git_prompt_char_stagedstate
-        set -g __fish_git_prompt_char_stagedstate "S"
+        set -g __fish_git_prompt_char_stagedstate S
     end
     if not set -q __fish_git_prompt_color_stagedstate
         set -g __fish_git_prompt_color_stagedstate green
     end
     if not set -q __fish_git_prompt_char_dirtystate
-        set -g __fish_git_prompt_char_dirtystate "U"
+        set -g __fish_git_prompt_char_dirtystate U
     end
     if not set -q __fish_git_prompt_color_dirtystate
         set -g __fish_git_prompt_color_dirtystate red
@@ -37,13 +37,13 @@ function fish_prompt --description 'Write out the prompt'
     if not set -q __fish_git_prompt_color_untrackedfiles
         set -g __fish_git_prompt_color_untrackedfiles red
     end
-    if not set -q __fish_git_prompt_char_conflictedstate 
-        set -g __fish_git_prompt_char_conflictedstate "x"
+    if not set -q __fish_git_prompt_char_conflictedstate
+        set -g __fish_git_prompt_char_conflictedstate x
     end
     if not set -q __fish_git_prompt_color_invalidstate
         set -g __fish_git_prompt_color_invalidstate red --bold
     end
-    if not set -q __fish_git_prompt_char_cleanstate 
+    if not set -q __fish_git_prompt_char_cleanstate
         set -g __fish_git_prompt_char_cleanstate ""
     end
 
@@ -64,7 +64,7 @@ function fish_prompt --description 'Write out the prompt'
     printf '%s%s' (fish_vcs_prompt) ' '
     switch $fish_bind_mode
         case default
-            set_color --bold red
+            set_color --bold blue
             printf $suffix
             set_color normal
         case insert
@@ -83,5 +83,5 @@ function fish_prompt --description 'Write out the prompt'
             set_color --bold red
             printf '? %s' $suffix
             set_color normal
-     end
+    end
 end

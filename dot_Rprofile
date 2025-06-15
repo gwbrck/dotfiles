@@ -2,13 +2,4 @@ dir.create(file.path("~/.local/lib/R"), showWarnings = FALSE, recursive = TRUE)
 .libPaths(new = "~/.local/lib/R", include.site = FALSE)
 options(repos = structure(c(CRAN = "https://ftp.gwdg.de/pub/misc/cran/")))
 
-
-if (interactive() &&
-  length(grep("tidyverse", utils::installed.packages()[, 1])) == 0) {
-  utils::install.packages("tidyverse")
-}
-
-if (interactive() &&
-  length(grep("easystats", utils::installed.packages()[, 1])) == 0) {
-  utils::install.packages("easystats")
-}
+cat("✅ .Rprofile geladen. Bibliothek: ", .libPaths()[1], "\n")

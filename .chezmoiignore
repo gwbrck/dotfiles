@@ -1,9 +1,8 @@
 README.md
 {{ if ne .chezmoi.os "darwin" }}
-.chezmoiscripts/90-mac-configure.sh
-.chezmoiscripts/91-mac-dark-mode-notify.sh
-.chezmoiscripts/10-mac-install-packages.sh
-.chezmoiscripts/11-mac-defaults.sh
+
+.chezmoiscripts/run_after-mac-configure.sh
+.chezmoiscripts/run_once_before_10-mac-bootstrap.sh
 .config/karabiner
 {{ end }}
 {{ if ne .chezmoi.os "windows" }}

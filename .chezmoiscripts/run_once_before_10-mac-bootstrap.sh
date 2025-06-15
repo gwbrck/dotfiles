@@ -7,6 +7,6 @@ if ! type brew >/dev/null; then
   NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-brew install git
-brew install fish
-brew install chezmoi
+/opt/homebrew/bin/brew install git
+/opt/homebrew/bin/brew install fish
+/opt/homebrew/bin/brew install chezmoi

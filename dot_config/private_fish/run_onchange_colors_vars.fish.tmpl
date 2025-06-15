@@ -33,7 +33,3 @@ set -U fish_greeting
 set -Ux EDITOR nvim
 set -Ux XDG_CONFIG_HOME $HOME/.config
 set -Ux HOMEBREW_BUNDLE_FILE_GLOBAL "$XDG_CONFIG_HOME/homebrew/Brewfile"
-
-if test (uname) = Darwin
-    set -Ux SSH_AUTH_SOCK "$HOME/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock"
-end

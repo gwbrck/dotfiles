@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -eufo pipefail
 xcode-select -p >/dev/null 2>&1 || xcode-select --install
 
 if ! type brew >/dev/null; then

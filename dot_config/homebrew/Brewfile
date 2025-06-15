@@ -1,4 +1,5 @@
 brew "chezmoi"
+brew "fish"
 brew "duck"
 brew "mas"
 brew "r"

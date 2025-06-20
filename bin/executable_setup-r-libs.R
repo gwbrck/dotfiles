@@ -18,6 +18,7 @@ packages_to_install <- c(
   # Reporting und Entwicklung
   "quarto",
   "flextable",
+  "kableExtra",
   "plotly",
   "languageserver"
 )

@@ -55,6 +55,7 @@ cask "zotero"
 cask "font-juliamono"
 cask "font-open-sans"
 cask "font-maple-mono-nf"
+cask "thingsmacsandboxhelper"
 mas "Aiko", id: 1672085276
 mas "Bitwarden", id: 1352778147
 mas "eduVPN", id: 1317704208

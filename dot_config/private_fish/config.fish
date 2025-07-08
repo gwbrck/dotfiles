@@ -7,6 +7,8 @@ if status is-login
 end
 
 alias em 'emacsclient -cn -a ""'
+abbr bwu 'set -x BW_SESSION $(bw unlock --raw)'
+
 if status is-interactive
     abbr tn "tmux new -s (pwd | sed 's/.*\///g')"
     abbr latex-update "sudo tlmgr update --self --all"

@@ -1,6 +1,4 @@
 Host *
-  # Wählt den korrekten Pfad zum Bitwarden SSH-Agent-Socket
-  # je nach Betriebssystem (macOS oder Linux).
   IdentityAgent {{ if eq .chezmoi.os "darwin" -}}
     ~/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock
   {{- else -}}

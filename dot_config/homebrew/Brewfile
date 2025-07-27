@@ -1,5 +1,7 @@
 brew "chezmoi"
 brew "fish"
+brew "age"
+brew "age-plugin-se"
 brew "duck"
 brew "mas"
 brew "r"

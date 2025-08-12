@@ -6,10 +6,11 @@
 (setq frame-inhibit-implied-resize t)
 
 (let ((is-mac (eq system-type 'darwin)))
-  ;; default-frame-alist idempotent setzen
   (setf (alist-get 'menu-bar-lines       default-frame-alist) (if is-mac 1 0)
         (alist-get 'tool-bar-lines       default-frame-alist) 0
-        (alist-get 'vertical-scroll-bars default-frame-alist) nil)
+        (alist-get 'vertical-scroll-bars default-frame-alist) nil
+        (alist-get 'height               default-frame-alist) 60
+        (alist-get 'width                default-frame-alist) 120)
   (setq use-dialog-box nil
         use-file-dialog nil
         ring-bell-function #'ignore
@@ -22,7 +23,6 @@
   (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
   (when (fboundp 'tooltip-mode)   (tooltip-mode -1)))
 
-;; Pixelgenaues Resizing und Scrolling
 (setq frame-resize-pixelwise t
       window-resize-pixelwise t)
 (add-hook 'emacs-startup-hook
@@ -36,20 +36,41 @@
 (when (boundp 'comp-async-report-warnings-errors)
   (setq comp-async-report-warnings-errors 'silent))
 
+;; Fonts: default-frame-alist IMMER setzen (auch im Daemon),
+(cond
+ ((eq system-type 'darwin)
+  (setf (alist-get 'font default-frame-alist) "SF Mono-13"))
+ ((eq system-type 'gnu/linux)
+  (setf (alist-get 'font default-frame-alist) "DejaVu Sans Mono-11")))
+
+;; Direkt anwenden, falls bereits GUI
 (when (display-graphic-p)
-  (cond
-   ((eq system-type 'darwin)
-    (let ((mono "SF Mono") (var "SF Pro Text") (mono-size 13) (var-size 13))
-      (setf (alist-get 'font default-frame-alist) (format "%s-%d" mono mono-size))
-      (set-face-attribute 'default        t :family mono :height (* 10 mono-size))
-      (set-face-attribute 'fixed-pitch    t :family mono :height (* 10 mono-size))
-      (set-face-attribute 'variable-pitch t :family var  :height (* 10 var-size))))
-   ((eq system-type 'gnu/linux)
-    (let ((mono "DejaVu Sans Mono") (var "DejaVu Sans") (mono-size 11) (var-size 12))
-      (setf (alist-get 'font default-frame-alist) (format "%s-%d" mono mono-size))
-      (set-face-attribute 'default        t :family mono :height (* 10 mono-size))
-      (set-face-attribute 'fixed-pitch    t :family mono :height (* 10 mono-size))
-      (set-face-attribute 'variable-pitch t :family var  :height (* 10 var-size))))))
+  (pcase system-type
+    ('darwin
+     (set-face-attribute 'default        t :family "SF Mono"         :height 130)
+     (set-face-attribute 'fixed-pitch    t :family "SF Mono"         :height 130)
+     (set-face-attribute 'variable-pitch t :family "SF Pro Text"     :height 130))
+    ('gnu/linux
+     (set-face-attribute 'default        t :family "DejaVu Sans Mono" :height 110)
+     (set-face-attribute 'fixed-pitch    t :family "DejaVu Sans Mono" :height 110)
+     (set-face-attribute 'variable-pitch t :family "DejaVu Sans"      :height 120))))
+
+;; Bei neu erstellten GUI-Frames anwenden
+(add-hook 'after-make-frame-functions
+          (lambda (f)
+            (with-selected-frame f
+              (when (display-graphic-p f)
+                (pcase system-type
+                  ('darwin
+                   (set-face-attribute 'default        t :family "SF Mono"         :height 130)
+                   (set-face-attribute 'fixed-pitch    t :family "SF Mono"         :height 130)
+                   (set-face-attribute 'variable-pitch t :family "SF Pro Text"     :height 130))
+                  ('gnu/linux
+                   (set-face-attribute 'default        t :family "DejaVu Sans Mono" :height 110)
+                   (set-face-attribute 'fixed-pitch    t :family "DejaVu Sans Mono" :height 110)
+                   (set-face-attribute 'variable-pitch t :family "DejaVu Sans"      :height 120)))))))
 
 (setq custom-file (locate-user-emacs-file "custom.el"))
-(setq package-enable-at-startup t)
+
+(setq package-enable-at-startup t
+      package-quickstart t)

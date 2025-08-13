@@ -1,34 +1,7 @@
-
 ;;; early-init.el --- early init -*- lexical-binding: t; -*-
 
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8)
-(setq frame-inhibit-implied-resize t)
-
-(let ((is-mac (eq system-type 'darwin)))
-  (setf (alist-get 'menu-bar-lines       default-frame-alist) (if is-mac 1 0)
-        (alist-get 'tool-bar-lines       default-frame-alist) 0
-        (alist-get 'vertical-scroll-bars default-frame-alist) nil
-        (alist-get 'height               default-frame-alist) 60
-        (alist-get 'width                default-frame-alist) 120)
-  (setq use-dialog-box nil
-        use-file-dialog nil
-        ring-bell-function #'ignore
-        inhibit-startup-screen t
-        inhibit-startup-message t
-        inhibit-startup-buffer-menu t
-        initial-scratch-message ";; Hi! ❇")
-  (unless is-mac (when (fboundp 'menu-bar-mode) (menu-bar-mode -1)))
-  (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-  (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-  (when (fboundp 'tooltip-mode)   (tooltip-mode -1)))
-
-(setq frame-resize-pixelwise t
-      window-resize-pixelwise t)
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (when (fboundp 'pixel-scroll-precision-mode)
-              (pixel-scroll-precision-mode 1))))
 
 (when (featurep 'native-compile)
   (when (boundp 'native-comp-async-report-warnings-errors)
@@ -36,41 +9,54 @@
 (when (boundp 'comp-async-report-warnings-errors)
   (setq comp-async-report-warnings-errors 'silent))
 
-;; Fonts: default-frame-alist IMMER setzen (auch im Daemon),
-(cond
- ((eq system-type 'darwin)
-  (setf (alist-get 'font default-frame-alist) "SF Mono-13"))
- ((eq system-type 'gnu/linux)
-  (setf (alist-get 'font default-frame-alist) "DejaVu Sans Mono-11")))
+;;;; UI Configuration
 
-;; Direkt anwenden, falls bereits GUI
-(when (display-graphic-p)
-  (pcase system-type
-    ('darwin
-     (set-face-attribute 'default        t :family "SF Mono"         :height 130)
-     (set-face-attribute 'fixed-pitch    t :family "SF Mono"         :height 130)
-     (set-face-attribute 'variable-pitch t :family "SF Pro Text"     :height 130))
-    ('gnu/linux
-     (set-face-attribute 'default        t :family "DejaVu Sans Mono" :height 110)
-     (set-face-attribute 'fixed-pitch    t :family "DejaVu Sans Mono" :height 110)
-     (set-face-attribute 'variable-pitch t :family "DejaVu Sans"      :height 120))))
+;; The `default-frame-alist` is the canonical way to set initial frame properties.
+;; This single setting handles the initial frame and all subsequent frames.
+(let ((font-spec (if (eq system-type 'darwin)
+                     "JuliaMono-13"      ;; Font and size for macOS
+                   "DejaVu Sans Mono-11"))) ;; Font and size for Linux
+  (add-to-list 'default-frame-alist `(font . ,font-spec))
+  (add-to-list 'default-frame-alist '(menu-bar-lines . 0))
+  (add-to-list 'default-frame-alist '(tool-bar-lines . 0))
+  (add-to-list 'default-frame-alist '(vertical-scroll-bars . nil))
+  (add-to-list 'default-frame-alist '(height . 80))
+  (add-to-list 'default-frame-alist '(width . 140)))
 
-;; Bei neu erstellten GUI-Frames anwenden
-(add-hook 'after-make-frame-functions
-          (lambda (f)
-            (with-selected-frame f
-              (when (display-graphic-p f)
-                (pcase system-type
-                  ('darwin
-                   (set-face-attribute 'default        t :family "SF Mono"         :height 130)
-                   (set-face-attribute 'fixed-pitch    t :family "SF Mono"         :height 130)
-                   (set-face-attribute 'variable-pitch t :family "SF Pro Text"     :height 130))
-                  ('gnu/linux
-                   (set-face-attribute 'default        t :family "DejaVu Sans Mono" :height 110)
-                   (set-face-attribute 'fixed-pitch    t :family "DejaVu Sans Mono" :height 110)
-                   (set-face-attribute 'variable-pitch t :family "DejaVu Sans"      :height 120)))))))
 
-(setq custom-file (locate-user-emacs-file "custom.el"))
+;; Pixel-based resizing and scrolling for smoother experience
+(add-hook 'emacs-startup-hook 'pixel-scroll-precision-mode)
+
+(setq frame-resize-pixelwise t
+      window-resize-pixelwise t
+      frame-inhibit-implied-resize t
+      initial-scratch-message ";; Hi! ✨"
+      inhibit-startup-screen t
+      visible-bell t
+      use-short-answers t)
+
+;;;; Package System
 
 (setq package-enable-at-startup t
-      package-quickstart t)
+      package-quickstart nil
+      package-archives
+      '(("gnu-elpa" . "https://elpa.gnu.org/packages/")
+        ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+        ("melpa" . "https://melpa.org/packages/"))
+      package-archive-priorities '(("melpa" . 3) ("gnu-elpa" . 2) ("nongnu" . 1)))
+
+;;;; Custom File
+;; Set the custom-file location early.
+(setq custom-file (locate-user-emacs-file "custom.el"))
+
+(setq default-directory "~/"))
+
+;; Backups
+(let ((backup-dir (expand-file-name "~/.cache/emacs/backup/")))
+  (make-directory backup-dir t)
+  (setq backup-directory-alist `(("." . ,backup-dir))
+        backup-by-copying t
+        version-control t
+        delete-old-versions t
+        kept-new-versions 20
+        kept-old-versions 5))

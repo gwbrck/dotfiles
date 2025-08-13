@@ -59,7 +59,6 @@ cask "font-maple-mono-nf"
 cask "thingsmacsandboxhelper"
 mas "addy.io", id: 6670220050
 mas "Aiko", id: 1672085276
-mas "Be Focused Pro", id: 961632518
 mas "Bitwarden", id: 1352778147
 mas "eduVPN", id: 1317704208
 mas "Mela", id: 1568924476

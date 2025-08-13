@@ -1,4 +1,4 @@
-tap "d12frosted/emacs-plus"
+# tap "d12frosted/emacs-plus"
 brew "chezmoi"
 brew "fish"
 brew "age"
@@ -27,7 +27,7 @@ brew "tmux"
 brew "typst"
 brew "wget"
 brew "cmake"
-brew "d12frosted/emacs-plus/emacs-plus@30", args: ["with-elrumo2-icon"]
+# brew "d12frosted/emacs-plus/emacs-plus@30", args: ["with-elrumo2-icon"]
 cask "adobe-acrobat-reader"
 cask "db-browser-for-sqlite"
 cask "docker-desktop"

@@ -1,3 +1,4 @@
+tap "d12frosted/emacs-plus"
 brew "chezmoi"
 brew "fish"
 brew "age"
@@ -26,6 +27,7 @@ brew "tmux"
 brew "typst"
 brew "wget"
 brew "cmake"
+brew "d12frosted/emacs-plus/emacs-plus@30", args: ["with-elrumo2-icon"]
 cask "adobe-acrobat-reader"
 cask "db-browser-for-sqlite"
 cask "docker-desktop"
@@ -55,7 +57,9 @@ cask "font-juliamono"
 cask "font-open-sans"
 cask "font-maple-mono-nf"
 cask "thingsmacsandboxhelper"
+mas "addy.io", id: 6670220050
 mas "Aiko", id: 1672085276
+mas "Be Focused Pro", id: 961632518
 mas "Bitwarden", id: 1352778147
 mas "eduVPN", id: 1317704208
 mas "Mela", id: 1568924476
@@ -65,6 +69,7 @@ mas "Slack", id: 803453959
 mas "Tailscale", id: 1475387142
 mas "TextCompare", id: 6502242357
 mas "Things", id: 904280696
+mas "VMware Remote Console", id: 1230249825
 vscode "alefragnani.project-manager"
 vscode "alexcvzz.vscode-sqlite"
 vscode "bierner.markdown-mermaid"

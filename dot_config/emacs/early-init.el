@@ -49,7 +49,7 @@
 ;; Set the custom-file location early.
 (setq custom-file (locate-user-emacs-file "custom.el"))
 
-(setq default-directory "~/"))
+(setq default-directory "~/")
 
 ;; Backups
 (let ((backup-dir (expand-file-name "~/.cache/emacs/backup/")))

@@ -25,6 +25,21 @@
   :config
   (setq which-key-idle-delay 0.1))
 
+(use-package emacs
+  :config
+  (require-theme 'modus-themes) ; `require-theme' is ONLY for the built-in Modus themes
+
+  ;; Add all your customizations prior to loading the themes
+  (setq modus-themes-italic-constructs t
+        modus-themes-bold-constructs t
+        modus-themes-mixed-fonts t
+        modus-themes-headings
+            '((1 . (variable-pitch 1.8))
+              (2 . (semibold 1.5))
+              (t . t))
+        modus-themes-variable-pitch-ui t))
+
+
 (use-package auto-dark
   :ensure t
   :custom
@@ -94,51 +109,25 @@
 (use-package olivetti
   :ensure t)
 
-(use-package markdown-mode
-  :ensure t
-  :hook
-  (markdown-mode . my-markdown-fixed-and-variable)
-  :config
-  (defun my-markdown-fixed-and-variable ()
-    "Use variable-pitch for prose, fixed-pitch for code/structural parts in markdown."
-    (variable-pitch-mode 1)
-    ;; Basis-Fonts setzen (optional)
-    (set (make-local-variable 'face-remapping-alist)
-         `((default variable-pitch)
-           (fixed-pitch fixed-pitch)
-           (fixed-pitch-serif fixed-pitch-serif)))
-    (set-face-attribute 'markdown-code-face nil :inherit 'fixed-pitch)
-    (set-face-attribute 'markdown-pre-face  nil :inherit 'fixed-pitch)
-    (set-face-attribute 'markdown-table-face nil :inherit 'fixed-pitch)
-    (set-face-attribute 'markdown-markup-face nil :inherit 'fixed-pitch)
-    (set-face-attribute 'markdown-inline-code-face nil :inherit 'fixed-pitch)
-    (set-face-attribute 'markdown-metadata-key-face nil :inherit 'fixed-pitch)
-    (set-face-attribute 'markdown-metadata-value-face nil :inherit 'fixed-pitch)
-    (set-face-attribute 'markdown-language-keyword-face nil :inherit 'fixed-pitch)
-    (set-face-attribute 'markdown-list-face nil :inherit 'fixed-pitch)
-    (set-face-attribute 'markdown-code-face nil :inherit 'fixed-pitch)
-    (set-face-attribute 'markdown-pre-face nil :inherit 'fixed-pitch)
-    (set-face-attribute 'markdown-header-delimiter-face nil :inherit 'fixed-pitch)
-    (set-face-attribute 'markdown-header-rule-face nil :inherit 'fixed-pitch)
-    (set-face-attribute 'markdown-url-face nil :inherit 'fixed-pitch)
-    (set-face-attribute 'markdown-header-face-1 nil
-                        :inherit 'variable-pitch :weight 'bold :height 180)
-    (set-face-attribute 'markdown-header-face-2 nil
-                        :inherit 'variable-pitch :weight 'bold :height 160)
-    (set-face-attribute 'markdown-header-face-3 nil
-                        :inherit 'variable-pitch :weight 'bold :height 145)
-    (set-face-attribute 'markdown-header-face-4 nil
-                        :inherit 'variable-pitch :weight 'semi-bold :height 130)
-    (set-face-attribute 'markdown-header-face-5 nil
-                        :inherit 'variable-pitch :weight 'semi-bold :height 120)
-    (set-face-attribute 'markdown-header-face-6 nil
-                        :inherit 'variable-pitch :weight 'semi-bold :height 110)
-
-    ;; Fallback: Code-Block-Overlays korrekt setzen
-    (setq-local line-spacing 0.1)))
-
 (use-package quarto-mode
   :ensure t)
+
+(use-package mixed-pitch
+  :ensure t
+  :config
+  (dolist (face '(markdown-code-face
+                  markdown-pre-face
+                  markdown-table-face
+                  markdown-markup-face
+                  markdown-inline-code-face
+                  markdown-metadata-key-face
+                  markdown-metadata-value-face
+                  markdown-language-keyword-face
+                  markdown-list-face
+                  markdown-header-delimiter-face
+                  markdown-header-rule-face
+                  markdown-url-face))
+    (add-to-list 'mixed-pitch-fixed-pitch-faces face)))
 
 
 

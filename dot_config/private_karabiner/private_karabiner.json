@@ -52,7 +52,7 @@
                         ]
                     },
                     {
-                        "description": "CapsLock and '#' to Modifier Hyper",
+                        "description": "CapsLock and '#' to Modifier Hyper (Layer-Aware)",
                         "manipulators": [
                             {
                                 "description": "'#' = '#'(click) | hyper(hold)",
@@ -88,7 +88,42 @@
                                 "type": "basic"
                             },
                             {
-                                "description": "capslock = esc(click) | hyper(hold)",
+                                "conditions": [
+                                    {
+                                        "name": "hyper_layer",
+                                        "type": "variable_unless",
+                                        "value": 0
+                                    }
+                                ],
+                                "description": "capslock = Deactivate Layer (if layer is on)",
+                                "from": {
+                                    "key_code": "caps_lock",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "hyper_layer",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "description": "Only active when the layer is OFF",
+                                        "name": "hyper_layer",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
+                                "description": "capslock = esc(click) | hyper(hold) (if layer is off)",
                                 "from": {
                                     "key_code": "caps_lock",
                                     "modifiers": {
@@ -769,6 +804,158 @@
                                 "type": "basic"
                             }
                         ]
+                    },
+                    {
+                        "description": "w-Layer (hyper_layer)",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "modifier_hyper",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "description": "Activate Layer: Hyper + w -> Set hyper_layer = w",
+                                "from": {
+                                    "key_code": "w",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "hyper_layer",
+                                            "value": "w"
+                                        }
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "hyper_layer",
+                                        "type": "variable_if",
+                                        "value": "w"
+                                    }
+                                ],
+                                "description": " h = left",
+                                "from": {
+                                    "key_code": "h",
+                                    "modifiers": {
+                                        "mandatory": [],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_arrow",
+                                        "modifiers": [
+                                            "fn",
+                                            "left_control",
+                                            "left_shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "hyper_layer",
+                                        "type": "variable_if",
+                                        "value": "w"
+                                    }
+                                ],
+                                "description": " j = down",
+                                "from": {
+                                    "key_code": "j",
+                                    "modifiers": {
+                                        "mandatory": [],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "down_arrow",
+                                        "modifiers": [
+                                            "fn",
+                                            "left_control",
+                                            "left_shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "hyper_layer",
+                                        "type": "variable_if",
+                                        "value": "w"
+                                    }
+                                ],
+                                "description": " k = up",
+                                "from": {
+                                    "key_code": "k",
+                                    "modifiers": {
+                                        "mandatory": [],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "up_arrow",
+                                        "modifiers": [
+                                            "fn",
+                                            "left_control",
+                                            "left_shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "hyper_layer",
+                                        "type": "variable_if",
+                                        "value": "w"
+                                    }
+                                ],
+                                "description": " l = right",
+                                "from": {
+                                    "key_code": "l",
+                                    "modifiers": {
+                                        "mandatory": [],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_arrow",
+                                        "modifiers": [
+                                            "fn",
+                                            "left_control",
+                                            "left_shift"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
                     }
                 ]
             },
@@ -780,6 +967,16 @@
                         "vendor_id": 1452
                     },
                     "simple_modifications": [
+                        {
+                            "from": {
+                                "key_code": "backslash"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "backslash"
+                                }
+                            ]
+                        },
                         {
                             "from": {
                                 "key_code": "grave_accent_and_tilde"
@@ -797,16 +994,6 @@
                             "to": [
                                 {
                                     "key_code": "non_us_backslash"
-                                }
-                            ]
-                        },
-                        {
-                            "from": {
-                                "key_code": "backslash"
-                            },
-                            "to": [
-                                {
-                                    "key_code": "backslash"
                                 }
                             ]
                         }

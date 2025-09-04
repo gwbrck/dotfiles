@@ -110,6 +110,12 @@
                                             "name": "hyper_layer",
                                             "value": 0
                                         }
+                                    },
+                                    {
+                                        "set_notification_message": {
+                                            "id": "layer",
+                                            "text": ""
+                                        }
                                     }
                                 ],
                                 "type": "basic"
@@ -830,6 +836,12 @@
                                         "set_variable": {
                                             "name": "hyper_layer",
                                             "value": "w"
+                                        }
+                                    },
+                                    {
+                                        "set_notification_message": {
+                                            "id": "layer",
+                                            "text": "Active Layer: W"
                                         }
                                     }
                                 ],

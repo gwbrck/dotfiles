@@ -884,6 +884,35 @@
                                         "value": "w"
                                     }
                                 ],
+                                "description": " c = center window",
+                                "from": {
+                                    "key_code": "c",
+                                    "modifiers": {
+                                        "mandatory": [],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "c",
+                                        "modifiers": [
+                                            "fn",
+                                            "left_control"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "hyper_layer",
+                                        "type": "variable_if",
+                                        "value": "w"
+                                    }
+                                ],
                                 "description": " h = left",
                                 "from": {
                                     "key_code": "h",

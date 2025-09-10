@@ -55,7 +55,7 @@ cask "chatgpt"
 cask "mactex-no-gui"
 cask "zotero"
 cask "font-juliamono"
-cask "font-open-sans"
+cask "font-noto-sans"
 cask "font-maple-mono-nf"
 cask "thingsmacsandboxhelper"
 mas "addy.io", id: 6670220050

@@ -1,0 +1,16 @@
+#!/opt/homebrew/bin/fish
+
+
+{{ $path := joinPath .chezmoi.homeDir ".config/sops/age/keys.txt" }}
+{{ if stat $path }}
+# hash of current key {{ include $path | sha256sum }}
+
+{{ $recipients := output "age-plugin-se" "recipients" "-i" $path }}
+set -Ux SOPS_AGE_RECIPIENTS "{{ .age_recovery_recipient }},{{ $recipients }}"
+
+{{ else }}
+# no key file found
+set -Ux SOPS_AGE_RECIPIENTS "{{ .age_recovery_recipient }}"
+{{ end }}
+
+echo "updated age recipients"

@@ -1,7 +1,9 @@
 # {{ $email := promptString "email" }}
+# {{ $age := promptString "Age recovery recipient (bw)" }}
 
 [data]
 email = {{ $email | quote }}
+age_recovery_recipient = {{ $age | quote }}
 
 [git]
     autoAdd = false

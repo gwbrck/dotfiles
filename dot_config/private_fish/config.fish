@@ -9,18 +9,7 @@ fish_config theme choose default
 
 set fish_color_comment grey
 set fish_color_command brgreen
-set fish_color_end brmagenta
-set fish_color_match --background=brblue
-set fish_color_operator cyan
 set fish_color_param brblue
-set fish_color_redirection bryellow
-set fish_color_search_match bryellow --background=brblack
-set fish_color_selection normal --bold --background=brblack
-set fish_pager_color_completion normal
-set fish_pager_color_description yellow
-set fish_pager_color_prefix normal --bold --underline
-set fish_pager_color_progress brwhite --background=cyan
-set fish_pager_color_selected_background -r
 
 if status is-login
     if test (uname) = Darwin

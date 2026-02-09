@@ -1,5 +1,5 @@
 function load_s3
-    set SOPS_FILE "$HOME/Documents/Dots/server_infra.yaml"
+    set SOPS_FILE "$HOME/OpenCloud/Dots/server_infra.yaml"
 
     if not type -q jq
         echo "Fehler: 'jq' fehlt."

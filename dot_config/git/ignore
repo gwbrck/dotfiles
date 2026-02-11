@@ -6,3 +6,4 @@ dir
 *.LSOverride
 Thumbs.db
 .bundle
+.claude/

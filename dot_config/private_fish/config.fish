@@ -62,3 +62,5 @@ end
 if test "$INSIDE_EMACS" = vterm
     source {$EMACS_VTERM_PATH}etc/emacs-vterm.fish
 end
+
+zoxide init fish | source

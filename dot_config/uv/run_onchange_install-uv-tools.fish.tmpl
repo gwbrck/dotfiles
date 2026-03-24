@@ -1,0 +1,26 @@
+#!/usr/bin/env fish
+# uv tools hash: {{ output "uv" "tool" "list" | sha256sum }}
+#
+
+set -l comp_dir ~/.config/fish/completions
+mkdir -p $comp_dir
+
+
+if command -q kptncook
+    kptncook --show-completion fish >$comp_dir/kptncook.fish 2>/dev/null
+end
+
+
+
+curl -sfo $comp_dir/ocrmypdf.fish \
+    https://raw.githubusercontent.com/ocrmypdf/OCRmyPDF/main/misc/completion/ocrmypdf.fish
+
+echo '
+# ocrmypdf-appleocr plugin
+complete -c ocrmypdf -l plugin -x -a "ocrmypdf_appleocr" -d "use AppleOCR plugin"
+complete -c ocrmypdf -l appleocr-recognition-mode -x -a "fast accurate livetext" -d "Apple Vision recognition mode"
+complete -c ocrmypdf -l appleocr-disable-correction -d "disable language correction"' >>$comp_dir/ocrmypdf.fish
+
+
+echo "✓ uv fish completions installiert"
+

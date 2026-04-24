@@ -22,5 +22,9 @@ complete -c ocrmypdf -l appleocr-recognition-mode -x -a "fast accurate livetext"
 complete -c ocrmypdf -l appleocr-disable-correction -d "disable language correction"' >>$comp_dir/ocrmypdf.fish
 
 
+if command -q bm
+    bm --show-completion >$comp_dir/bm.fish 2>/dev/null
+end
+
 echo "✓ uv fish completions installiert"
 

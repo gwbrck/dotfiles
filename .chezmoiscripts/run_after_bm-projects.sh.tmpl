@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+command -v yq >/dev/null 2>&1 || {
+    echo "mikefarah/yq v4 is required"
+    exit 1
+}
+
+home='{{ .chezmoi.homeDir }}'
+config_file="$home/.basic-memory/config.json"
+
+mkdir -p "$(dirname "$config_file")"
+
+if [ ! -f "$config_file" ]; then
+    printf '{}\n' > "$config_file"
+fi
+
+projects_file="$(mktemp)"
+trap 'rm -f "$projects_file"' EXIT
+
+cat > "$projects_file" <<EOF
+main:
+  mode: local
+  path: $home/OpenCloud/Zettlr/bm
+erasmus:
+  mode: local
+  path: $home/Arbeit/Erasmus/Notes
+EOF
+
+export PROJECTS_FILE="$projects_file"
+
+yq -i -p=json -o=json '
+    .projects = load(strenv(PROJECTS_FILE))
+    | .default_project = "main"
+' "$config_file"

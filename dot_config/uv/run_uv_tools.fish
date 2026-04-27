@@ -11,3 +11,4 @@ end
 
 uv tool install "zotero-mcp-server[all]"
 uv tool install basic-memory
+uv tool install things-mcp

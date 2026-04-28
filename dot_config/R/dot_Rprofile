@@ -6,3 +6,22 @@ options(repos = structure(c(CRAN = "https://ftp.gwdg.de/pub/misc/cran/")))
 if (interactive()) {
   message("✅ .Rprofile geladen. Bibliothek: ", .libPaths()[1])
 }
+
+
+
+.orga <- function() {
+  servr::httd("~/Arbeit/TUD/Documents/Datenanalyse/2026/Orga/_output/")
+}
+
+
+.skript <- function() {
+  servr::httd("~/Code/ba_datenanalyse/_output/")
+}
+
+
+.aufgaben <- function() {
+  servr::httd("~/Arbeit/TUD/Documents/Datenanalyse/2026/Sitzungsaufgaben/_output/")
+}
+
+
+

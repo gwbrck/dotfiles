@@ -3,7 +3,7 @@ set -g fish_greeting
 set -gx EDITOR nvim
 set -gx XDG_CONFIG_HOME $HOME/.config
 set -gx HOMEBREW_BUNDLE_FILE_GLOBAL "$XDG_CONFIG_HOME/homebrew/Brewfile"
-set -gx R_PROFILE_USER "$XDG_CONFIG_HOME/R/.Rprofile"
+set -gx R_PROFILE "$XDG_CONFIG_HOME/R/Rprofile.site"
 
 fish_config theme choose default
 

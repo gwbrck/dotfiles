@@ -23,14 +23,10 @@ alias em 'emacsclient -cn -a ""'
 abbr bwu 'set -x BW_SESSION $(bw unlock --raw)'
 
 if status is-interactive
-    abbr tn "tmux new -s (pwd | sed 's/.*\///g')"
+    abbr s "sesh connect (sesh list -i | fzf --ansi)"
     abbr latex-update "sudo tlmgr update --self --all"
     abbr biber-cash-reset "rm -rf `biber --cache`"
-    abbr cm chezmoi
-    abbr cmcd 'chezmoi cd'
-    abbr cmgst 'chezmoi git status'
-    abbr cmgaa 'chezmoi git add --all'
-    abbr cmgc 'chezmoi git commit -v'
+    abbr cma 'chezmoi apply'
     abbr cme 'chezmoi edit'
     abbr g git
     abbr ga 'git add'

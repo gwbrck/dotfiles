@@ -32,6 +32,22 @@ defaults write com.apple.dock persistent-apps -array \
     </dict>'
 killall Dock
 
+# Shortcut 60 (Vorherige Eingabequelle) deaktivieren
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 60 '
+<dict>
+    <key>enabled</key><false/>
+    <key>value</key><dict>
+        <key>parameters</key><array>
+            <integer>32</integer>
+            <integer>49</integer>
+            <integer>262144</integer>
+        </array>
+        <key>type</key><string>standard</string>
+    </dict>
+</dict>'
+killall cfprefsd
+/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+
 # Disable shadow in screenshots
 defaults write com.apple.screencapture disable-shadow -bool true
 

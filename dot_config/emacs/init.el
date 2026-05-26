@@ -201,6 +201,9 @@
 (use-package quarto-mode
   :ensure t)
 
+(use-package ess
+  :ensure t)
+
 (use-package mixed-pitch
   :ensure t
   :config

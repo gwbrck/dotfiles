@@ -85,6 +85,14 @@ mas "Slack", id: 803453959
 mas "Tailscale", id: 1475387142
 mas "TextCompare", id: 6502242357
 mas "Things", id: 904280696
+mas "Microsoft Excel", id: 462058435
+mas "Microsoft Word", id: 462054704
+mas "Microsoft PowerPoint", id: 462062816
+mas "Tyme", id: 1461456897
+mas "Cumbersome", id: 6753016821
+mas "Noir", id: 1592917505
+mas "AusweisApp Bund", id: 948660805
+mas "Numbers", id: 361304891
 vscode "alefragnani.project-manager"
 vscode "alexcvzz.vscode-sqlite"
 vscode "bierner.markdown-mermaid"

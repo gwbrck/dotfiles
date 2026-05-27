@@ -1,0 +1,21 @@
+#:schema https://github.com/joshmedeski/sesh/raw/main/sesh.schema.json
+
+
+[[session]]
+name = "Downloads 📥"
+path = "~/Downloads"
+startup_command = "ls"
+preview_command = "ls"
+
+
+[[wildcard]]
+pattern = "~/projects/*"
+startup_command = "code ."
+
+
+[[wildcard]]
+pattern = "~/Arbeit/**"
+startup_command = "open ."
+
+[[wildcard]]
+pattern = "~/.local/share/chezmoi/**"

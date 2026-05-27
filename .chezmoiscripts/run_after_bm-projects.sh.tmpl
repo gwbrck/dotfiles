@@ -7,7 +7,7 @@ command -v yq >/dev/null 2>&1 || {
 }
 
 home='{{ .chezmoi.homeDir }}'
-config_file="$home/.basic-memory/config.json"
+config_file="$home/config/basic-memory/config.json"
 
 mkdir -p "$(dirname "$config_file")"
 

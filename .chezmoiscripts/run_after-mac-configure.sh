@@ -6,8 +6,28 @@ if ! grep -q "/opt/homebrew/bin/fish" /etc/shells; then
   chsh -s /opt/homebrew/bin/fish
 fi
 
-if ! grep -qE "^\s*auth\s+sufficient\s+pam_tid.so" /etc/pam.d/sudo_local 2>/dev/null; then
-  sed "s/^#auth/auth/" /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local
+# Pfad zum pam_reattach Modul ermitteln (Apple Silicon oder Intel)
+REATTACH_PATH=""
+if [ -f "/opt/homebrew/lib/pam/pam_reattach.so" ]; then
+  REATTACH_PATH="/opt/homebrew/lib/pam/pam_reattach.so"
+elif [ -f "/usr/local/lib/pam/pam_reattach.so" ]; then
+  REATTACH_PATH="/usr/local/lib/pam/pam_reattach.so"
+fi
+
+# Gewünschten Inhalt zusammenbauen
+# pam_reattach NUR eintragen, wenn das Modul wirklich existiert!
+if [ -n "$REATTACH_PATH" ]; then
+  DESIRED="auth       optional       $REATTACH_PATH
+auth       sufficient     pam_tid.so"
+else
+  echo "Hinweis: pam-reattach nicht installiert (brew install pam-reattach), Touch ID läuft ohne tmux-Support."
+  DESIRED="auth       sufficient     pam_tid.so"
+fi
+
+# Nur schreiben, wenn der Inhalt abweicht (idempotent)
+if [ "$(cat /etc/pam.d/sudo_local 2>/dev/null)" != "$DESIRED" ]; then
+  echo "Konfiguriere /etc/pam.d/sudo_local..."
+  echo "$DESIRED" | sudo tee /etc/pam.d/sudo_local >/dev/null
 fi
 
 defaults write com.apple.dock autohide -bool true

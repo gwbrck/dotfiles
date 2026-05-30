@@ -1,5 +1,6 @@
 tap "d12frosted/emacs-plus"
 brew "chezmoi"
+brew "pam-reattach"
 brew "fish"
 brew "age"
 brew "age-plugin-se"

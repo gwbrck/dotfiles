@@ -1,88 +1,170 @@
-tap "d12frosted/emacs-plus"
+tap "d12frosted/emacs-plus", trusted: true
+# Simple, modern, secure file encryption
 brew "age"
+# Age plugin for Apple Secure Enclave
 brew "age-plugin-se"
+# Command-line interface for SQLite
 brew "sqlite"
+# Automate deployment, configuration, and upgrading
 brew "ansible"
+# Open-source, cross-platform JavaScript runtime environment
 brew "node"
+# Language Server for Ansible Files
 brew "ansible-language-server"
+# Checks ansible playbooks for practices and behaviour
 brew "ansible-lint"
+# Manage your dotfiles across multiple diverse machines, securely
 brew "chezmoi"
+# Cross-platform make
 brew "cmake"
+# GNU File, Shell, and Text utilities
 brew "coreutils"
+# Get a file from an HTTP, HTTPS or FTP server
 brew "curl"
+# Command-line interface for Cyberduck (a multi-protocol file transfer tool)
 brew "duck"
+# Play, record, convert, and stream select audio and video codecs
 brew "ffmpeg"
+# User-friendly command-line shell for UNIX-like operating systems
 brew "fish"
+# Command-line fuzzy finder written in Go
 brew "fzf"
+# OCR (Optical Character Recognition) engine
 brew "tesseract"
+# Distributed revision control system
 brew "git"
+# Lightweight and flexible command-line JSON processor
 brew "jq"
+# Handy way to save and run project-specific commands
 brew "just"
+# C virtualization API
 brew "libvirt", restart_service: :changed
+# Mac App Store command-line interface
 brew "mas"
+# Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
+# Search tool like grep and The Silver Searcher
 brew "ripgrep"
+# AI coding agent, built for the terminal
 brew "opencode"
+# Drop-in replacement for Terraform. Infrastructure as Code Tool
 brew "opentofu"
+# PAM module for reattaching to the user's GUI (Aqua) session
 brew "pam-reattach"
+# Swiss-army knife of markup format conversion
 brew "pandoc"
+# Pandoc filter for numbering and cross-referencing
 brew "pandoc-crossref"
+# Package compiler and linker metadata toolkit
 brew "pkgconf"
+# PDF rendering library (based on the xpdf-3.0 code base)
 brew "poppler"
+# Generic machine emulator and virtualizer
 brew "qemu"
+# Software environment for statistical computing
 brew "r"
+# Unofficial Bitwarden CLI client
 brew "rbw"
+# Fast, efficient and secure backup program
 brew "restic"
+# Extremely fast Python linter, written in Rust
 brew "ruff"
+# Safe, concurrent, practical language
 brew "rust"
+# Smart session manager for the terminal
 brew "sesh"
+# Editor of encrypted files
 brew "sops"
+# Enables extra languages support for Tesseract
 brew "tesseract-lang"
+# Terminal multiplexer
 brew "tmux"
+# Extremely fast Python type checker, written in Rust
 brew "ty"
+# Markup-based typesetting system
 brew "typst"
+# Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
+# Internet file retriever
 brew "wget"
+# ISO9660+RR manipulation tool
 brew "xorriso"
+# Process YAML, JSON, XML, CSV and properties documents from the CLI
 brew "yq"
+# Shell extension to navigate your filesystem faster
 brew "zoxide"
+# Privacy-focused app for managing your finances
 cask "actual"
+# View, print, and comment on PDF documents
 cask "adobe-acrobat-reader"
+# Image editing and design software
 cask "affinity"
+# Multi-track audio editor and recorder
 cask "audacity"
+# Web browser focusing on privacy
 cask "brave-browser"
+# Anthropic's official Claude AI desktop app
 cask "claude"
+# Browser for SQLite databases
 cask "db-browser-for-sqlite"
+# App to build and share containerised applications and microservices
 cask "docker-desktop"
+# Matrix collaboration client
 cask "element"
+# GNU Emacs text editor with patches for macOS
 cask "d12frosted/emacs-plus/emacs-plus-app"
+# Cross-platform Text Expander written in Rust
 cask "espanso"
+# Collaborative team software
 cask "figma"
+# Web browser
 cask "firefox"
 cask "font-juliamono"
 cask "font-maple-mono-nf"
 cask "font-noto-sans"
+# Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
+# Free and open-source image editor
 cask "gimp"
+# Keyboard customiser
 cask "karabiner-elements"
+# Software for Logitech devices
 cask "logi-options+"
+# Full TeX Live distribution without GUI applications
 cask "mactex-no-gui"
+# Free and open-source RSS reader
 cask "netnewswire"
+# Desktop sync client for Nextcloud software products
 cask "nextcloud"
+# Desktop syncing client for OpenCloud
 cask "opencloud"
+# AI coding agent desktop client
 cask "opencode-desktop"
+# Calculate the overall performance of an investment portfolio
 cask "portfolioperformance"
+# Tool for pdf slides
 cask "presentation"
+# Scientific and technical publishing system built on Pandoc
 cask "quarto"
+# Imaging utility to install operating systems to a microSD card
 cask "raspberry-pi-imager"
+# Data science software focusing on R and Python
 cask "rstudio"
+# Instant messaging application focusing on security
 cask "signal"
+# Music streaming service
 cask "spotify"
+# Video game digital distribution service
 cask "steam"
+# Helper application for Things
 cask "thingsmacsandboxhelper"
+# Open-source code editor
 cask "visual-studio-code"
+# Open-source markdown editor
 cask "zettlr"
+# Video communication and virtual meeting platform
 cask "zoom"
+# Collect, organise, cite, and share research sources
 cask "zotero"
 mas "addy.io", id: 6670220050
 mas "Aiko", id: 1672085276

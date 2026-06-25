@@ -1,3 +1,8 @@
+(use-package exec-path-from-shell
+  :demand t
+  :ensure t
+  :config (exec-path-from-shell-initialize))
+
 (use-package ns-auto-titlebar
   :ensure t
   :when (equal system-type 'darwin)

@@ -128,8 +128,6 @@ cask "ghostty"
 cask "gimp"
 # Keyboard customiser
 cask "karabiner-elements"
-# Software for Logitech devices
-cask "logi-options+"
 # Full TeX Live distribution without GUI applications
 cask "mactex-no-gui"
 # Free and open-source RSS reader
@@ -140,6 +138,8 @@ cask "nextcloud"
 cask "opencloud"
 # AI coding agent desktop client
 cask "opencode-desktop"
+# Local-first alternative to Logitech Options+ for HID++ devices
+cask "openlogi"
 # Calculate the overall performance of an investment portfolio
 cask "portfolioperformance"
 # Tool for pdf slides
@@ -170,7 +170,6 @@ mas "addy.io", id: 6670220050
 mas "Aiko", id: 1672085276
 mas "AusweisApp", id: 948660805
 mas "Bitwarden", id: 1352778147
-mas "Cumbersome", id: 6753016821
 mas "eduVPN", id: 1317704208
 mas "Microsoft Excel", id: 462058435
 mas "Microsoft PowerPoint", id: 462062816

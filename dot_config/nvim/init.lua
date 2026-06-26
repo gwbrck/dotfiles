@@ -1,10 +1,7 @@
--- ~/.config/nvim/init.lua
-
 vim.pack.add({
   { src = "https://github.com/catppuccin/nvim", name = "catppuccin" },
 })
 
--- helle Variante = latte, dunkle Variante = mocha
 require("catppuccin").setup({
   background = {
     light = "latte",
@@ -13,4 +10,4 @@ require("catppuccin").setup({
 })
 
 vim.cmd.colorscheme("catppuccin")
-
+vim.o.clipboard = "unnamedplus"

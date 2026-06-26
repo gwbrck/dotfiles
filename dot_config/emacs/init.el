@@ -150,7 +150,7 @@
     "bv" '(previous-buffer :wk "preVious Buffer")
     "bk" '(:ignore t :which-key "kill buffer")
     "bks" '(kill-some-buffers :wk "kill some buffers")
-    "bkk" '(kill-this-buffer :wk "kill this buffer")
+    "bkk" '(kill-current-buffer :wk "kill this buffer")
     "w" '(evil-window-map :which-key "windows")))
 
 (use-package evil-org

@@ -5,6 +5,10 @@ packages_to_install <- c(
   "tidyverse",
   "janitor",
   "naniar",
+  "rio",
+  "datawizard",
+  "MASS",
+
 
   # Statistik und Modellierung
   "easystats",
@@ -17,10 +21,12 @@ packages_to_install <- c(
 
   # Reporting und Entwicklung
   "quarto",
+  "see",
   "flextable",
   "kableExtra",
   "plotly",
-  "languageserver"
+  "languageserver",
+  "servr"
 )
 
 

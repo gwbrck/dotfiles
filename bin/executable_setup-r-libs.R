@@ -19,14 +19,27 @@ packages_to_install <- c(
   "emmeans",
   "WRS2",
 
+  "tidycomm",
+  "icr",
+
   # Reporting und Entwicklung
+  "rempsyc",
   "quarto",
   "see",
   "flextable",
   "kableExtra",
   "plotly",
   "languageserver",
-  "servr"
+
+  # Beispiedatensätze
+
+  "titanic",
+  "gss",
+
+  # Dev
+
+  "servr",
+  "dotenv"
 )
 
 

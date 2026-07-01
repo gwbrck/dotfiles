@@ -1,35 +1,56 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-command -v yq >/dev/null 2>&1 || {
-    echo "mikefarah/yq v4 is required"
+command -v bm >/dev/null 2>&1 || {
+    echo "basic-memory (bm) is required"
     exit 1
 }
 
 home='{{ .chezmoi.homeDir }}'
-config_file="$home/config/basic-memory/config.json"
 
-mkdir -p "$(dirname "$config_file")"
+main_path="$home/OpenCloud/Zettlr/bm"
+erasmus_path="$home/Arbeit/Erasmus/Notes"
 
-if [ ! -f "$config_file" ]; then
-    printf '{}\n' > "$config_file"
+current_json="$(bm project list --local --json)"
+
+stale_main_present() {
+    grep -Eq '"local_path"[[:space:]]*:[[:space:]]*"~/basic-memory"' <<<"$current_json"
+}
+
+project_exists() {
+    grep -Eq "\"name\"[[:space:]]*:[[:space:]]*\"$1\"" <<<"$current_json"
+}
+
+if stale_main_present; then
+    echo "Stale 'main' project detected (local_path ~/basic-memory)"
+
+    if project_exists erasmus; then
+        echo "Re-registering 'erasmus' as default to free up 'main'"
+        bm project remove erasmus --local
+        bm project add erasmus "$erasmus_path" --default --local
+    else
+        echo "Adding 'erasmus' as default to free up 'main'"
+        bm project add erasmus "$erasmus_path" --default --local
+    fi
+
+    echo "Removing stale 'main' project"
+    bm project remove main --local
+
+    current_json="$(bm project list --local --json)"
 fi
 
-projects_file="$(mktemp)"
-trap 'rm -f "$projects_file"' EXIT
+if project_exists main; then
+    echo "Project 'main' already present, skipping"
+else
+    echo "Adding project 'main' -> $main_path"
+    bm project add main "$main_path" --default --local
+fi
 
-cat > "$projects_file" <<EOF
-main:
-  mode: local
-  path: $home/OpenCloud/Zettlr/bm
-erasmus:
-  mode: local
-  path: $home/Arbeit/Erasmus/Notes
-EOF
+current_json="$(bm project list --local --json)"
 
-export PROJECTS_FILE="$projects_file"
-
-yq -i -p=json -o=json '
-    .projects = load(strenv(PROJECTS_FILE))
-    | .default_project = "main"
-' "$config_file"
+if project_exists erasmus; then
+    echo "Project 'erasmus' already present, skipping"
+else
+    echo "Adding project 'erasmus' -> $erasmus_path"
+    bm project add erasmus "$erasmus_path" --local
+fi

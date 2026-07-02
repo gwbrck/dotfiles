@@ -103,8 +103,6 @@ cask "affinity"
 cask "audacity"
 # Web browser focusing on privacy
 cask "brave-browser"
-# Anthropic's official Claude AI desktop app
-cask "claude"
 # Browser for SQLite databases
 cask "db-browser-for-sqlite"
 # App to build and share containerised applications and microservices

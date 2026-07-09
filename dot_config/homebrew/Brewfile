@@ -96,7 +96,7 @@ brew "zoxide"
 # Privacy-focused app for managing your finances
 cask "actual"
 # View, print, and comment on PDF documents
-cask "adobe-acrobat-reader"
+cask "adobe-acrobat-reader", greedy: true
 # Image editing and design software
 cask "affinity"
 # Multi-track audio editor and recorder
@@ -192,6 +192,7 @@ vscode "charliermarsh.ruff"
 vscode "chrischinchilla.vscode-pandoc"
 vscode "esbenp.prettier-vscode"
 vscode "foxundermoon.shell-format"
+vscode "jnoortheen.nix-ide"
 vscode "mads-hartmann.bash-ide-vscode"
 vscode "malmaud.tmux"
 vscode "mblode.zotero"
@@ -236,3 +237,4 @@ uv "ocrmypdf", with: ["ocrmypdf-appleocr"]
 uv "things-mcp"
 uv "zotero-mcp-server[all]"
 npm "@modelcontextprotocol/server-filesystem"
+go "github.com/Mic92/ssh-to-age/cmd/ssh-to-age"

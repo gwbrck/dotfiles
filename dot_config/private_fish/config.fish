@@ -50,6 +50,7 @@ end
 fish_add_path $HOME/bin
 fish_add_path $HOME/.local/bin #pipx & uv
 fish_add_path /opt/homebrew/opt/curl/bin
+fish_add_path $HOME/go/bin
 
 if test (uname) = Darwin
     set -gx SSH_AUTH_SOCK "$HOME/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock"

@@ -65,6 +65,40 @@ defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 60 '
         <key>type</key><string>standard</string>
     </dict>
 </dict>'
+
+# Ctrl+Left: Einen Space nach links
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 79 '
+<dict>
+    <key>enabled</key><true/>
+    <key>value</key>
+    <dict>
+        <key>parameters</key>
+        <array>
+            <integer>65535</integer>
+            <integer>123</integer>
+            <integer>8650752</integer>
+        </array>
+        <key>type</key><string>standard</string>
+    </dict>
+</dict>'
+
+# Ctrl+Right: Einen Space nach rechts
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 81 '
+<dict>
+    <key>enabled</key><true/>
+    <key>value</key>
+    <dict>
+        <key>parameters</key>
+        <array>
+            <integer>65535</integer>
+            <integer>124</integer>
+            <integer>8650752</integer>
+        </array>
+        <key>type</key><string>standard</string>
+    </dict>
+</dict>'
+
+
 killall cfprefsd
 /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 

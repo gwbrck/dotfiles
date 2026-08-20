@@ -37,8 +37,6 @@ brew "git"
 brew "jq"
 # Handy way to save and run project-specific commands
 brew "just"
-# C virtualization API
-brew "libvirt", restart_service: :changed
 # Mac App Store command-line interface
 brew "mas"
 # Ambitious Vim-fork focused on extensibility and agility
@@ -59,12 +57,6 @@ brew "pandoc-crossref"
 brew "pkgconf"
 # PDF rendering library (based on the xpdf-3.0 code base)
 brew "poppler"
-# Generic machine emulator and virtualizer
-brew "qemu"
-# Software environment for statistical computing
-brew "r"
-# Unofficial Bitwarden CLI client
-brew "rbw"
 # Fast, efficient and secure backup program
 brew "restic"
 # Extremely fast Python linter, written in Rust
@@ -103,8 +95,6 @@ cask "affinity"
 cask "audacity"
 # Web browser focusing on privacy
 cask "brave-browser"
-# Browser for SQLite databases
-cask "db-browser-for-sqlite"
 # App to build and share containerised applications and microservices
 cask "docker-desktop"
 # Matrix collaboration client
@@ -113,8 +103,6 @@ cask "element"
 cask "d12frosted/emacs-plus/emacs-plus-app"
 # Cross-platform Text Expander written in Rust
 cask "espanso"
-# Collaborative team software
-cask "figma"
 # Web browser
 cask "firefox"
 cask "font-juliamono"
@@ -141,13 +129,11 @@ cask "openlogi"
 # Calculate the overall performance of an investment portfolio
 cask "portfolioperformance"
 # Tool for pdf slides
-cask "presentation"
+# cask "presentation"
 # Scientific and technical publishing system built on Pandoc
 cask "quarto"
 # Imaging utility to install operating systems to a microSD card
 cask "raspberry-pi-imager"
-# Data science software focusing on R and Python
-cask "rstudio"
 # Instant messaging application focusing on security
 cask "signal"
 # Music streaming service
@@ -166,7 +152,7 @@ cask "zoom"
 cask "zotero"
 mas "addy.io", id: 6670220050
 mas "Aiko", id: 1672085276
-mas "AusweisApp", id: 948660805
+mas "AusweisApp Bund", id: 948660805
 mas "Bitwarden", id: 1352778147
 mas "eduVPN", id: 1317704208
 mas "Microsoft Excel", id: 462058435
@@ -230,11 +216,6 @@ vscode "tamasfe.even-better-toml"
 vscode "tombi-toml.tombi"
 vscode "tomoki1207.pdf"
 vscode "tootone.org-mode"
-uv "basic-memory"
 uv "kptncook"
-uv "markitdown[all]"
 uv "ocrmypdf", with: ["ocrmypdf-appleocr"]
 uv "things-mcp"
-uv "zotero-mcp-server[all]"
-npm "@modelcontextprotocol/server-filesystem"
-go "github.com/Mic92/ssh-to-age/cmd/ssh-to-age"

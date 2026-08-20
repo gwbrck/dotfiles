@@ -6,6 +6,7 @@ if ! type brew >/dev/null; then
   echo "add path"
   export PATH="/opt/homebrew/bin:${PATH}"
   echo "install brew"
+  sudo -v
   NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   echo "brew installed"
 fi

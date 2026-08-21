@@ -1,0 +1,10 @@
+# nixpkgs-Quelle des Projekts. Der exakte Rev ist in devenv.lock gepinnt;
+# aktualisieren mit `devenv update`.
+#
+# Warum nixos-26.05 (Release-Branch) und nicht devenvs Default
+# (github:cachix/devenv-nixpkgs/rolling)? rolling ist KEIN Hydra-Channel-Rev.
+# Wer neuere R-Versionen will: github:NixOS/nixpkgs/nixpkgs-unstable ist
+# ebenfalls Hydra-gecacht (danach: devenv update).
+inputs:
+  nixpkgs:
+    url: github:NixOS/nixpkgs/nixos-26.05

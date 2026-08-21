@@ -1,10 +1,11 @@
 README.md
+plan.md
 {{ if ne .chezmoi.os "darwin" }}
-dot_config/homebrew
-.chezmoiscripts/run_after-mac-configure.sh
-.chezmoiscripts/run_once_before_10-mac-bootstrap.sh
-.config/karabiner
-private_Library/
+.config/homebrew/**
+.config/nix/**
+.chezmoiscripts/after-mac-configure.sh
+.chezmoiscripts/10-mac-bootstrap.sh
+.config/karabiner/**
 {{ end }}
 {{ if ne .chezmoi.os "windows" }}
 ahk

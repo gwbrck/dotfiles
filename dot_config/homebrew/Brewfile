@@ -216,6 +216,7 @@ vscode "tamasfe.even-better-toml"
 vscode "tombi-toml.tombi"
 vscode "tomoki1207.pdf"
 vscode "tootone.org-mode"
+vscode "datakurre.devenv"
 uv "kptncook"
 uv "ocrmypdf", with: ["ocrmypdf-appleocr"]
 uv "things-mcp"

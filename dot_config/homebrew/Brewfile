@@ -7,8 +7,6 @@ brew "age-plugin-se"
 brew "sqlite"
 # Automate deployment, configuration, and upgrading
 brew "ansible"
-# Open-source, cross-platform JavaScript runtime environment
-brew "node"
 # Language Server for Ansible Files
 brew "ansible-language-server"
 # Checks ansible playbooks for practices and behaviour
@@ -33,6 +31,8 @@ brew "fzf"
 brew "tesseract"
 # Distributed revision control system
 brew "git"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Handy way to save and run project-specific commands
@@ -41,13 +41,9 @@ brew "just"
 brew "mas"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
-# Search tool like grep and The Silver Searcher
-brew "ripgrep"
 # AI coding agent, built for the terminal
 brew "opencode"
 # Drop-in replacement for Terraform. Infrastructure as Code Tool
-brew "opentofu"
-# PAM module for reattaching to the user's GUI (Aqua) session
 brew "pam-reattach"
 # Swiss-army knife of markup format conversion
 brew "pandoc"
@@ -59,10 +55,6 @@ brew "pkgconf"
 brew "poppler"
 # Fast, efficient and secure backup program
 brew "restic"
-# Extremely fast Python linter, written in Rust
-brew "ruff"
-# Safe, concurrent, practical language
-brew "rust"
 # Smart session manager for the terminal
 brew "sesh"
 # Editor of encrypted files
@@ -71,24 +63,18 @@ brew "sops"
 brew "tesseract-lang"
 # Terminal multiplexer
 brew "tmux"
-# Extremely fast Python type checker, written in Rust
-brew "ty"
 # Markup-based typesetting system
 brew "typst"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
 # Internet file retriever
 brew "wget"
-# ISO9660+RR manipulation tool
-brew "xorriso"
-# Process YAML, JSON, XML, CSV and properties documents from the CLI
-brew "yq"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
 # Privacy-focused app for managing your finances
 cask "actual"
 # View, print, and comment on PDF documents
-cask "adobe-acrobat-reader", greedy: true
+cask "adobe-acrobat-reader"
 # Image editing and design software
 cask "affinity"
 # Multi-track audio editor and recorder
@@ -112,6 +98,8 @@ cask "font-noto-sans"
 cask "ghostty"
 # Free and open-source image editor
 cask "gimp"
+# Open-source desktop AI agent
+cask "hermes-desktop"
 # Keyboard customiser
 cask "karabiner-elements"
 # Full TeX Live distribution without GUI applications
@@ -128,8 +116,6 @@ cask "opencode-desktop"
 cask "openlogi"
 # Calculate the overall performance of an investment portfolio
 cask "portfolioperformance"
-# Tool for pdf slides
-# cask "presentation"
 # Scientific and technical publishing system built on Pandoc
 cask "quarto"
 # Imaging utility to install operating systems to a microSD card
@@ -152,7 +138,7 @@ cask "zoom"
 cask "zotero"
 mas "addy.io", id: 6670220050
 mas "Aiko", id: 1672085276
-mas "AusweisApp Bund", id: 948660805
+mas "AusweisApp", id: 948660805
 mas "Bitwarden", id: 1352778147
 mas "eduVPN", id: 1317704208
 mas "Microsoft Excel", id: 462058435
@@ -166,6 +152,7 @@ mas "Tailscale", id: 1475387142
 mas "TextCompare", id: 6502242357
 mas "Things", id: 904280696
 mas "Tyme", id: 1461456897
+mas "UTM", id: 1538878817
 vscode "alefragnani.project-manager"
 vscode "alexcvzz.vscode-sqlite"
 vscode "alexhammans.pandoc-grid-table"
@@ -176,6 +163,7 @@ vscode "bpruitt-goddard.mermaid-markdown-syntax-highlighting"
 vscode "catppuccin.catppuccin-vsc"
 vscode "charliermarsh.ruff"
 vscode "chrischinchilla.vscode-pandoc"
+vscode "datakurre.devenv"
 vscode "esbenp.prettier-vscode"
 vscode "foxundermoon.shell-format"
 vscode "jnoortheen.nix-ide"
@@ -216,7 +204,6 @@ vscode "tamasfe.even-better-toml"
 vscode "tombi-toml.tombi"
 vscode "tomoki1207.pdf"
 vscode "tootone.org-mode"
-vscode "datakurre.devenv"
 uv "kptncook"
 uv "ocrmypdf", with: ["ocrmypdf-appleocr"]
 uv "things-mcp"

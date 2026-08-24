@@ -10,7 +10,7 @@ function gpublish
         set repo $argv[2]
     end
 
-    ssh $host "mkdir -p /git; if [ ! -d /git/$repo.git ]; then git init --bare /git/$repo.git; fi"
+    ssh $host "mkdir -p /git; if [ ! -d /git/$repo.git ]; then git init --bare --shared=group /git/$repo.git; fi"
 
     if git remote get-url origin >/dev/null 2>/dev/null
         git remote set-url origin "$host:/git/$repo.git"

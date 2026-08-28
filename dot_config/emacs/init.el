@@ -1,3 +1,5 @@
+;;; init.el --- Emacs configuration -*- lexical-binding: t; -*-
+
 (use-package exec-path-from-shell
   :demand t
   :ensure t
@@ -209,6 +211,12 @@
 (use-package ess
   :ensure t)
 
+(use-package treesit
+  :ensure nil
+  :custom
+  (treesit-auto-install-grammar 'always)
+  (treesit-enabled-modes t))
+
 (use-package mixed-pitch
   :ensure t
   :config
@@ -225,6 +233,10 @@
                   markdown-header-rule-face
                   markdown-url-face))
     (add-to-list 'mixed-pitch-fixed-pitch-faces face)))
+
+(use-package markdown-ts-mode
+  :ensure nil
+  :defer t)
 
 (use-package dired
   :commands (dired dired-jump)

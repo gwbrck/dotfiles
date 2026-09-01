@@ -54,9 +54,13 @@ function fish_prompt --description 'Write out the prompt'
     if functions -q fish_is_root_user; and fish_is_root_user
         set suffix '# '
     else
-        set suffix (printf '\u276f ')
+        set suffix (string repeat -n $SHLVL (printf '\u276f'))' '
     end
 
+    if set -q SSH_CONNECTION
+        prompt_login
+        printf ' '
+    end
     if test $laststatus -ne 0
         printf "%s\u018e $laststatus %s" (set_color -o red) (set_color normal)
     end

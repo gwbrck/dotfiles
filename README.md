@@ -22,9 +22,10 @@ To deploy these dotfiles on a new machine, follow the steps below:
 
 ## Development Environments
 
-On macOS, `chezmoi apply` installs Nix and devenv. Start a new Fish session
-after the initial bootstrap so that the Nix environment and devenv hook are
-loaded:
+On macOS, `chezmoi apply` installs Nix and devenv. Subsequent applies update
+the global devenv CLI with `nix profile upgrade devenv`. Start a new Fish
+session after the initial bootstrap so that the Nix environment and devenv
+hook are loaded:
 
 ```sh
 exec fish
@@ -48,12 +49,6 @@ pyinit
 uv init
 devenv allow
 devenv shell # optional
-```
-
-Update the global devenv CLI explicitly with:
-
-```sh
-nix profile upgrade devenv
 ```
 
 Update a project's pinned inputs from inside that project with:

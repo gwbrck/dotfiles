@@ -9,6 +9,7 @@ if [[ -r "$nix_daemon_profile" ]]; then
 fi
 
 if command -v devenv >/dev/null 2>&1; then
+  nix profile upgrade devenv
   exit 0
 fi
 

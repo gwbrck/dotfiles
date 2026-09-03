@@ -207,3 +207,4 @@ vscode "tootone.org-mode"
 uv "kptncook"
 uv "ocrmypdf", with: ["ocrmypdf-appleocr"]
 uv "things-mcp"
+go "filippo.io/age/extra/age-plugin-tag"

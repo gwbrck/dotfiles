@@ -113,7 +113,7 @@ cask "opencloud"
 # AI coding agent desktop client
 cask "opencode-desktop", greedy: true
 # Local-first alternative to Logitech Options+ for HID++ devices
-cask "openlogi", greedy: true
+cask "openlogi"
 # Calculate the overall performance of an investment portfolio
 cask "portfolioperformance", greedy: true
 # Scientific and technical publishing system built on Pandoc

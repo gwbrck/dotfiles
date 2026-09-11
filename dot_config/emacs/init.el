@@ -143,6 +143,8 @@
     "ff" '(find-file :wk "file")
     "d" '(:ignore t :wk "dired")
     "dd" #'dired
+    "g" '(:ignore t :wk "git")
+    "gg" '(magit-status :wk "status")
     "c" '(:ignore t :wk "mode-map")
     "SPC" '(execute-extended-command :wk "M-x")
     "x" '(:keymap ctl-x-map :wk "ctl-x-map")
@@ -264,7 +266,10 @@
 (use-package magit
   :ensure t
   :commands magit-status
-  :bind ("C-x g" . magit-status))
+  :bind ("C-x g" . magit-status)
+  :config
+  (define-key magit-mode-map (kbd "SPC") nil)
+  (evil-define-key 'normal magit-mode-map (kbd "SPC") nil))
 
 (use-package server
   :unless (daemonp)

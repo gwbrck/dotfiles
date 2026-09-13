@@ -2,7 +2,7 @@ theme = dark:Catppuccin Mocha, light:Catppuccin Latte
 font-family = JuliaMono
 shell-integration-features = ssh-env,no-ssh-terminfo
 quick-terminal-position = center
-quick-terminal-size = 40%
+quick-terminal-size = 55%
 keybind = global:cmd+ctrl+opt+l=toggle_quick_terminal
 
 

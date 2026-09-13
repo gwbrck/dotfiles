@@ -2,6 +2,23 @@
 
 
 [[session]]
+name = "hermes 🖥️"
+path = "~"
+startup_command = "ssh hermes-vm"
+
+[[session]]
+name = "hermes · diss 🔬"
+path = "~"
+startup_command = "ssh hermes-vm -t 'cd ~/projects/diss && exec $SHELL'"
+preview_command = "ssh hermes-vm 'ls ~/projects/diss'"
+
+[[session]]
+name = "hermes · hermes 🧬"
+path = "~"
+startup_command = "ssh hermes-vm -t 'cd ~/.hermes && exec $SHELL'"
+preview_command = "ssh hermes-vm 'ls ~/.hermes'"
+
+[[session]]
 name = "Downloads 📥"
 path = "~/Downloads"
 startup_command = "ls"

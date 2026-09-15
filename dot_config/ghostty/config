@@ -4,5 +4,7 @@ shell-integration-features = ssh-env,no-ssh-terminfo
 quick-terminal-position = center
 quick-terminal-size = 55%
 keybind = global:cmd+ctrl+opt+l=toggle_quick_terminal
+quit-after-last-window-closed = false
+initial-window = false
 
 

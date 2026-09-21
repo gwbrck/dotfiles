@@ -90,38 +90,38 @@ cask "d12frosted/emacs-plus/emacs-plus-app"
 # Cross-platform Text Expander written in Rust
 cask "espanso"
 # Web browser
-cask "firefox", greedy: true
+cask "firefox"
 cask "font-juliamono"
 cask "font-maple-mono-nf"
 cask "font-noto-sans"
 # Terminal emulator that uses platform-native UI and GPU acceleration
-cask "ghostty", greedy: true
+cask "ghostty"
 # Free and open-source image editor
 cask "gimp"
 # Open-source desktop AI agent
-cask "hermes-desktop", greedy: true
+cask "hermes-desktop"
 # Keyboard customiser
-cask "karabiner-elements", greedy: true
+cask "karabiner-elements"
 # Full TeX Live distribution without GUI applications
 cask "mactex-no-gui"
 # Free and open-source RSS reader
 cask "netnewswire"
 # Desktop sync client for Nextcloud software products
-cask "nextcloud", greedy: true
+cask "nextcloud"
 # Desktop syncing client for OpenCloud
 cask "opencloud"
 # AI coding agent desktop client
-cask "opencode-desktop", greedy: true
+cask "opencode-desktop"
 # Local-first alternative to Logitech Options+ for HID++ devices
 cask "openlogi"
 # Calculate the overall performance of an investment portfolio
-cask "portfolioperformance", greedy: true
+cask "portfolioperformance"
 # Scientific and technical publishing system built on Pandoc
 cask "quarto"
 # Imaging utility to install operating systems to a microSD card
 cask "raspberry-pi-imager"
 # Instant messaging application focusing on security
-cask "signal", greedy: true
+cask "signal"
 # Music streaming service
 cask "spotify"
 # Video game digital distribution service
@@ -129,13 +129,13 @@ cask "steam"
 # Helper application for Things
 cask "thingsmacsandboxhelper"
 # Open-source code editor
-cask "visual-studio-code", greedy: true
+cask "visual-studio-code"
 # Open-source markdown editor
 cask "zettlr"
 # Video communication and virtual meeting platform
 cask "zoom"
 # Collect, organise, cite, and share research sources
-cask "zotero", greedy: true
+cask "zotero"
 mas "addy.io", id: 6670220050
 mas "Aiko", id: 1672085276
 mas "AusweisApp", id: 948660805

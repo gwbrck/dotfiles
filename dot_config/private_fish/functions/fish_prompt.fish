@@ -57,7 +57,7 @@ function fish_prompt --description 'Write out the prompt'
         set suffix (string repeat -n $SHLVL (printf '\u276f'))' '
     end
 
-    if set -q SSH_CONNECTION
+    if set -q SSH_CONNECTION; or set -q SUDO_USER
         prompt_login
         printf ' '
     end

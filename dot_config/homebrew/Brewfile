@@ -99,8 +99,6 @@ cask "ghostty"
 # Free and open-source image editor
 cask "gimp"
 # Open-source desktop AI agent
-cask "hermes-desktop"
-# Keyboard customiser
 cask "karabiner-elements"
 # Full TeX Live distribution without GUI applications
 cask "mactex-no-gui"

@@ -79,10 +79,6 @@ cask "adobe-acrobat-reader", greedy: true
 cask "affinity"
 # Multi-track audio editor and recorder
 cask "audacity"
-# Web browser focusing on privacy
-cask "brave-browser"
-# App to build and share containerised applications and microservices
-cask "docker-desktop"
 # Matrix collaboration client
 cask "element"
 # GNU Emacs text editor with patches for macOS
@@ -90,7 +86,7 @@ cask "d12frosted/emacs-plus/emacs-plus-app"
 # Cross-platform Text Expander written in Rust
 cask "espanso"
 # Web browser
-cask "firefox"
+cask "zen"
 cask "font-juliamono"
 cask "font-maple-mono-nf"
 cask "font-noto-sans"

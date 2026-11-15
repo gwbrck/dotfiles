@@ -102,8 +102,6 @@ cask "mactex-no-gui"
 cask "netnewswire"
 # Desktop sync client for Nextcloud software products
 cask "nextcloud"
-# Desktop syncing client for OpenCloud
-cask "opencloud"
 # AI coding agent desktop client
 cask "opencode-desktop"
 # Local-first alternative to Logitech Options+ for HID++ devices

@@ -4,6 +4,8 @@ Host *
   {{- else -}}
     ~/.bitwarden-ssh-agent.sock
   {{- end }}
+{{- if .ssh_include }}
 
 
-Include ~/Library/CloudStorage/Nextcloud-nextcloud.wbrck.de-Gregor/Dots/servers.conf
+Include {{ .ssh_include }}
+{{- end }}
